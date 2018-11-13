@@ -36,7 +36,7 @@ const unauthorized = class Unauthorized extends React.Component<IProps> {
     const classes = this.props.classes
     return (
       <Grid container={true} alignItems={'center'} justify={'center'} className={classes.root}>
-        <Grid item={true} xs={4}>
+        <Grid item={true} xs={2}>
           <Card className={classes.cardFix}>
             <AppBar color="primary" position="static" className={classes.disableShadow}>
               <Toolbar>
