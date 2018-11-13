@@ -1,5 +1,5 @@
-import {IUserAction} from '../../interfaces/user/IUserAction';
-import {IUserState} from '../../interfaces/user/IUserState';
+import {IUserAction} from '../../interfaces/user/IUserAction'
+import {IUserState} from '../../interfaces/user/IUserState'
 
 const initialState : IUserState = {
   user: null
@@ -7,7 +7,6 @@ const initialState : IUserState = {
 
 export default function (state : IUserState = initialState, action: IUserAction) : IUserState {
   switch (action.type) {
-
     default:
       return state
   }

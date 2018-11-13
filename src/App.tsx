@@ -1,22 +1,31 @@
-import * as React from 'react';
-import './App.css';
+import './styles.css'
+import * as React from 'react'
+import {connect} from 'react-redux'
+import {IUserState} from './interfaces/user/IUserState'
+import Authorized from './containers/authorized/authorized'
+import Unauthorized from './containers/unauthorized/unauthorized'
 
-import logo from './logo.svg';
 
-class App extends React.Component {
+interface IProps {
+  isAuthorized?: boolean
+  user?: IUserState
+}
+
+class App extends React.Component<IProps> {
   public render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        {this.props.isAuthorized ? <Authorized/> : <Unauthorized/>}
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state: IUserState) : any {
+  return {
+    isAuthorized: !!state.user,
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps)(App);
