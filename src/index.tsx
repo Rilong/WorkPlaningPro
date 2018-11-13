@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles'
-import red from '@material-ui/core/colors/red'
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware} from 'redux'
@@ -18,7 +17,12 @@ const theme = createMuiTheme({
     background: {
       default: '#f2f2f2'
     },
-    primary: red
+    primary: {
+      main: '#78909c'
+    },
+    secondary: {
+      main: '#00e676'
+    }
   },
   typography: {
     useNextVariants: true
