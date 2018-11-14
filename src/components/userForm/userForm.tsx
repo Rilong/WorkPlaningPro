@@ -35,7 +35,7 @@ const userForm = function UserForm(props: IProps) {
           : null
         }
         <div className={classes.submitBtn}>
-          <Button type="button" variant="contained" color="secondary" style={{color: '#fff'}}>{!props.isRegister ? 'Регистрація' : 'Вхід'}</Button>
+          <Button type="button" variant="contained" color="secondary" style={{color: '#fff'}}>{!props.isRegister ? 'Реєстрація' : 'Вхід'}</Button>
           <Button type="submit" variant="contained" color="primary">{props.isRegister ? 'Зареєструватись' : 'Увійти'}</Button>
         </div>
       </form>
