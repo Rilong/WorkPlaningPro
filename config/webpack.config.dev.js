@@ -109,6 +109,7 @@ module.exports = {
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
       new TsconfigPathsPlugin({ configFile: paths.appTsConfig }),
+      new webpack.WatchIgnorePlugin([/css\.d\.ts$/])
     ],
   },
   module: {
@@ -174,12 +175,14 @@ module.exports = {
             use: [
               require.resolve('style-loader'),
               {
-                loader: require.resolve('css-loader'),
+                loader: require.resolve('typings-for-css-modules-loader'),
                 options: {
-                  importLoaders: 1,
                   modules: true,
-                  localIdentName: "[name]_[local]_[hash:base64:5]"
-                },
+                  importLoaders: 1,
+                  localIdentName: '[name]__[local]___[hash:base64:5]',
+                  namedExport: true,
+                  camelCase: true,
+                }
               },
               {
                 loader: require.resolve('postcss-loader'),

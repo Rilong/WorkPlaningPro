@@ -1,29 +1,11 @@
 import * as React from 'react'
-import {StyleRulesCallback, withStyles} from '@material-ui/core/styles'
+import * as classes from './styles.css'
 import FormControl from '@material-ui/core/FormControl/FormControl'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Input from '@material-ui/core/Input/Input'
 import Button from '@material-ui/core/Button/Button'
 
-interface IProps {
-  classes?: {
-    input: string,
-    submitBtn: string
-  }
-}
-
-const styles: StyleRulesCallback = theme => ({
-  submitBtn: {
-    marginTop: 10,
-      display: 'flex',
-      justifyContent: 'flex-end'
-  },
-  input: {
-    marginBottom: 10
-  }
-})
-
-const loginForm = function LoginForm({classes} : IProps) {
+const loginForm = function LoginForm() {
   return (
     <>
       <form>
@@ -47,4 +29,4 @@ const loginForm = function LoginForm({classes} : IProps) {
   )
 }
 
-export default withStyles(styles)(loginForm)
+export default loginForm

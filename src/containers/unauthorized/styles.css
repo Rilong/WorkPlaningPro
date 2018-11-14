@@ -1,3 +1,16 @@
 body, #root, .App {
     height: 100vh;
 }
+
+.root {
+    height: 100vh
+}
+
+.disableShadow {
+    box-shadow: none !important;
+}
+
+.cardFix {
+    border-radius: 0;
+    border: none
+}
