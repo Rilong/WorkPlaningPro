@@ -6,14 +6,18 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography/Typography'
 import Toolbar from '@material-ui/core/Toolbar/Toolbar'
 import AppBar from '@material-ui/core/AppBar/AppBar'
-import LoginForm from '../../components/loginForm/loginForm'
+import UserForm from '../../components/userForm/userForm'
 
 const unauthorized = class Unauthorized extends React.Component {
+
+  public state = {
+    isRegister: false
+  }
 
   public render(): React.ReactNode {
     return (
       <Grid container={true} alignItems={'center'} justify={'center'} className={classes.root}>
-        <Grid item={true} xs={2}>
+        <Grid item={true} xs={3}>
           <Card className={classes.cardFix}>
             <AppBar color="primary" position="static" className={classes.disableShadow}>
               <Toolbar>
@@ -23,7 +27,7 @@ const unauthorized = class Unauthorized extends React.Component {
               </Toolbar>
             </AppBar>
             <CardContent>
-              <LoginForm />
+              <UserForm isRegister={this.state.isRegister} />
             </CardContent>
           </Card>
         </Grid>

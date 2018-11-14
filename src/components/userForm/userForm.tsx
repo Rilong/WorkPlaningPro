@@ -5,7 +5,11 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Input from '@material-ui/core/Input/Input'
 import Button from '@material-ui/core/Button/Button'
 
-const loginForm = function LoginForm() {
+interface IProps {
+  isRegister: boolean
+}
+
+const userForm = function UserForm(props: IProps) {
   return (
     <>
       <form>
@@ -21,12 +25,22 @@ const loginForm = function LoginForm() {
             <Input id="password"/>
           </FormControl>
         </div>
+        {props.isRegister ?
+          <div className={classes.input}>
+            <FormControl fullWidth={true}>
+              <InputLabel htmlFor="repeatPassword">Повторить пароль</InputLabel>
+              <Input id="repeatPassword"/>
+            </FormControl>
+          </div>
+          : null
+        }
         <div className={classes.submitBtn}>
-          <Button type="submit" variant="contained" color="primary">Увійти</Button>
+          <Button type="button" variant="contained" color="secondary" style={{color: '#fff'}}>{!props.isRegister ? 'Регистрація' : 'Вхід'}</Button>
+          <Button type="submit" variant="contained" color="primary">{props.isRegister ? 'Зареєструватись' : 'Увійти'}</Button>
         </div>
       </form>
     </>
   )
 }
 
-export default loginForm
+export default userForm
