@@ -28,7 +28,7 @@ const unauthorized = class Unauthorized extends React.Component {
             <AppBar color="primary" position="static" className={classes.disableShadow}>
               <Toolbar>
                 <Typography variant="h6" color="inherit">
-                  {this.state.isRegister ? 'Реєстрація' : 'Вхід  '}
+                  {this.state.isRegister ? 'Реєстрація' : 'Вхід'}
                 </Typography>
               </Toolbar>
             </AppBar>
