@@ -14,6 +14,12 @@ const unauthorized = class Unauthorized extends React.Component {
     isRegister: false
   }
 
+  public changeForm = () => {
+    this.setState({
+      isRegister: !this.state.isRegister
+    })
+  }
+
   public render(): React.ReactNode {
     return (
       <Grid container={true} alignItems={'center'} justify={'center'} className={classes.root}>
@@ -22,12 +28,12 @@ const unauthorized = class Unauthorized extends React.Component {
             <AppBar color="primary" position="static" className={classes.disableShadow}>
               <Toolbar>
                 <Typography variant="h6" color="inherit">
-                  Вхід
+                  {this.state.isRegister ? 'Реєстрація' : 'Вхід  '}
                 </Typography>
               </Toolbar>
             </AppBar>
             <CardContent>
-              <UserForm isRegister={this.state.isRegister} />
+              <UserForm isRegister={this.state.isRegister} changeForm={this.changeForm}  />
             </CardContent>
           </Card>
         </Grid>
