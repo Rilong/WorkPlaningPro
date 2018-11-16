@@ -18,7 +18,7 @@ export default (props: IProps) => {
 
   return (
     <FormControl fullWidth={true} error={props.hasError} aria-describedby={errorId}>
-      <InputLabel htmlFor={props.name}>{props.label}></InputLabel>
+      <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
       <Input id={props.name} type={props.type} value={props.value}/>
       {props.hasError ? <FormHelperText id={errorId}>{props.errorMessage}</FormHelperText> : null}
     </FormControl>
