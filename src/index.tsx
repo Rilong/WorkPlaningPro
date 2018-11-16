@@ -3,13 +3,17 @@ import * as ReactDOM from 'react-dom'
 import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles'
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import {Provider} from 'react-redux'
-import {createStore, applyMiddleware} from 'redux'
+import {createStore, applyMiddleware, compose} from 'redux'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import RootReducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk'
 
-const store = createStore(RootReducer, applyMiddleware(thunk))
+
+const store = createStore(RootReducer, compose(
+  applyMiddleware(thunk),
+  (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+))
 
 const theme = createMuiTheme({
 
