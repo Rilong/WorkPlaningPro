@@ -49,6 +49,7 @@ const unauthorized = class Unauthorized extends React.Component {
         }
       ])
     },
+    hasError: false,
     isRegister: false
   }
 
@@ -94,7 +95,11 @@ const unauthorized = class Unauthorized extends React.Component {
               </Toolbar>
             </AppBar>
             <CardContent>
-              <UserForm isRegister={this.state.isRegister} changeForm={this.changeForm} inputs={this.renderInputs} />
+              <UserForm isRegister={this.state.isRegister}
+                        changeForm={this.changeForm}
+                        inputs={this.renderInputs}
+                        disabled={!this.state.hasError}
+              />
             </CardContent>
           </Card>
         </Grid>

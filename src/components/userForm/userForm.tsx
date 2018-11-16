@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button/Button'
 interface IProps {
   isRegister: boolean
   changeForm: () => void
-  inputs: (classInput: string) => React.ReactNode
+  inputs: (classInput: string) => React.ReactNode,
+  disabled?: boolean
 }
 
 const userForm = function UserForm(props: IProps) {
@@ -15,7 +16,7 @@ const userForm = function UserForm(props: IProps) {
         {props.inputs(classes.input)}
         <div className={classes.submitBtn}>
           <Button type="button" variant="contained" color="primary" onClick={props.changeForm}>{!props.isRegister ? 'Реєстрація' : 'Вхід'}</Button>
-          <Button type="submit" variant="contained" color="secondary" style={{color: '#fff'}}>{props.isRegister ? 'Зареєструватись' : 'Увійти'}</Button>
+          <Button type="submit" disabled={props.disabled} variant="contained" color="secondary" style={{color: '#fff'}}>{props.isRegister ? 'Зареєструватись' : 'Увійти'}</Button>
         </div>
       </form>
     </>
