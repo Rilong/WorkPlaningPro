@@ -59,27 +59,10 @@ const unauthorized = class Unauthorized extends React.Component {
     })
   }
 
-  public renderInputs = (classInput: string) => {
-    const formControls = this.state.formControls
-
-    return Object.keys(formControls).map((key: string, index: number) => {
-      const formControl = formControls[key];
-      const input = (
-        <Input type={formControl.type}
-               label={formControl.label}
-               name={key} value={formControl.value}
-               hasError={formControl.hasError}
-               errorMessage={formControl.errorMessage}
-        />
-      )
-      return (
-        <React.Fragment key={index + '__' + key}>
-          <div className={classInput}>
-            {!this.state.isRegister && key === 'passwordConfirm' ? null : input }
-          </div>
-        </React.Fragment>
-      )
-    })
+  public onChange = (name: string, value: string) => {
+    const formControls = {...this.state.formControls}
+    formControls[name].value = value
+    this.setState({...this.state, formControls})
   }
 
   public render(): React.ReactNode {
@@ -105,6 +88,30 @@ const unauthorized = class Unauthorized extends React.Component {
         </Grid>
       </Grid>
     )
+  }
+
+  public renderInputs = (classInput: string) => {
+    const formControls = this.state.formControls
+
+    return Object.keys(formControls).map((key: string, index: number) => {
+      const formControl = formControls[key];
+      const input = (
+        <Input type={formControl.type}
+               label={formControl.label}
+               name={key} value={formControl.value}
+               hasError={formControl.hasError}
+               errorMessage={formControl.errorMessage}
+               change={(event) => this.onChange(key, event.target.value)}
+        />
+      )
+      return (
+        <React.Fragment key={index + '__' + key}>
+          <div className={classInput}>
+            {!this.state.isRegister && key === 'passwordConfirm' ? null : input }
+          </div>
+        </React.Fragment>
+      )
+    })
   }
 }
 

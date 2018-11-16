@@ -11,6 +11,7 @@ interface IProps {
   name: string
   hasError?: boolean
   errorMessage?: string
+  change?: (e: any) => void
 }
 
 export default (props: IProps) => {
@@ -19,7 +20,7 @@ export default (props: IProps) => {
   return (
     <FormControl fullWidth={true} error={props.hasError} aria-describedby={errorId}>
       <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
-      <Input id={props.name} type={props.type} value={props.value}/>
+      <Input id={props.name} type={props.type} value={props.value} onChange={props.change}/>
       {props.hasError ? <FormHelperText id={errorId}>{props.errorMessage}</FormHelperText> : null}
     </FormControl>
   );
