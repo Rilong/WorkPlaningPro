@@ -3,7 +3,7 @@ interface IParams {
   type: string
   value: string
   errorMessage: string
-  validators: IValidators[]
+  validators: IValidators
 }
 
 interface IBasic {

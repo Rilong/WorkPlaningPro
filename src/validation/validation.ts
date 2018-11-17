@@ -8,4 +8,10 @@ export default class Validation {
 
     return {...params, ...basicParams}
   }
+
+  public static setValidationControl(control: IControl, hasError: boolean = false, message: string = ''): IControl {
+    control.hasError = hasError
+    control.errorMessage = message
+    return control
+  }
 }
