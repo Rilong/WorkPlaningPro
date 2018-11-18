@@ -1,4 +1,4 @@
-interface IParams {
+export interface IParams {
   label: string
   type: string
   value: string
@@ -6,9 +6,13 @@ interface IParams {
   validators: IValidators
 }
 
-interface IBasic {
+export interface IBasic {
   hasError: boolean
   touched: boolean
 }
 
-interface IControl extends IBasic, IParams {}
+export interface IControl extends IBasic, IParams {}
+
+export interface IFormControl {
+  [name: string]: IControl
+}
