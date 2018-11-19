@@ -27,7 +27,7 @@ export default class Login extends React.Component <IProps, IState> {
   }
 
   public onChangeHandler = (name: string, value: string) => {
-    const controls: IFormControl = this.state.formControls
+    const controls: IFormControl = {...this.state.formControls}
 
     controls[name].value = value
     controls[name] = Validation.valid(controls[name])
