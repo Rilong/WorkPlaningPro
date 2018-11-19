@@ -1,7 +1,12 @@
-interface IValidators {
-  required?: boolean
-  email?: boolean
-  minLength?: number
-  maxLength?: number
-  confirm?: string
+export interface IValidator {
+  message: string
+  value?: any
+}
+
+export interface IValidators {
+  required?: boolean | IValidator
+  email?: boolean | IValidator
+  minLength?: IValidator
+  maxLength?: IValidator
+  confirm?: IValidator
 }

@@ -1,7 +1,10 @@
 import {IBasic, IControl, IFormControl, IParams} from './interfaces/validation';
+import {IValidator, IValidators} from './interfaces/validators';
+import Validators from './validators';
+import {ERROR_EMAIL, ERROR_REQUIRED} from './validationMessages';
 
 export default class Validation {
-  public static createControl(params: IParams) : IControl {
+  public static createControl(params: IParams): IControl {
     const basicParams: IBasic = {
       hasError: false,
       touched: false
@@ -10,7 +13,7 @@ export default class Validation {
     return {...params, ...basicParams}
   }
 
-  public static createControlWithDefalut(type: string, label: string, validators: IValidators): IControl {
+  public static createControlWithDefault(type: string, label: string, validators: IValidators): IControl {
     return Validation.createControl({
       type,
       label,
@@ -20,12 +23,45 @@ export default class Validation {
     })
   }
 
-  public static setValidationControl(control: IControl, hasError: boolean = false, message: string = ''): IControl {
-    control.hasError = hasError
-    control.errorMessage = message
+  public static valid(control: IControl, confirmControl: IControl = null): IControl {
+    control = {...control}
+
+    if (control.validators.required && Validators.isRequired(control.value)) {
+      return this.setErrorValidationControl(control, control.validators.required, ERROR_REQUIRED)
+    }
+
+    if (control.validators.email && Validators.isEmail(control.value)) {
+      return this.setErrorValidationControl(control, control.validators.email, ERROR_EMAIL)
+    }
+
+    if (control.validators.minLength && Validators.isMinLength(control.value, control.validators.minLength.value)) {
+      return this.setErrorValidationControl(control, control.validators.minLength)
+    }
+
+    if (control.validators.maxLength && Validators.isMaxLength(control.value, control.validators.maxLength.value)) {
+      return this.setErrorValidationControl(control, control.validators.maxLength)
+    }
+
+    if (control.validators.confirm && confirmControl !== null) {
+      if (Validators.isConfirm(control.value, confirmControl.validators.confirm.value)) {
+        return this.setErrorValidationControl(control, control.validators.confirm)
+      }
+    }
+
+    return this.clearErrorValidationControl(control)
+  }
+
+  public static setErrorValidationControl(control: IControl, validator: IValidator | boolean | number, message: string = ''): IControl {
+    control.hasError = true
+    control.errorMessage = typeof validator === 'boolean' || typeof validator === 'number' ? message : validator.message
     return control
   }
 
+  public static clearErrorValidationControl(control: IControl) {
+    control.hasError = false
+    control.errorMessage = ''
+    return control
+  }
 
   public static isNotHasErrorForm(formControls: IFormControl) {
     let isHasError = true

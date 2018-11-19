@@ -17,17 +17,21 @@ export default class Login extends React.Component <IProps, IState> {
   public state = {
     hasError: true,
     formControls: {
-      'email': Validation.createControlWithDefalut('text', 'E-mail', {
+      'email': Validation.createControlWithDefault('text', 'E-mail', {
         required: true
       }),
-      'password': Validation.createControlWithDefalut('password', 'Пароль', {
+      'password': Validation.createControlWithDefault('password', 'Пароль', {
         required: true
       })
     }
   }
 
-  public onChangeHandler(name: string, value: string) : void {
-    console.log(name, value)
+  public onChangeHandler = (name: string, value: string) => {
+    const controls: IFormControl = this.state.formControls
+
+    controls[name].value = value
+    controls[name] = Validation.valid(controls[name])
+    this.setState({formControls: controls})
   }
 
   public onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {

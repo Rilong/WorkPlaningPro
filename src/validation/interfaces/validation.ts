@@ -1,3 +1,5 @@
+import {IValidators} from './validators';
+
 export interface IParams {
   label: string
   type: string

@@ -2,6 +2,7 @@ import * as React from 'react'
 import UserForm from '../userForm/userForm'
 import {IFormControl} from '../../validation/interfaces/validation';
 import Validation from '../../validation/validation';
+import {ERROR_PASSWORD_CONFIRM} from '../../validation/validationMessages';
 
 interface IProps {
   changeForm: () => void
@@ -17,17 +18,17 @@ export default class Register extends React.Component<IProps, IState> {
   public state = {
     hasError: true,
     formControls: {
-      'email': Validation.createControlWithDefalut('text', 'E-mail', {
+      'email': Validation.createControlWithDefault('text', 'E-mail', {
         required: true,
         email: true
       }),
-      'password': Validation.createControlWithDefalut('password', 'Пароль', {
+      'password': Validation.createControlWithDefault('password', 'Пароль', {
         required: true,
-        minLength: 6
+        minLength: {message: 'Пароль має бути не меньше ніж 6 символів', value: 6}
       }),
-      'confirmPassword': Validation.createControlWithDefalut('password', 'Підтвердження пароля', {
+      'confirmPassword': Validation.createControlWithDefault('password', 'Підтвердження пароля', {
         required: true,
-        confirm: 'password'
+        confirm: {message: ERROR_PASSWORD_CONFIRM}
       })
     }
   }
