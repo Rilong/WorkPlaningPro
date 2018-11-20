@@ -23,8 +23,9 @@ export default class Validation {
     })
   }
 
-  public static valid(control: IControl, confirmControl: IControl = null): IControl {
-    control = {...control}
+  public static valid(formControls: IFormControl, name: string): IControl {
+    formControls = {...formControls}
+    const control: IControl = formControls[name]
 
     if (control.validators.required && Validators.isRequired(control.value)) {
       return this.setErrorValidationControl(control, control.validators.required, ERROR_REQUIRED)
@@ -42,10 +43,8 @@ export default class Validation {
       return this.setErrorValidationControl(control, control.validators.maxLength)
     }
 
-    if (control.validators.confirm && confirmControl !== null) {
-      if (Validators.isConfirm(control.value, confirmControl.validators.confirm.value)) {
-        return this.setErrorValidationControl(control, control.validators.confirm)
-      }
+    if (control.validators.confirm && Validators.isConfirm(control.value, formControls[control.validators.confirm.value].value)) {
+      return this.setErrorValidationControl(control, control.validators.confirm)
     }
 
     return this.clearErrorValidationControl(control)
@@ -63,11 +62,11 @@ export default class Validation {
     return control
   }
 
-  public static isNotHasErrorForm(formControls: IFormControl) {
+  public static hasErrorForm(formControls: IFormControl) {
     let isHasError = true
     Object.keys(formControls).forEach((key) => {
       isHasError = !formControls[key].hasError && formControls[key].touched && isHasError
     })
-    return isHasError
+    return !isHasError
   }
 }

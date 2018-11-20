@@ -28,13 +28,18 @@ export default class Register extends React.Component<IProps, IState> {
       }),
       'confirmPassword': Validation.createControlWithDefault('password', 'Підтвердження пароля', {
         required: true,
-        confirm: {message: ERROR_PASSWORD_CONFIRM}
+        confirm: {message: ERROR_PASSWORD_CONFIRM, value: 'password'}
       })
     }
   }
 
-  public onChangeHandler(name: string, value: string) : void {
-    console.log(name, value)
+  public onChangeHandler = (name: string, value: string) => {
+    const controls: IFormControl = {...this.state.formControls}
+
+    controls[name].touched = true
+    controls[name].value = value
+    controls[name] = Validation.valid(controls, name)
+    this.setState({formControls: controls, hasError: Validation.hasErrorForm(controls)})
   }
 
   public onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
