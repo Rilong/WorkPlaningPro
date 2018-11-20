@@ -1,11 +1,16 @@
 import * as React from 'react'
 import UserForm from '../userForm/userForm'
+import {connect} from 'react-redux'
 import {IFormControl} from '../../validation/interfaces/validation';
 import Validation from '../../validation/validation';
 import {ERROR_PASSWORD_CONFIRM} from '../../validation/validationMessages';
+import {Dispatch} from 'redux';
+import {userRegister} from '../../store/actions/user/actions';
+import {IUser} from '../../interfaces/user/IUser';
 
 interface IProps {
   changeForm: () => void
+  onRegister?: (userData: IUser) => void
 }
 
 interface IState {
@@ -13,7 +18,7 @@ interface IState {
   formControls: IFormControl
 }
 
-export default class Register extends React.Component<IProps, IState> {
+const register = class Register extends React.Component<IProps, IState> {
 
   public state = {
     hasError: true,
@@ -42,11 +47,14 @@ export default class Register extends React.Component<IProps, IState> {
     this.setState({formControls: controls, hasError: Validation.hasErrorForm(controls)})
   }
 
-  public onSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
+  public onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    this.props.onRegister(null)
   }
 
+
   public render() : React.ReactNode {
+    console.log(this.props)
     return (
       <UserForm formChangeHandler={this.onSubmitHandler}
                 formControls={this.state.formControls}
@@ -58,3 +66,11 @@ export default class Register extends React.Component<IProps, IState> {
     )
   }
 }
+
+function mapDispatchToProps(dispatch: Dispatch) {
+    return {
+      onRegister: (userData: IUser) => dispatch(userRegister(userData))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(register)
