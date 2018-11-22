@@ -7,10 +7,12 @@ import {ERROR_PASSWORD_CONFIRM} from '../../validation/validationMessages';
 import {Dispatch} from 'redux';
 import {userRegister} from '../../store/actions/user/actions';
 import {IUser} from '../../interfaces/user/IUser';
+import {IUserState} from '../../interfaces/user/IUserState';
 
 interface IProps {
   changeForm: () => void
   onRegister?: (userData: IUser) => void
+  isLoading?: boolean
 }
 
 interface IState {
@@ -49,7 +51,7 @@ const register = class Register extends React.Component<IProps, IState> {
 
   public onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    this.props.onRegister(null)
+    this.props.onRegister({email: this.state.formControls.email.value, password: this.state.formControls.password.value})
   }
 
 
@@ -67,10 +69,16 @@ const register = class Register extends React.Component<IProps, IState> {
   }
 }
 
+function mapStateToProps(state: IUserState) {
+  return {
+    isLoading: state.userLoading
+  }
+}
+
 function mapDispatchToProps(dispatch: Dispatch) {
     return {
-      onRegister: (userData: IUser) => dispatch(userRegister(userData))
+      onRegister: (userData: IUser) => dispatch<any>(userRegister(userData))
     }
 }
 
-export default connect(null, mapDispatchToProps)(register)
+export default connect(mapStateToProps, mapDispatchToProps)(register)
