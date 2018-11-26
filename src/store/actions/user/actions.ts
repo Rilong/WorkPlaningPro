@@ -3,6 +3,7 @@ import {USER_REGISTER, USER_REGISTER_END, USER_REGISTER_START} from './actionTyp
 import {Dispatch} from 'redux'
 import firebase from '../../../firebase'
 import {IUser} from '../../../interfaces/user/IUser';
+import {openMessage} from "../message/actions";
 
 export const userRegister = ({email, password}: IUser) => {
   return async (dispatch: Dispatch) => {
@@ -15,6 +16,7 @@ export const userRegister = ({email, password}: IUser) => {
         payload: registerUser
       })
     } catch (e) {
+      dispatch(openMessage(e.message))
       dispatch(endRegister())
     }
   }

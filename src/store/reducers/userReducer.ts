@@ -1,4 +1,4 @@
-import {IUserAction} from '../../interfaces/user/IUserAction'
+import {IAction} from '../../interfaces/IAction'
 import {IUserState} from '../../interfaces/user/IUserState'
 import {USER_REGISTER, USER_REGISTER_END, USER_REGISTER_START} from '../actions/user/actionTypes';
 
@@ -7,12 +7,12 @@ const initialState : IUserState = {
   userLoading: false
 }
 
-export default function (state : IUserState = initialState, action: IUserAction) : IUserState {
+export default function (state : IUserState = initialState, action: IAction) : IUserState {
   switch (action.type) {
     case USER_REGISTER_START:
       state.userLoading = true
     case USER_REGISTER:
-      console.log('USER_REGISTER', )
+      console.log('USER_REGISTER', state)
     case USER_REGISTER_END:
       state.userLoading = false
 
