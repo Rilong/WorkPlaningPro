@@ -30,7 +30,7 @@ class App extends React.Component<IProps> {
         <Snackbar
             anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'center',
             }}
             open={this.props.messageOpen}
             autoHideDuration={6000}
