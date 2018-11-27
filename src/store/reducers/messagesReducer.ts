@@ -16,8 +16,8 @@ export default function (state: IMessagesState = initialState, action: IAction) 
       }
     case MESSAGE_CLOSE:
       return {
-        messageOpen: false,
-        messageText: ''
+        ...state,
+        messageOpen: false
       }
     default:
       return state

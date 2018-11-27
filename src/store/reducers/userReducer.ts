@@ -10,11 +10,15 @@ const initialState : IUserState = {
 export default function (state : IUserState = initialState, action: IAction) : IUserState {
   switch (action.type) {
     case USER_REGISTER_START:
-      state.userLoading = true
+      return {
+        ...state, userLoading: true
+      }
     case USER_REGISTER:
       console.log('USER_REGISTER', state)
     case USER_REGISTER_END:
-      state.userLoading = false
+      return {
+        ...state, userLoading: false
+      }
 
     default:
       return state

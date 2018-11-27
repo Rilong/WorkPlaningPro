@@ -3,7 +3,7 @@ import * as classes from './styles.css'
 import Button from '@material-ui/core/Button/Button'
 import RenderInputs from '../renderInputs/renderInputs';
 import {IFormControl} from '../../validation/interfaces/validation';
-import CircularProgress from "@material-ui/core/CircularProgress/CircularProgress";
+
 interface IProps {
   formChangeHandler: (event: React.FormEvent<HTMLFormElement>) => void
   formControls: IFormControl
@@ -23,8 +23,7 @@ const userForm = function UserForm(props: IProps) {
         <div className={classes.submitBtn}>
           <Button type="button" variant="contained" color="primary" onClick={props.changeForm}>{props.changeLabel}</Button>
           <Button type="submit" disabled={props.disabled || props.loading} variant="contained" color="secondary" style={{color: '#fff'}}>
-            {props.submitLabel}
-            {props.loading ? <CircularProgress className={classes.progress} color="inherit" /> : null}
+            {props.submitLabel} {props.loading ? '...' : null}
           </Button>
         </div>
       </form>

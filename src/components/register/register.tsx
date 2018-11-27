@@ -7,7 +7,6 @@ import {ERROR_PASSWORD_CONFIRM} from '../../validation/validationMessages';
 import {Dispatch} from 'redux';
 import {userRegister} from '../../store/actions/user/actions';
 import {IUser} from '../../interfaces/user/IUser';
-import {IUserState} from '../../interfaces/user/IUserState';
 
 interface IProps {
   changeForm: () => void
@@ -64,14 +63,15 @@ const register = class Register extends React.Component<IProps, IState> {
                 changeForm={this.props.changeForm}
                 changeLabel="Вхід"
                 submitLabel="зареєструватися"
-                disabled={this.state.hasError}/>
+                disabled={this.state.hasError}
+                loading={this.props.isLoading}/>
     )
   }
 }
 
-function mapStateToProps(state: IUserState) {
+function mapStateToProps(state: any) {
   return {
-    isLoading: state.userLoading
+    isLoading: state.UserReducer.userLoading
   }
 }
 
