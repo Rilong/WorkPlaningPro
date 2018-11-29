@@ -8,17 +8,28 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar'
 import AppBar from '@material-ui/core/AppBar/AppBar'
 import Register from '../../components/register/register'
 import Login from '../../components/login/login'
+import {connect} from "react-redux";
+import {userRegisterOff, userRegisterOn} from "../../store/actions/user/actions";
 
-const unauthorized = class Unauthorized extends React.Component {
+interface IProps {
+  isRegister?: boolean
+  registerOn?: () => void
+  registerOff?: () => void
+
+}
+
+const unauthorized = class Unauthorized extends React.Component<IProps> {
 
   public state = {
     isRegister: false
   }
 
   public changeForm = () => {
-    this.setState({
-      isRegister: !this.state.isRegister
-    })
+    if (this.props.isRegister) {
+      this.props.registerOff()
+    } else {
+      this.props.registerOn()
+    }
   }
   
   public render(): React.ReactNode {
@@ -29,12 +40,12 @@ const unauthorized = class Unauthorized extends React.Component {
             <AppBar color="primary" position="static" className={classes.disableShadow}>
               <Toolbar>
                 <Typography variant="h6" color="inherit">
-                  {this.state.isRegister ? 'Реєстрація' : 'Вхід'}
+                  {this.props.isRegister ? 'Реєстрація' : 'Вхід'}
                 </Typography>
               </Toolbar>
             </AppBar>
             <CardContent>
-              {!this.state.isRegister ? <Login changeForm={this.changeForm}/> : <Register changeForm={this.changeForm}/>}
+              {!this.props.isRegister ? <Login changeForm={this.changeForm}/> : <Register changeForm={this.changeForm}/>}
             </CardContent>
           </Card>
         </Grid>
@@ -43,4 +54,17 @@ const unauthorized = class Unauthorized extends React.Component {
   }
 }
 
-export default unauthorized
+function mapStateToProps(state: any) {
+  return {
+    isRegister: state.UserReducer.isRegister
+  }
+}
+
+function mapDispatchToProps(dispatch: any) {
+  return {
+    registerOn: () => dispatch(userRegisterOn()),
+    registerOff: () => dispatch(userRegisterOff())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(unauthorized)
