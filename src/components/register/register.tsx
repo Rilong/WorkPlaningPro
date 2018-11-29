@@ -55,7 +55,6 @@ const register = class Register extends React.Component<IProps, IState> {
 
 
   public render() : React.ReactNode {
-    console.log(this.props)
     return (
       <UserForm formChangeHandler={this.onSubmitHandler}
                 formControls={this.state.formControls}
