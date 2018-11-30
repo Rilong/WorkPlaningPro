@@ -8,6 +8,7 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import RootReducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk'
+import {BrowserRouter} from "react-router-dom";
 
 
 const store = createStore(RootReducer, compose(
@@ -38,7 +39,9 @@ const app = (
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
       <CssBaseLine/>
-      <App/>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
     </MuiThemeProvider>
   </Provider>
 )

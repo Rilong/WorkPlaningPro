@@ -1,12 +1,68 @@
 import * as React from 'react'
+import {Link, NavLink} from 'react-router-dom'
+import * as classes from './styles.css'
+import Typography from "@material-ui/core/Typography/Typography";
+import Toolbar from "@material-ui/core/Toolbar/Toolbar";
+import AppBar from "@material-ui/core/AppBar/AppBar";
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {userSingOut} from "../../store/actions/user/actions";
+import IMenu from "../../interfaces/IMenu";
+import AddNote from '@material-ui/icons/NoteAdd'
+import Calendar from '@material-ui/icons/CalendarToday'
+import Button from "@material-ui/core/Button/Button";
+interface IProps {
+  singOut?: () => void
+}
 
-export default class Authorized extends React.Component {
+const authorized = class Authorized extends React.Component<IProps> {
+
+  public menuLinks: IMenu[] = [
+    {label: 'Додати новий проект', to: '/new-project', icon: <AddNote className={classes.iconLeft}/>},
+    {label: 'Календар', to: '/calendar', icon: <Calendar className={classes.iconLeft}/>},
+  ]
+
+  public logout = () => {
+    this.props.singOut()
+  }
+
+  public menu() {
+    return this.menuLinks.map((link: IMenu, index: number) => {
+      const route = (props:any) => <NavLink to={link.to} {...props}/>
+      return (
+        <Button key={index + Math.random()} component={route} color="inherit">{link.icon ? link.icon : null} {link.label}</Button>
+      )
+    })
+  }
 
   public render(): React.ReactNode {
+    const linkHome = (props: any) => <Link to="/" {...props}/>
     return (
       <div>
-        Authorized component
+        <AppBar position="static">
+          <Toolbar className={classes.toolbar}>
+            <div>
+              <Typography variant="h5" color="inherit" component={linkHome} className={classes.logo}>
+                Work Planing Pro
+              </Typography>
+            </div>
+            <div>
+              {this.menu()}
+              <IconButton onClick={this.logout} color="inherit"><ExitToApp/></IconButton>
+            </div>
+          </Toolbar>
+        </AppBar>
       </div>
     );
   }
 }
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    singOut: () => dispatch<any>(userSingOut())
+  }
+}
+
+export default connect(null, mapDispatchToProps)(authorized)
