@@ -4,3 +4,5 @@ export const ERROR_PASSWORD = 'Пароль має бути не меньше н
 export const ERROR_PASSWORD_CONFIRM = 'Паролі не співпадають'
 export const ERROR_EMAIL_ALREADRY = 'Цей email уже занятий'
 export const ERROR_SERVER = 'Помилка сервера'
+export const ERROR_TOO_MANY_REQUESTS = 'Занадто багато запитів до сервера'
+export const ERROR_AUTH_DATA_INVALID = 'Невірний email або пароль'

@@ -1,11 +1,12 @@
 import {IAction} from '../../interfaces/IAction'
 import {IUserState} from '../../interfaces/user/IUserState'
 import {
-  USER_REGISTER,
   USER_LOADING_END,
   USER_LOADING_START,
   USER_REGISTER_ON,
-  USER_REGISTER_OFF
+  USER_REGISTER_OFF,
+  USER_SING_IN,
+  USER_SING_OUT
 } from '../actions/user/actionTypes';
 
 const initialState : IUserState = {
@@ -20,8 +21,6 @@ export default function (state : IUserState = initialState, action: IAction) : I
       return {
         ...state, userLoading: true
       }
-    case USER_REGISTER:
-      console.log('USER_REGISTER', state)
     case USER_LOADING_END:
       return {
         ...state, userLoading: false
@@ -34,6 +33,10 @@ export default function (state : IUserState = initialState, action: IAction) : I
       return {
         ...state, isRegister: false
       }
+    case USER_SING_IN:
+      return {...state, user: action.payload}
+    case USER_SING_OUT:
+      return {...state, user: null}
 
     default:
       return state

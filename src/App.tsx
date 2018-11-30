@@ -8,25 +8,46 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 import {Dispatch} from "redux";
 import {closeMessage} from "./store/actions/message/actions";
+import {autoLogin} from "./store/actions/user/actions";
+import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
 
 interface IProps {
   isAuthorized?: boolean
   user?: IUserState
   messageOpen?: boolean
   messageClose?: () => void
-  messageText?: string
+  messageText?: string,
+  autoLogin?: () => Promise<any>
 }
 
 class App extends React.Component<IProps> {
+
+  public state = {
+    loadingApp: false
+  }
+
   public handleClose = () => {
     this.props.messageClose()
   }
 
+  public componentDidMount(): void {
+    this.setState({loadingApp: true})
+    this.props.autoLogin().then(() => {
+      this.setState({loadingApp: false})
+    }).catch(e => {
+      this.setState({loadingApp: false})
+    })
+  }
+
   public render() {
-    console.log(this.props)
     return (
       <div className="App">
-        {this.props.isAuthorized ? <Authorized/> : <Unauthorized/>}
+        {
+          this.state.loadingApp ? <LinearProgress color="secondary" />:
+          <div>
+            {this.props.isAuthorized ? <Authorized/> : <Unauthorized/>}
+          </div>
+        }
         <Snackbar
             anchorOrigin={{
                 vertical: 'bottom',
@@ -66,7 +87,8 @@ function mapStateToProps(state: any) : any {
 
 function mapDispatchToProps(dispatch: Dispatch) {
     return {
-      messageClose: () => dispatch(closeMessage())
+      messageClose: () => dispatch(closeMessage()),
+      autoLogin: () => dispatch<any>(autoLogin())
     }
 }
 
