@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import {Link, NavLink, Route, withRouter} from 'react-router-dom'
 import * as classes from './styles.css'
 import Typography from "@material-ui/core/Typography/Typography";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
@@ -13,6 +13,9 @@ import IMenu from "../../interfaces/IMenu";
 import AddNote from '@material-ui/icons/NoteAdd'
 import Calendar from '@material-ui/icons/CalendarToday'
 import Button from "@material-ui/core/Button/Button";
+import Home from "./pages/home/Home";
+import AddProject from "./pages/add-project/AddProject";
+import CalendarPage from './pages/calendar/Calendar'
 interface IProps {
   singOut?: () => void
 }
@@ -54,6 +57,11 @@ const authorized = class Authorized extends React.Component<IProps> {
             </div>
           </Toolbar>
         </AppBar>
+        <div className="content">
+          <Route path="/" exact={true} component={Home}/>
+          <Route path="/new-project" component={AddProject}/>
+          <Route path="/calendar" component={CalendarPage}/>
+        </div>
       </div>
     );
   }
@@ -65,4 +73,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   }
 }
 
-export default connect(null, mapDispatchToProps)(authorized)
+export default withRouter<any>(connect(null, mapDispatchToProps)(authorized))

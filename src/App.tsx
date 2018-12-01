@@ -10,6 +10,7 @@ import {Dispatch} from "redux";
 import {closeMessage} from "./store/actions/message/actions";
 import {autoLogin} from "./store/actions/user/actions";
 import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
+import {BrowserRouter} from "react-router-dom";
 
 interface IProps {
   isAuthorized?: boolean
@@ -43,40 +44,46 @@ class App extends React.Component<IProps> {
     return (
       <div className="App">
         {
-          this.state.loadingApp ? <LinearProgress color="secondary" />:
-          <div>
-            {this.props.isAuthorized ? <Authorized/> : <Unauthorized/>}
-          </div>
+          this.state.loadingApp ? <LinearProgress color="secondary"/> :
+            <div>
+              {
+                this.props.isAuthorized ?
+                <BrowserRouter>
+                  <Authorized/>
+                </BrowserRouter>
+                : <Unauthorized/>
+              }
+            </div>
         }
         <Snackbar
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-            }}
-            open={this.props.messageOpen}
-            autoHideDuration={6000}
-            onClose={this.handleClose}
-            ContentProps={{
-                'aria-describedby': 'message-id',
-            }}
-            message={<span id="message-id">{this.props.messageText}</span>}
-            action={[
-                <IconButton
-                    key="close"
-                    aria-label="Close"
-                    color="inherit"
-                    onClick={this.handleClose}
-                >
-                &times;
-                </IconButton>,
-            ]}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.props.messageOpen}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{this.props.messageText}</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={this.handleClose}
+            >
+              &times;
+            </IconButton>,
+          ]}
         />
       </div>
     );
   }
 }
 
-function mapStateToProps(state: any) : any {
+function mapStateToProps(state: any): any {
   return {
     isAuthorized: !!state.UserReducer.user,
     user: state.UserReducer.user,
@@ -86,10 +93,10 @@ function mapStateToProps(state: any) : any {
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
-    return {
-      messageClose: () => dispatch(closeMessage()),
-      autoLogin: () => dispatch<any>(autoLogin())
-    }
+  return {
+    messageClose: () => dispatch(closeMessage()),
+    autoLogin: () => dispatch<any>(autoLogin())
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
