@@ -8,12 +8,15 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import RootReducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk'
-
+import red from '@material-ui/core/colors/red'
 
 const store = createStore(RootReducer, compose(
   applyMiddleware(thunk),
   (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
 ))
+
+const primary = red["500"];
+const secondary = red["700"];
 
 const theme = createMuiTheme({
 
@@ -22,10 +25,10 @@ const theme = createMuiTheme({
       default: '#f2f2f2'
     },
     primary: {
-      main: '#78909c'
+      main: primary
     },
     secondary: {
-      main: '#00e676'
+      main: secondary
     }
   },
   typography: {
