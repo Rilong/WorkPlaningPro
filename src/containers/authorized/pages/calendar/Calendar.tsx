@@ -1,12 +1,14 @@
 import * as React from 'react'
-
+import CalendarUI from '../../../../components/ui/calendar/Calendar'
+import {Grid} from '@material-ui/core';
+import * as classes from './styles.css'
 class Calendar extends React.Component {
 
   public render() {
     return (
-        <div>
-          <h1>Calendar page</h1>
-        </div>
+        <Grid container={true} className={classes.calendar}>
+          <CalendarUI size="big"/>
+        </Grid>
     );
   }
 }
