@@ -3,7 +3,7 @@ import * as classes from './styles.css'
 import * as React from 'react'
 import * as dateFns from 'date-fns'
 import * as locale from 'date-fns/locale/ru'
-import {Fab, Grid, Typography} from "@material-ui/core";
+import {Fab, Grid, Typography, Card} from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import ArrowForward from "@material-ui/icons/ArrowForward"
 
@@ -76,11 +76,49 @@ class Calendar extends React.Component<IProps, IState> {
     )
   }
 
+  private renderDays() {
+    const {currentDate} = this.state
+    const startMonth = dateFns.startOfMonth(currentDate)
+    const endMonth = dateFns.endOfMonth(startMonth)
+    const startDate = dateFns.startOfWeek(startMonth, { weekStartsOn: 1 })
+    const endDate = dateFns.endOfWeek(endMonth, { weekStartsOn: 1 })
+
+    const rows = []
+
+    let days = []
+    let day = startDate
+
+    while (day <= endDate) {
+      for (let i = 0; i < 7; i++) {
+        const formatDate = dateFns.format(day, 'D MMM', { locale })
+        days.push(
+          <div key={i + Math.random()} className={classes.calendarCeil}>
+            <Card className={classes.calendarCard}>
+              <Typography variant="h6">{formatDate}</Typography>
+            </Card>
+          </div>
+        )
+
+        day = dateFns.addDays(day, 1)
+      }
+
+      rows.push(
+        <div key={Math.random()} className={classes.calendarRow}>
+          {days}
+        </div>
+      )
+      days = []
+    }
+
+    return (rows)
+  }
+
   public render() {
     return (
       <>
         {this.headerRender()}
         {this.renderWeekDays()}
+        {this.renderDays()}
       </>
     );
   }
