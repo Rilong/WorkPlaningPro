@@ -50,10 +50,10 @@ const login = class Login extends React.Component <IProps, IState> {
     return (
       <UserForm formControls={this.state.formControls}
                 changeForm={this.props.changeForm}
-                changeLabel={'Реєстрація'}
+                changeLabel={'Регистрация'}
                 formChangeHandler={(event) => this.onSubmitHandler(event)}
                 inputChange={this.onChangeHandler}
-                submitLabel={'Увійти'}
+                submitLabel={'Войти'}
                 disabled={this.state.hasError}
                 loading={this.props.isLoading}/>
     )

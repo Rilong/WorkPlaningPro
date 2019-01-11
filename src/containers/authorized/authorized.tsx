@@ -24,8 +24,8 @@ interface IProps {
 const authorized = class Authorized extends React.Component<IProps> {
 
   public menuLinks: IMenu[] = [
-    {label: 'Додати новий проект', to: '/new-project', icon: <AddNote className={classes.iconLeft}/>},
-    {label: 'Календар', to: '/calendar', icon: <Calendar className={classes.iconLeft}/>},
+    {label: 'Добавить новый проект', to: '/new-project', icon: <AddNote className={classes.iconLeft}/>},
+    {label: 'Календарь', to: '/calendar', icon: <Calendar className={classes.iconLeft}/>},
   ]
 
   public logout = () => {

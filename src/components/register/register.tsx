@@ -30,9 +30,9 @@ const register = class Register extends React.Component<IProps, IState> {
       }),
       'password': Validation.createControlWithDefault('password', 'Пароль', {
         required: true,
-        minLength: {message: 'Пароль має бути не меньше ніж 6 символів', value: 6}
+        minLength: {message: 'Пароль должен быть не менее 6 символов', value: 6}
       }),
-      'confirmPassword': Validation.createControlWithDefault('password', 'Підтвердження пароля', {
+      'confirmPassword': Validation.createControlWithDefault('password', 'Подтверждение пароля', {
         required: true,
         confirm: {message: ERROR_PASSWORD_CONFIRM, value: 'password'}
       })
@@ -60,8 +60,8 @@ const register = class Register extends React.Component<IProps, IState> {
                 formControls={this.state.formControls}
                 inputChange={this.onChangeHandler}
                 changeForm={this.props.changeForm}
-                changeLabel="Вхід"
-                submitLabel="зареєструватися"
+                changeLabel="Вход"
+                submitLabel="Зарегистрироваться"
                 disabled={this.state.hasError}
                 loading={this.props.isLoading}/>
     )
