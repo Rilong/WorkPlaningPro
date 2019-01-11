@@ -37,13 +37,15 @@ class Calendar extends React.Component<IProps, IState> {
 
   private headerRender() {
     const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', { locale });
+    const currentYear = dateFns.format(this.state.currentDate, 'YYYY', { locale });
+
     return (
       <>
         <Grid container={true} item={true} xs={3} justify="flex-start">
           <Fab color="secondary" onClick={this.prevMonthHandler}><ArrowBack/></Fab>
         </Grid>
         <Grid container={true} item={true} xs={6} justify="center">
-          <Typography variant="h5" classes={{root: classes.capitalize}}>{currentMonth}</Typography>
+          <Typography variant="h5" classes={{root: classes.capitalize}}>{currentMonth} - {currentYear}</Typography>
         </Grid>
         <Grid container={true} item={true} xs={3} justify="flex-end">
           <Fab color="secondary" onClick={this.nextMonthHandler}><ArrowForward/></Fab>
