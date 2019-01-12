@@ -1,8 +1,9 @@
 import * as React from 'react'
-import * as classes from './styles.css'
+import {styles, IStyles} from './styles'
 import Button from '@material-ui/core/Button/Button'
 import RenderInputs from '../renderInputs/renderInputs';
 import {IFormControl} from '../../validation/interfaces/validation';
+import withStyles from "@material-ui/core/styles/withStyles";
 
 interface IProps {
   formChangeHandler: (event: React.FormEvent<HTMLFormElement>) => void
@@ -13,9 +14,11 @@ interface IProps {
   submitLabel: string
   disabled?: boolean
   loading?: boolean
+  classes?: IStyles
 }
 
 const userForm = function UserForm(props: IProps) {
+  const {classes} = props
   return (
     <>
       <form onSubmit={(event) => props.formChangeHandler(event)}>
@@ -31,4 +34,4 @@ const userForm = function UserForm(props: IProps) {
   )
 }
 
-export default userForm
+export default withStyles(styles)(userForm)

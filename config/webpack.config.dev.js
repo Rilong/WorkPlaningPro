@@ -177,7 +177,7 @@ module.exports = {
               {
                 loader: require.resolve('typings-for-css-modules-loader'),
                 options: {
-                  modules: true,
+                  modules: false,
                   importLoaders: 1,
                   localIdentName: '[name]__[local]___[hash:base64:5]',
                   namedExport: true,

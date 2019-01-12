@@ -1,4 +1,4 @@
-import * as classes from './styles.css'
+import {styles, IStyles} from './styles'
 
 import * as React from 'react'
 import * as dateFns from 'date-fns'
@@ -6,9 +6,11 @@ import * as locale from 'date-fns/locale/ru'
 import {Fab, Grid, Typography, Card} from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import ArrowForward from "@material-ui/icons/ArrowForward"
+import withStyles from "@material-ui/core/styles/withStyles";
 
 interface IProps {
-  size:string
+  size:string,
+  classes?: IStyles
 }
 
 interface IState {
@@ -36,6 +38,8 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private headerRender() {
+    const {classes} = this.props
+
     const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', { locale });
     const currentYear = dateFns.format(this.state.currentDate, 'YYYY', { locale });
 
@@ -77,6 +81,8 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private renderDays() {
+    const {classes} = this.props
+
     const {currentDate} = this.state
     const startMonth = dateFns.startOfMonth(currentDate)
     const endMonth = dateFns.endOfMonth(startMonth)
@@ -114,6 +120,7 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   public render() {
+
     return (
       <>
         {this.headerRender()}
@@ -124,4 +131,4 @@ class Calendar extends React.Component<IProps, IState> {
   }
 }
 
-export default Calendar
+export default withStyles(styles)(Calendar)

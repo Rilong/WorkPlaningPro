@@ -190,7 +190,7 @@ module.exports = {
                     loader: require.resolve('style-loader'),
                     options: {
                       hmr: false,
-                      modules: true,
+                      modules: false,
                       localIdentName: "[name]_[local]_[hash:base64:5]"
                     },
                   },

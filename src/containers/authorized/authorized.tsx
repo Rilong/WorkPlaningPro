@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {Link, NavLink, Route, withRouter} from 'react-router-dom'
-import * as classes from './styles.css'
+import {styles, IStyles} from './styles'
+import { withStyles } from '@material-ui/core/styles'
 import Typography from "@material-ui/core/Typography/Typography";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -18,14 +19,15 @@ import AddProject from "./pages/add-project/AddProject";
 import CalendarPage from './pages/calendar/Calendar'
 
 interface IProps {
-  singOut?: () => void
+  singOut?: () => void,
+  classes?: IStyles
 }
 
 const authorized = class Authorized extends React.Component<IProps> {
 
   public menuLinks: IMenu[] = [
-    {label: 'Добавить новый проект', to: '/new-project', icon: <AddNote className={classes.iconLeft}/>},
-    {label: 'Календарь', to: '/calendar', icon: <Calendar className={classes.iconLeft}/>},
+    {label: 'Добавить новый проект', to: '/new-project', icon: <AddNote className={this.props.classes.iconLeft}/>},
+    {label: 'Календарь', to: '/calendar', icon: <Calendar className={this.props.classes.iconLeft}/>},
   ]
 
   public logout = () => {
@@ -42,6 +44,7 @@ const authorized = class Authorized extends React.Component<IProps> {
   }
 
   public render(): React.ReactNode {
+    const {classes} = this.props
     const linkHome = (props: any) => <Link to="/" {...props}/>
     return (
       <div>
@@ -74,4 +77,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   }
 }
 
-export default withRouter<any>(connect(null, mapDispatchToProps)(authorized))
+export default withRouter<any>(connect(null, mapDispatchToProps)(withStyles(styles)(authorized)))
