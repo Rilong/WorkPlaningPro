@@ -1,4 +1,4 @@
-import {Theme} from "@material-ui/core";
+import createStyles from "@material-ui/core/styles/createStyles";
 
 export interface IStyles {
   input: string
@@ -6,7 +6,7 @@ export interface IStyles {
   progress: string
 }
 
-export const styles = (theme: Theme) => ({
+export const styles = createStyles({
   input: {
     marginBottom: '10px'
   },

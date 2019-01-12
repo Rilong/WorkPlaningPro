@@ -1,4 +1,4 @@
-import {Theme} from "@material-ui/core";
+import createStyles from '@material-ui/core/styles/createStyles';
 
 export interface IStyles {
   capitalize: string
@@ -9,7 +9,7 @@ export interface IStyles {
 }
 
 
-export const styles = (theme: Theme): any => ({
+export const styles = createStyles({
   root: {
     margin: '20px'
   },
@@ -24,7 +24,7 @@ export const styles = (theme: Theme): any => ({
 
   calendarCeil: {
     width: '100%',
-    display: 'flex'
+    display: ''
   },
 
   calendarCard: {

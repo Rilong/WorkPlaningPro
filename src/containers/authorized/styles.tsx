@@ -1,4 +1,4 @@
-import {Theme} from "@material-ui/core";
+import createStyles from "@material-ui/core/styles/createStyles";
 
 export interface IStyles {
   toolbar: string
@@ -6,7 +6,7 @@ export interface IStyles {
   iconLeft: string
 }
 
-export const styles = (theme: Theme) => ({
+export const styles = createStyles({
   toolbar: {
     justifyContent: 'space-between'
   },

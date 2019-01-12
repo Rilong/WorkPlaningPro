@@ -1,11 +1,11 @@
 import createStyles from "@material-ui/core/styles/createStyles";
 
 export interface IStyles {
-  input: string
+    calendar: string
 }
 
 export const styles = createStyles({
-  input: {
-    marginBottom: '10px'
-  }
+    calendar: {
+        marginTop: '30px'
+    }
 })
