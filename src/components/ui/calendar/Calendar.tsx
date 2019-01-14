@@ -15,7 +15,8 @@ interface IProps {
 }
 
 interface IState {
-  currentDate: Date
+  currentDate: Date,
+  fixedDate: Date
   selectedDate: Date
 }
 
@@ -23,6 +24,7 @@ class Calendar extends React.Component<IProps, IState> {
 
   public state: IState = {
     currentDate: new Date(),
+    fixedDate: new Date(),
     selectedDate: null
   }
 
@@ -84,7 +86,7 @@ class Calendar extends React.Component<IProps, IState> {
   private renderDays() {
     const {classes} = this.props
 
-    const {currentDate, selectedDate} = this.state
+    const {currentDate, fixedDate, selectedDate} = this.state
     const startMonth = dateFns.startOfMonth(currentDate)
     const endMonth = dateFns.endOfMonth(startMonth)
     const startDate = dateFns.startOfWeek(startMonth, { weekStartsOn: 1 })
@@ -107,7 +109,7 @@ class Calendar extends React.Component<IProps, IState> {
           typoClass += ' ' + classes.unactivatedText
         }
 
-        if (dateFns.isSameDay(day, currentDate)) {
+        if (dateFns.isSameDay(day, fixedDate)) {
           cardClass += ' ' + classes.activated
           typoClass += ' ' + classes.activatedText
         }
