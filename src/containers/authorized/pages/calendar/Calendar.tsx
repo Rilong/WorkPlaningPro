@@ -9,10 +9,14 @@ interface IProps {
 
 class Calendar extends React.Component<IProps> {
 
+  private handler(day: Date) {
+    console.log(day);
+  }
+
   public render() {
     return (
         <Grid container={true} className={this.props.classes.calendar}>
-          <CalendarUI size="big"/>
+          <CalendarUI size="big" onSelect={this.handler}/>
         </Grid>
     );
   }

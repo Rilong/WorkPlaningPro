@@ -3,12 +3,13 @@ import {styles, IStyles} from './styles'
 import * as React from 'react'
 import * as dateFns from 'date-fns'
 import * as locale from 'date-fns/locale/ru'
-import {Fab, Grid, Typography, Card} from "@material-ui/core";
+import {Fab, Grid, Typography, Button} from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import ArrowForward from "@material-ui/icons/ArrowForward"
 import withStyles from "@material-ui/core/styles/withStyles";
 
 interface IProps {
+  onSelect: (day: Date) => void,
   size:string,
   classes?: IStyles
 }
@@ -22,7 +23,7 @@ class Calendar extends React.Component<IProps, IState> {
 
   public state: IState = {
     currentDate: new Date(),
-    selectedDate: new Date()
+    selectedDate: null
   }
 
   constructor(props: IProps) {
@@ -83,12 +84,11 @@ class Calendar extends React.Component<IProps, IState> {
   private renderDays() {
     const {classes} = this.props
 
-    const {currentDate} = this.state
+    const {currentDate, selectedDate} = this.state
     const startMonth = dateFns.startOfMonth(currentDate)
     const endMonth = dateFns.endOfMonth(startMonth)
     const startDate = dateFns.startOfWeek(startMonth, { weekStartsOn: 1 })
     const endDate = dateFns.endOfWeek(endMonth, { weekStartsOn: 1 })
-
     const rows = []
 
     let days = []
@@ -96,12 +96,33 @@ class Calendar extends React.Component<IProps, IState> {
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        const formatDate = dateFns.format(day, 'D MMM', { locale })
+        const currentDay = day
+        const formatDate = dateFns.format(currentDay, 'D', { locale })
+
+        let cardClass = classes.calendarCard
+        let typoClass = classes.text
+
+        if (!dateFns.isSameMonth(day, startMonth)) {
+          cardClass += ' ' + classes.unactivated
+          typoClass += ' ' + classes.unactivatedText
+        }
+
+        if (dateFns.isSameDay(day, currentDate)) {
+          cardClass += ' ' + classes.activated
+          typoClass += ' ' + classes.activatedText
+        }
+
+        if (dateFns.isSameDay(selectedDate, currentDay)) {
+          console.log('test')
+          cardClass += ' ' + classes.selected
+          typoClass += ' ' + classes.selectedText
+        }
+
         days.push(
           <div key={i + Math.random()} className={classes.calendarCeil}>
-            <Card className={classes.calendarCard}>
-              <Typography variant="h6">{formatDate}</Typography>
-            </Card>
+            <Button className={cardClass} onClick={() => this.selectHandler(currentDay)}>
+              <Typography variant="h6" className={typoClass}>{formatDate}</Typography>
+            </Button>
           </div>
         )
 
@@ -117,6 +138,12 @@ class Calendar extends React.Component<IProps, IState> {
     }
 
     return (rows)
+  }
+
+  private selectHandler(day: Date) {
+    this.props.onSelect(day)
+    this.setState({...this.state, selectedDate: day})
+    console.log(day)
   }
 
   public render() {
