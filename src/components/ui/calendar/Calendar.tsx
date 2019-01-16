@@ -115,7 +115,6 @@ class Calendar extends React.Component<IProps, IState> {
         }
 
         if (dateFns.isSameDay(selectedDate, currentDay)) {
-          console.log('test')
           cardClass += ' ' + classes.selected
           typoClass += ' ' + classes.selectedText
         }
