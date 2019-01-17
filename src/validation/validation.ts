@@ -13,7 +13,7 @@ export default class Validation {
     return {...params, ...basicParams}
   }
 
-  public static createControlWithDefault(type: string, label: string, validators: IValidators): IControl {
+  public static createControlWithDefault(type: string, label: string, validators: IValidators = null): IControl {
     return Validation.createControl({
       type,
       label,
@@ -26,6 +26,10 @@ export default class Validation {
   public static valid(formControls: IFormControl, name: string): IControl {
     formControls = {...formControls}
     const control: IControl = formControls[name]
+
+    if (control.validators === null) {
+      return control
+    }
 
     if (control.validators.required && Validators.isRequired(control.value)) {
       return this.setErrorValidationControl(control, control.validators.required, ERROR_REQUIRED)
