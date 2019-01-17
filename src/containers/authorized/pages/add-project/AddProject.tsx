@@ -1,23 +1,29 @@
 import * as React from 'react'
-import {Grid, Card} from '@material-ui/core'
+import {Grid, Card, TextField, Divider, Button, Typography, withStyles} from '@material-ui/core'
 import Input from '../../../../components/input/input'
-import Validation from "../../../../validation/validation";
-import {IFormControl} from "../../../../validation/interfaces/validation";
+import Validation from '../../../../validation/validation';
+import {IFormControl} from '../../../../validation/interfaces/validation';
+import {IStyles, styles} from './styles';
+import TaskField from "../../../../components/taskField/TaskField";
+
+interface IProps {
+  classes?: IStyles
+}
 
 interface IState {
   hasError: boolean,
   formControls: IFormControl
 }
 
-
-class AddProject extends React.Component<null, IState> {
+class AddProject extends React.Component<IProps, IState> {
 
   public state = {
     hasError: true,
     formControls: {
       'name': Validation.createControlWithDefault('text', 'Имя', {
         required: true
-      })
+      }),
+      'desc': Validation.createControlWithDefault('textarea', 'Описание')
     }
   }
 
@@ -50,7 +56,19 @@ class AddProject extends React.Component<null, IState> {
                        label="Имя проекта"
                        errorMessage={this.state.formControls.name.errorMessage}
                        hasError={this.state.formControls.name.hasError}
+                       className={this.props.classes.input}
                 />
+                <TextField placeholder="Описание"
+                           multiline={true}
+                           fullWidth={true}
+                           onChange={(event: any) => this.onInputHandler('desc', event.target.value)}
+                           className={this.props.classes.input}/>
+                <Divider variant="fullWidth"/>
+                <Typography variant="h6" align="center">Задачи</Typography>
+                <div>
+                  <Button>Добавить задачу</Button>
+                </div>
+                <TaskField />
               </form>
             </Card>
           </Grid>
@@ -60,4 +78,4 @@ class AddProject extends React.Component<null, IState> {
   }
 }
 
-export default AddProject
+export default withStyles(styles)(AddProject)
