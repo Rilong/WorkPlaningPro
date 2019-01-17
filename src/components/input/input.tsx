@@ -11,14 +11,15 @@ interface IProps {
   name: string
   hasError?: boolean
   errorMessage?: string
-  change?: (e: any) => void
+  change?: (e: any) => void,
+  className?: string
 }
 
 export default (props: IProps) => {
   const errorId = `${props.name}__error`
 
   return (
-    <FormControl fullWidth={true} error={props.hasError} aria-describedby={errorId}>
+    <FormControl fullWidth={true} error={props.hasError} aria-describedby={errorId} className={props.className}>
       <InputLabel htmlFor={props.name}>{props.label}</InputLabel>
       <Input id={props.name} type={props.type} value={props.value} onChange={props.change}/>
       {props.hasError ? <FormHelperText id={errorId}>{props.errorMessage}</FormHelperText> : null}
