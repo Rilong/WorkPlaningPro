@@ -5,14 +5,16 @@ import Validation from '../../../../validation/validation';
 import {IFormControl} from '../../../../validation/interfaces/validation';
 import {IStyles, styles} from './styles';
 import TaskField from "../../../../components/taskField/TaskField";
+import ITask from "../../../../interfaces/projects/Task";
 
 interface IProps {
   classes?: IStyles
 }
 
 interface IState {
-  hasError: boolean,
+  hasError: boolean
   formControls: IFormControl
+  tasks: ITask[]
 }
 
 class AddProject extends React.Component<IProps, IState> {
@@ -24,7 +26,8 @@ class AddProject extends React.Component<IProps, IState> {
         required: true
       }),
       'desc': Validation.createControlWithDefault('textarea', 'Описание')
-    }
+    },
+    tasks: []
   }
 
 
@@ -40,6 +43,30 @@ class AddProject extends React.Component<IProps, IState> {
 
   private onFormHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+  }
+
+  private onAddTaskHandler = () => {
+    const tasks = this.state.tasks.concat()
+    const newTask: ITask = {name: '', deadline: null}
+    tasks.push(newTask)
+
+    this.setState({...this.state, tasks})
+  }
+
+  private onTaskChangeHandler = (value: string, index: number) => {
+    // console.log(value, index)
+    const tasks: ITask[] = this.state.tasks.concat()
+    tasks[index] = {...tasks[index], name: value}
+    this.setState({tasks})
+  }
+
+  private renderTaskFields() {
+    return this.state.tasks.map((task: ITask, index: number) => (
+      <TaskField key={'taskInput' + index}
+                 value={task.name}
+                 change={(value: string) => this.onTaskChangeHandler(value, index)} />
+      )
+    )
   }
 
   public render() {
@@ -66,9 +93,9 @@ class AddProject extends React.Component<IProps, IState> {
                 <Divider variant="fullWidth"/>
                 <Typography variant="h6" align="center">Задачи</Typography>
                 <div>
-                  <Button>Добавить задачу</Button>
+                  <Button variant="contained" onClick={this.onAddTaskHandler}>Добавить задачу</Button>
                 </div>
-                <TaskField />
+                {this.renderTaskFields()}
               </form>
             </Card>
           </Grid>
