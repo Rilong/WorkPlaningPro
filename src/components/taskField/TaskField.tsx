@@ -2,12 +2,12 @@ import * as React from 'react'
 import {Typography, TextField} from '@material-ui/core'
 
 interface IProps {
+  value: string
   change?: (value: string) => void
 }
 
 interface IState {
   inputShowed: boolean
-  value: string
 }
 
 class TaskField extends React.Component<IProps, IState> {
@@ -16,24 +16,18 @@ class TaskField extends React.Component<IProps, IState> {
 
   public state = {
     inputShowed: true,
-    value: ''
   }
 
   public componentDidMount(): void {
     this.input.current.focus()
   }
 
-  private onInputHandler = (value: string) => {
-    this.props.change(value)
-    this.setState({...this.state, value})
-  }
-
   private focusLost = () => {
-    this.setState({...this.state, inputShowed: false})
+    this.setState({inputShowed: false})
   }
 
   private onFocusHandler = () => {
-    this.setState({...this.state, inputShowed: true})
+    this.setState({inputShowed: true})
     setTimeout(() => this.input.current.focus(), 50)
   }
 
@@ -48,11 +42,11 @@ class TaskField extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         {this.state.inputShowed !== true
-         ? <Typography variant="body1" onClick={this.onFocusHandler}>{this.state.value}</Typography>
+         ? <Typography variant="body1" onClick={this.onFocusHandler} style={{cursor: 'pointer'}}>{this.props.value}</Typography>
          : <TextField placeholder="Введите название задачи"
-                      value={this.state.value}
+                      value={this.props.value || ''}
+                      onChange={(e: any) => this.props.change(e.target.value)}
                       inputRef={this.input}
-                      onChange={(e: any) => this.onInputHandler(e.target.value)}
                       onBlur={this.focusLost}
                       onKeyPress={this.onEnterHandler}
                       fullWidth={true}/>
