@@ -16,7 +16,7 @@ class Calendar extends React.Component<IProps> {
   public render() {
     return (
         <Grid container={true} className={this.props.classes.calendar}>
-          <CalendarUI size="big" onSelect={this.handler}/>
+          <CalendarUI onSelect={this.handler}/>
         </Grid>
     );
   }

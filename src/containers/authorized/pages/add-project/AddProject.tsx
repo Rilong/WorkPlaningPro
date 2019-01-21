@@ -6,6 +6,7 @@ import {IFormControl} from '../../../../validation/interfaces/validation';
 import {IStyles, styles} from './styles';
 import TaskField from "../../../../components/taskField/TaskField";
 import ITask from "../../../../interfaces/projects/Task";
+import Calendar from '../../../../components/ui/calendar/Calendar'
 
 interface IProps {
   classes?: IStyles
@@ -60,6 +61,8 @@ class AddProject extends React.Component<IProps, IState> {
     this.setState({tasks})
   }
 
+  private pickStartDateHandler = (date: Date) => console.log(date)
+
   private renderTaskFields() {
     return this.state.tasks.map((task: ITask, index: number) => (
       <TaskField key={'taskInput' + index}
@@ -91,6 +94,9 @@ class AddProject extends React.Component<IProps, IState> {
                            onChange={(event: any) => this.onInputHandler('desc', event.target.value)}
                            className={this.props.classes.input}/>
                 <Divider variant="fullWidth"/>
+
+                <Calendar picker={true} onSelect={this.pickStartDateHandler} />
+
                 <Typography variant="h6" align="center">Задачи</Typography>
                 <div>
                   <Button variant="contained" onClick={this.onAddTaskHandler}>Добавить задачу</Button>

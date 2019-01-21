@@ -3,21 +3,31 @@ import {styles, IStyles} from './styles'
 import * as React from 'react'
 import * as dateFns from 'date-fns'
 import * as locale from 'date-fns/locale/ru'
-import {Fab, Grid, Typography, Button} from "@material-ui/core";
+import CalendarIcon from '@material-ui/icons/CalendarToday'
+import {
+  Fab,
+  Grid,
+  Typography,
+  Button,
+  DialogActions,
+  DialogContent,
+  Dialog
+} from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import ArrowForward from "@material-ui/icons/ArrowForward"
 import withStyles from "@material-ui/core/styles/withStyles";
 
 interface IProps {
   onSelect: (day: Date) => void,
-  size:string,
   classes?: IStyles
+  picker?: boolean
 }
 
 interface IState {
   currentDate: Date,
   fixedDate: Date
-  selectedDate: Date
+  selectedDate: Date,
+  dialog: boolean
 }
 
 class Calendar extends React.Component<IProps, IState> {
@@ -25,12 +35,18 @@ class Calendar extends React.Component<IProps, IState> {
   public state: IState = {
     currentDate: new Date(),
     fixedDate: new Date(),
-    selectedDate: null
+    selectedDate: null,
+    dialog: false
+  }
+
+  public static defaultProps = {
+    picker: false
   }
 
   constructor(props: IProps) {
     super(props)
   }
+
 
   private nextMonthHandler = () => {
     this.setState({currentDate: dateFns.addMonths(this.state.currentDate, 1)})
@@ -43,8 +59,8 @@ class Calendar extends React.Component<IProps, IState> {
   private headerRender() {
     const {classes} = this.props
 
-    const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', { locale });
-    const currentYear = dateFns.format(this.state.currentDate, 'YYYY', { locale });
+    const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', {locale});
+    const currentYear = dateFns.format(this.state.currentDate, 'YYYY', {locale});
 
     return (
       <>
@@ -62,10 +78,14 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private renderWeekDays() {
-    const dateFormat = 'dddd'
+    let dateFormat = 'dddd'
     const days = []
 
-    const startWeek = dateFns.startOfWeek(this.state.currentDate, { weekStartsOn: 1 })
+    if (this.props.picker) {
+      dateFormat = 'dd'
+    }
+
+    const startWeek = dateFns.startOfWeek(this.state.currentDate, {weekStartsOn: 1})
 
     for (let i = 0; i < 7; i++) {
       const day = dateFns.format(dateFns.addDays(startWeek, i), dateFormat, {locale})
@@ -89,8 +109,8 @@ class Calendar extends React.Component<IProps, IState> {
     const {currentDate, fixedDate, selectedDate} = this.state
     const startMonth = dateFns.startOfMonth(currentDate)
     const endMonth = dateFns.endOfMonth(startMonth)
-    const startDate = dateFns.startOfWeek(startMonth, { weekStartsOn: 1 })
-    const endDate = dateFns.endOfWeek(endMonth, { weekStartsOn: 1 })
+    const startDate = dateFns.startOfWeek(startMonth, {weekStartsOn: 1})
+    const endDate = dateFns.endOfWeek(endMonth, {weekStartsOn: 1})
     const rows = []
 
     let days = []
@@ -99,7 +119,7 @@ class Calendar extends React.Component<IProps, IState> {
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         const currentDay = day
-        const formatDate = dateFns.format(currentDay, 'D', { locale })
+        const formatDate = dateFns.format(currentDay, 'D', {locale})
 
         let cardClass = classes.calendarCard
         let typoClass = classes.text
@@ -147,13 +167,48 @@ class Calendar extends React.Component<IProps, IState> {
     console.log(day)
   }
 
-  public render() {
-
+  private renderCalendar() {
     return (
       <>
         {this.headerRender()}
         {this.renderWeekDays()}
         {this.renderDays()}
+      </>
+    )
+  }
+
+  private dialogCloseHandler = () => this.setState({dialog: false});
+
+
+  private openDialog = () => this.setState({dialog: true})
+
+  public render() {
+
+    return (
+      <>
+        {this.props.picker ? (
+          <>
+            <Button color="primary" onClick={this.openDialog}>Выбрать дату <CalendarIcon/></Button>
+            <Dialog
+              open={this.state.dialog}
+              onClose={this.dialogCloseHandler}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogContent>
+                {this.renderCalendar()}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.dialogCloseHandler} color="primary">
+                  Disagree
+                </Button>
+                <Button onClick={this.dialogCloseHandler} color="primary" autoFocus={true}>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        ) : this.renderCalendar()}
       </>
     );
   }
