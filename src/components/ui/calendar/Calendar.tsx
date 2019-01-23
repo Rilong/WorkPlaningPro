@@ -6,7 +6,6 @@ import * as locale from 'date-fns/locale/ru'
 import CalendarIcon from '@material-ui/icons/CalendarToday'
 import {
   Fab,
-  Grid,
   Typography,
   Button,
   DialogActions,
@@ -63,17 +62,17 @@ class Calendar extends React.Component<IProps, IState> {
     const currentYear = dateFns.format(this.state.currentDate, 'YYYY', {locale});
 
     return (
-      <>
-        <Grid container={true} item={true} xs={3} justify="flex-start">
+      <div className={this.props.classes.calendarHeader}>
+        <div className={this.props.classes.calendarHeaderItem}>
           <Fab color="secondary" onClick={this.prevMonthHandler}><ArrowBack/></Fab>
-        </Grid>
-        <Grid container={true} item={true} xs={6} justify="center">
-          <Typography variant="h5" classes={{root: classes.capitalize}}>{currentMonth} - {currentYear}</Typography>
-        </Grid>
-        <Grid container={true} item={true} xs={3} justify="flex-end">
+        </div>
+        <div className={this.props.classes.calendarHeaderItem}>
+          <Typography variant="h5" align="center" classes={{root: classes.capitalize}}>{currentMonth}  {currentYear}</Typography>
+        </div>
+        <div className={this.props.classes.calendarHeaderItem}>
           <Fab color="secondary" onClick={this.nextMonthHandler}><ArrowForward/></Fab>
-        </Grid>
-      </>
+        </div>
+      </div>
     )
   }
 
@@ -87,19 +86,30 @@ class Calendar extends React.Component<IProps, IState> {
 
     const startWeek = dateFns.startOfWeek(this.state.currentDate, {weekStartsOn: 1})
 
+    let classesItem = ''
+    let classesContainer = ''
+
+    if(this.props.picker) {
+      classesItem = this.props.classes.weekHeaderDialogItem
+      classesContainer = this.props.classes.weekHeaderDialogContainer
+    } else {
+      classesItem = this.props.classes.weekHeaderItem
+      classesContainer = this.props.classes.weekHeaderContainer
+    }
+
     for (let i = 0; i < 7; i++) {
       const day = dateFns.format(dateFns.addDays(startWeek, i), dateFormat, {locale})
       days.push(
-        <Grid item={true} key={i + Math.random()}>
-          <Typography variant="h6" align="center">{day}</Typography>
-        </Grid>
+        <div className={classesItem} key={'week-' + i}>
+          <Typography variant="h6">{day}</Typography>
+        </div>
       )
     }
 
     return (
-      <Grid container={true} justify="space-between" style={{margin: '20px'}}>
+      <div className={classesContainer}>
         {days}
-      </Grid>
+      </div>
     )
   }
 

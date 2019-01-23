@@ -15,6 +15,12 @@ export interface IStyles {
   selectedText: string
   text: string
   root: string
+  weekHeaderContainer: string
+  weekHeaderDialogContainer: string
+  weekHeaderItem: string
+  weekHeaderDialogItem: string
+  calendarHeader: string
+  calendarHeaderItem: string
 }
 
 
@@ -77,5 +83,41 @@ export const styles = (theme: Theme) => createStyles({
     color: '#fff'
   },
 
-  text: {}
+  text: {},
+
+  weekHeaderContainer: {
+    display: 'flex',
+    width: '100%',
+    marginBottom: '10px'
+  },
+
+  weekHeaderDialogContainer: {
+    display: 'flex',
+    width: '100%',
+    marginBottom: '5px'
+  },
+
+  weekHeaderItem: {
+    width: '100%',
+    textAlign: 'center'
+  },
+
+  weekHeaderDialogItem: {
+    width: '100%',
+    textAlign: 'center'
+  },
+
+  calendarHeader: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+
+  calendarHeaderItem: {
+    width: '100%',
+    '&:last-child': {
+      display: 'flex',
+      justifyContent: 'flex-end'
+    }
+  }
 })

@@ -92,7 +92,9 @@ class AddProject extends React.Component<IProps, IState> {
                            multiline={true}
                            fullWidth={true}
                            onChange={(event: any) => this.onInputHandler('desc', event.target.value)}
-                           className={this.props.classes.input}/>
+                           className={this.props.classes.input}
+                           variant="filled"
+                           rows={5}/>
                 <Divider variant="fullWidth"/>
 
                 <Calendar picker={true} onSelect={this.pickStartDateHandler} />
