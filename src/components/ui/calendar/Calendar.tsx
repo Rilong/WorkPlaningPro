@@ -46,13 +46,19 @@ class Calendar extends React.Component<IProps, IState> {
     super(props)
   }
 
-
   private nextMonthHandler = () => {
     this.setState({currentDate: dateFns.addMonths(this.state.currentDate, 1)})
   }
 
   private prevMonthHandler = () => {
     this.setState({currentDate: dateFns.subMonths(this.state.currentDate, 1)})
+  }
+
+
+  private calculateHeight(item: HTMLButtonElement) {
+    if (item !== null && this.props.picker === true) {
+      item.style.height = item.clientWidth + 'px'
+    }
   }
 
   private headerRender() {
@@ -142,6 +148,10 @@ class Calendar extends React.Component<IProps, IState> {
         if (dateFns.isSameDay(day, fixedDate)) {
           cardClass += ' ' + classes.activated
           typoClass += ' ' + classes.activatedText
+          if (this.props.picker) {
+            cardClass += ' ' + classes.activatedModal
+            typoClass += ' ' + classes.activatedTextModal
+          }
         }
 
         if (dateFns.isSameDay(selectedDate, currentDay)) {
@@ -151,12 +161,13 @@ class Calendar extends React.Component<IProps, IState> {
 
         days.push(
           <div key={i + Math.random()} className={classes.calendarCeil}>
-            <Button className={cardClass} onClick={() => this.selectHandler(currentDay)}>
+            <Button className={cardClass}
+                    onClick={() => this.selectHandler(currentDay)}
+                    buttonRef={(item: HTMLButtonElement) => this.calculateHeight(item)}>
               <Typography variant="h6" className={typoClass}>{formatDate}</Typography>
             </Button>
           </div>
         )
-
         day = dateFns.addDays(day, 1)
       }
 
@@ -174,7 +185,6 @@ class Calendar extends React.Component<IProps, IState> {
   private selectHandler(day: Date) {
     this.props.onSelect(day)
     this.setState({...this.state, selectedDate: day})
-    console.log(day)
   }
 
   private renderCalendar() {
@@ -209,11 +219,11 @@ class Calendar extends React.Component<IProps, IState> {
                 {this.renderCalendar()}
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.dialogCloseHandler} color="primary">
-                  Disagree
-                </Button>
                 <Button onClick={this.dialogCloseHandler} color="primary" autoFocus={true}>
-                  Agree
+                  Отменить
+                </Button>
+                <Button onClick={this.dialogCloseHandler} color="primary">
+                  Принять
                 </Button>
               </DialogActions>
             </Dialog>

@@ -11,6 +11,8 @@ export interface IStyles {
   unactivatedText: string,
   activated: string
   activatedText: string
+  activatedModal: string
+  activatedTextModal: string
   selected: string
   selectedText: string
   text: string
@@ -71,6 +73,13 @@ export const styles = (theme: Theme) => createStyles({
     lineHeight: '48px',
     color: '#fff',
   },
+
+  activatedTextModal: {
+    width: '40px',
+    height: '40px',
+    lineHeight: '40px',
+  },
+  activatedModal: {},
 
   selected: {
     backgroundColor: theme.palette.primary.main,
