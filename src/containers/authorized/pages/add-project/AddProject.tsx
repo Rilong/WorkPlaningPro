@@ -16,6 +16,9 @@ interface IState {
   hasError: boolean
   formControls: IFormControl
   tasks: ITask[]
+  taskSelectingDeadline: number
+  taskDeadlineDialog: boolean
+  projectDeadlineDialog: boolean
 }
 
 class AddProject extends React.Component<IProps, IState> {
@@ -28,7 +31,10 @@ class AddProject extends React.Component<IProps, IState> {
       }),
       'desc': Validation.createControlWithDefault('textarea', 'Описание')
     },
-    tasks: []
+    tasks: [],
+    taskSelectingDeadline: null,
+    taskDeadlineDialog: false,
+    projectDeadlineDialog: false
   }
 
 
@@ -55,13 +61,14 @@ class AddProject extends React.Component<IProps, IState> {
   }
 
   private onTaskChangeHandler = (value: string, index: number) => {
-    // console.log(value, index)
     const tasks: ITask[] = this.state.tasks.concat()
     tasks[index] = {...tasks[index], name: value}
     this.setState({tasks})
   }
 
-  private pickStartDateHandler = (date: Date) => console.log(date)
+  private taskDeadlineDialogClose = () => this.setState({taskDeadlineDialog: false})
+
+  private pickDeadlineDateHandler = (date: Date) => console.log(date)
 
   private renderTaskFields() {
     return this.state.tasks.map((task: ITask, index: number) => (
@@ -97,7 +104,10 @@ class AddProject extends React.Component<IProps, IState> {
                            rows={5}/>
                 <Divider variant="fullWidth"/>
 
-                <Calendar picker={true} onSelect={this.pickStartDateHandler} />
+                <Calendar picker={true}
+                          onSelect={this.pickDeadlineDateHandler}
+                          dialog={this.state.taskDeadlineDialog}
+                          onClose={this.taskDeadlineDialogClose} />
 
                 <Typography variant="h6" align="center">Задачи</Typography>
                 <div>

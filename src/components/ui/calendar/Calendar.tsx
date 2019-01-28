@@ -3,7 +3,6 @@ import {styles, IStyles} from './styles'
 import * as React from 'react'
 import * as dateFns from 'date-fns'
 import * as locale from 'date-fns/locale/ru'
-import CalendarIcon from '@material-ui/icons/CalendarToday'
 import {
   Fab,
   Typography,
@@ -20,13 +19,15 @@ interface IProps {
   onSelect: (day: Date) => void,
   classes?: IStyles
   picker?: boolean
+  dialog?: boolean
+  onClose?: () => void
+  onAccept?: () => void
 }
 
 interface IState {
   currentDate: Date,
   fixedDate: Date
   selectedDate: Date,
-  dialog: boolean
 }
 
 class Calendar extends React.Component<IProps, IState> {
@@ -35,7 +36,6 @@ class Calendar extends React.Component<IProps, IState> {
     currentDate: new Date(),
     fixedDate: new Date(),
     selectedDate: null,
-    dialog: false
   }
 
   public static defaultProps = {
@@ -197,21 +197,15 @@ class Calendar extends React.Component<IProps, IState> {
     )
   }
 
-  private dialogCloseHandler = () => this.setState({dialog: false});
-
-
-  private openDialog = () => this.setState({dialog: true})
-
   public render() {
 
     return (
       <>
         {this.props.picker ? (
           <>
-            <Button color="primary" onClick={this.openDialog}>Выбрать дату <CalendarIcon/></Button>
             <Dialog
-              open={this.state.dialog}
-              onClose={this.dialogCloseHandler}
+              open={this.props.dialog}
+              onClose={this.props.onClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
@@ -219,10 +213,10 @@ class Calendar extends React.Component<IProps, IState> {
                 {this.renderCalendar()}
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.dialogCloseHandler} color="primary" autoFocus={true}>
+                <Button onClick={this.props.onClose && null} color="primary" autoFocus={true}>
                   Отменить
                 </Button>
-                <Button onClick={this.dialogCloseHandler} color="primary">
+                <Button onClick={this.props.onAccept && null} color="primary">
                   Принять
                 </Button>
               </DialogActions>
