@@ -23,11 +23,19 @@ class TaskField extends React.Component<IProps, IState> {
     autofocus: false
   }
 
+  public componentDidMount() {
+    if (this.props.value) {
+      this.focusLost()
+    } else {
+      this.makeFocus()
+    }
+  }
+
   private focusLost = () => {
     this.setState({inputShowed: false})
   }
 
-  private onFocusHandler = () => {
+  private makeFocus = () => {
     this.setState({inputShowed: true})
     setTimeout(() => this.input.current.focus(), 50)
   }
@@ -43,7 +51,7 @@ class TaskField extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         {this.state.inputShowed !== true
-         ? <Typography variant="body1" onClick={this.onFocusHandler} style={{cursor: 'pointer'}}>{this.props.value}</Typography>
+         ? <Typography variant="body1" onClick={this.makeFocus} style={{cursor: 'pointer'}}>{this.props.value}</Typography>
          : <TextField placeholder="Введите название задачи"
                       autoFocus={this.props.autofocus}
                       value={this.props.value || ''}
