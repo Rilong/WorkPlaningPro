@@ -31,7 +31,11 @@ class AddProject extends React.Component<IProps, IState> {
       }),
       'desc': Validation.createControlWithDefault('textarea', 'Описание')
     },
-    tasks: [],
+    tasks: [
+      {name: 'Task 1', deadline: null},
+      {name: 'Task 2', deadline: null},
+      {name: 'Task 3', deadline: null}
+    ],
     taskSelectingDeadline: null,
     taskDeadlineDialog: false,
     projectDeadlineDialog: false
@@ -72,9 +76,11 @@ class AddProject extends React.Component<IProps, IState> {
 
   private renderTaskFields() {
     return this.state.tasks.map((task: ITask, index: number) => (
-      <TaskField key={'taskInput' + index}
-                 value={task.name}
-                 change={(value: string) => this.onTaskChangeHandler(value, index)} />
+      <Card className={this.props.classes.task}>
+        <TaskField key={'taskInput' + index}
+                   value={task.name}
+                   change={(value: string) => this.onTaskChangeHandler(value, index)} />
+      </Card>
       )
     )
   }
@@ -110,8 +116,8 @@ class AddProject extends React.Component<IProps, IState> {
                           onClose={this.taskDeadlineDialogClose} />
 
                 <Typography variant="h6" align="center">Задачи</Typography>
-                <div>
-                  <Button variant="contained" onClick={this.onAddTaskHandler}>Добавить задачу</Button>
+                <div className={this.props.classes.addTaskBtn}>
+                  <Button variant="contained" color="primary" onClick={this.onAddTaskHandler}>Добавить задачу</Button>
                 </div>
                 {this.renderTaskFields()}
               </form>
