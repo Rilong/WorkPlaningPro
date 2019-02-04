@@ -19,6 +19,7 @@ interface IState {
   taskSelectingDeadline: number
   taskDeadlineDialog: boolean
   projectDeadlineDialog: boolean
+  check: boolean
 }
 
 class AddProject extends React.Component<IProps, IState> {
@@ -38,9 +39,9 @@ class AddProject extends React.Component<IProps, IState> {
     ],
     taskSelectingDeadline: null,
     taskDeadlineDialog: false,
-    projectDeadlineDialog: false
+    projectDeadlineDialog: false,
+    check: false
   }
-
 
   private onInputHandler(name: string, value: string) {
     const formControls: IFormControl = {...this.state.formControls};
@@ -77,7 +78,7 @@ class AddProject extends React.Component<IProps, IState> {
   private renderTaskFields() {
     return this.state.tasks.map((task: ITask, index: number) => (
       <Task value={task.name}
-            OnChange={(value: string) => this.onTaskChangeHandler(value, index)}
+            onChange={(value: string) => this.onTaskChangeHandler(value, index)}
             key={'task__' + index} />
       )
     )
