@@ -4,9 +4,9 @@ import Input from '../../../../components/input/input'
 import Validation from '../../../../validation/validation';
 import {IFormControl} from '../../../../validation/interfaces/validation';
 import {IStyles, styles} from './styles';
-import TaskField from "../../../../components/taskField/TaskField";
 import ITask from "../../../../interfaces/projects/Task";
 import Calendar from '../../../../components/ui/calendar/Calendar'
+import Task from "../../../../components/task/Task";
 
 interface IProps {
   classes?: IStyles
@@ -76,11 +76,9 @@ class AddProject extends React.Component<IProps, IState> {
 
   private renderTaskFields() {
     return this.state.tasks.map((task: ITask, index: number) => (
-      <Card className={this.props.classes.task}>
-        <TaskField key={'taskInput' + index}
-                   value={task.name}
-                   change={(value: string) => this.onTaskChangeHandler(value, index)} />
-      </Card>
+      <Task value={task.name}
+            OnChange={(value: string) => this.onTaskChangeHandler(value, index)}
+            key={'task__' + index} />
       )
     )
   }
