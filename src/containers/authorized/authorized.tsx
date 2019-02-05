@@ -11,7 +11,6 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {userSingOut} from "../../store/actions/user/actions";
 import IMenu from "../../interfaces/IMenu";
-import AddNote from '@material-ui/icons/NoteAdd'
 import Calendar from '@material-ui/icons/CalendarToday'
 import Button from "@material-ui/core/Button/Button";
 import Home from "./pages/home/Home";
@@ -26,7 +25,6 @@ interface IProps {
 const authorized = class Authorized extends React.Component<IProps> {
 
   public menuLinks: IMenu[] = [
-    {label: 'Добавить новый проект', to: '/new-project', icon: <AddNote className={this.props.classes.iconLeft}/>},
     {label: 'Календарь', to: '/calendar', icon: <Calendar className={this.props.classes.iconLeft}/>},
   ]
 
