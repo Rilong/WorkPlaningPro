@@ -1,10 +1,13 @@
 import * as React from 'react';
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Card, Checkbox, Fab, Grid, Typography} from '@material-ui/core';
 import TaskField from '../taskField/TaskField';
 import {IStyles, styles} from './styles'
 import withStyles from "@material-ui/core/styles/withStyles";
 import CloseIcon from '@material-ui/icons/Close'
 import CalendarIcon from '@material-ui/icons/CalendarTodayRounded'
+
+import './animation.css'
 
 interface IProps {
   value: string
@@ -47,12 +50,17 @@ class Task extends React.Component<IProps, IState> {
               <Typography variant="body2" className={this.props.classes.dateText}>20.02.2019</Typography>
             </Grid>
             <Grid item={true} xs={2} className={this.props.classes.controlsRoot}>
-              {this.state.showControls ?
-                  <>
-                    <Fab color="primary" size="small" style={{marginRight: '10px'}} onClick={this.props.onDatelinePicker}><CalendarIcon/></Fab>
-                    <Fab color="primary" size="small" onClick={this.props.onRemove}><CloseIcon/></Fab>
-                  </> : null
-              }
+              <TransitionGroup>
+                {this.state.showControls ?
+                      <CSSTransition classNames="fade" timeout={300}>
+                        <div>
+                          <Fab color="primary" size="small" style={{marginRight: '10px'}} onClick={this.props.onDatelinePicker}><CalendarIcon/></Fab>
+                          <Fab color="primary" size="small" onClick={this.props.onRemove}><CloseIcon/></Fab>
+                        </div>
+                      </CSSTransition>
+                     : null
+                }
+              </TransitionGroup>
             </Grid>
           </Grid>
         </div>
