@@ -1,5 +1,3 @@
-import {styles, IStyles} from './styles'
-
 import * as React from 'react'
 import * as dateFns from 'date-fns'
 import * as locale from 'date-fns/locale/ru'
@@ -13,11 +11,11 @@ import {
 } from "@material-ui/core";
 import ArrowBack from "@material-ui/icons/ArrowBack"
 import ArrowForward from "@material-ui/icons/ArrowForward"
-import withStyles from "@material-ui/core/styles/withStyles";
+
+import './styles.scss'
 
 interface IProps {
   onSelect: (day: Date) => void,
-  classes?: IStyles
   picker?: boolean
   dialog?: boolean
   onClose?: () => void
@@ -62,20 +60,18 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private headerRender() {
-    const {classes} = this.props
-
     const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', {locale});
     const currentYear = dateFns.format(this.state.currentDate, 'YYYY', {locale});
 
     return (
-      <div className={this.props.classes.calendarHeader}>
-        <div className={this.props.classes.calendarHeaderItem}>
+      <div className="calendarHeader">
+        <div className="calendarHeaderItem">
           <Fab color="secondary" onClick={this.prevMonthHandler}><ArrowBack/></Fab>
         </div>
-        <div className={this.props.classes.calendarHeaderItem}>
-          <Typography variant="h5" align="center" classes={{root: classes.capitalize}}>{currentMonth}  {currentYear}</Typography>
+        <div className="calendarHeaderItem">
+          <Typography variant="h5" align="center" classes={{root: 'capitalize'}}>{currentMonth}  {currentYear}</Typography>
         </div>
-        <div className={this.props.classes.calendarHeaderItem}>
+        <div className="calendarHeaderItem">
           <Fab color="secondary" onClick={this.nextMonthHandler}><ArrowForward/></Fab>
         </div>
       </div>
@@ -96,11 +92,11 @@ class Calendar extends React.Component<IProps, IState> {
     let classesContainer = ''
 
     if(this.props.picker) {
-      classesItem = this.props.classes.weekHeaderDialogItem
-      classesContainer = this.props.classes.weekHeaderDialogContainer
+      classesItem = 'weekHeaderDialogItem'
+      classesContainer = 'weekHeaderDialogContainer'
     } else {
-      classesItem = this.props.classes.weekHeaderItem
-      classesContainer = this.props.classes.weekHeaderContainer
+      classesItem = 'weekHeaderItem'
+      classesContainer = 'weekHeaderContainer'
     }
 
     for (let i = 0; i < 7; i++) {
@@ -120,8 +116,6 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private renderDays() {
-    const {classes} = this.props
-
     const {currentDate, fixedDate, selectedDate} = this.state
     const startMonth = dateFns.startOfMonth(currentDate)
     const endMonth = dateFns.endOfMonth(startMonth)
@@ -137,30 +131,30 @@ class Calendar extends React.Component<IProps, IState> {
         const currentDay = day
         const formatDate = dateFns.format(currentDay, 'D', {locale})
 
-        let cardClass = classes.calendarCard
-        let typoClass = classes.text
+        let cardClass = 'calendarCard'
+        let typoClass = 'text'
 
         if (!dateFns.isSameMonth(day, startMonth)) {
-          cardClass += ' ' + classes.unactivated
-          typoClass += ' ' + classes.unactivatedText
+          cardClass += ' unactivated'
+          typoClass += ' unactivatedText'
         }
 
         if (dateFns.isSameDay(day, fixedDate)) {
-          cardClass += ' ' + classes.activated
-          typoClass += ' ' + classes.activatedText
+          cardClass += ' activated'
+          typoClass += ' activatedText'
           if (this.props.picker) {
-            cardClass += ' ' + classes.activatedModal
-            typoClass += ' ' + classes.activatedTextModal
+            cardClass += ' activatedModal'
+            typoClass += ' activatedTextModal'
           }
         }
 
         if (dateFns.isSameDay(selectedDate, currentDay)) {
-          cardClass += ' ' + classes.selected
-          typoClass += ' ' + classes.selectedText
+          cardClass += ' selected'
+          typoClass += ' selectedText'
         }
 
         days.push(
-          <div key={i + Math.random()} className={classes.calendarCeil}>
+          <div key={i + Math.random()} className="calendarCeil">
             <Button className={cardClass}
                     onClick={() => this.selectHandler(currentDay)}
                     buttonRef={(item: HTMLButtonElement) => this.calculateHeight(item)}>
@@ -172,7 +166,7 @@ class Calendar extends React.Component<IProps, IState> {
       }
 
       rows.push(
-        <div key={Math.random()} className={classes.calendarRow}>
+        <div key={Math.random()} className="calendarRow">
           {days}
         </div>
       )
@@ -228,4 +222,4 @@ class Calendar extends React.Component<IProps, IState> {
   }
 }
 
-export default withStyles(styles)(Calendar)
+export default Calendar

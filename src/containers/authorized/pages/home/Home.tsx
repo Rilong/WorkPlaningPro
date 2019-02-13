@@ -1,19 +1,17 @@
 import * as React from 'react'
-import {Grid, Fab, TextField, withStyles} from '@material-ui/core'
+import {Grid, Fab, TextField} from '@material-ui/core'
 import DialogAction from '../../../../components/DialogAction/DialogAction'
 import AddIcon from '@material-ui/icons/Add'
-import {IStyles, styles} from './styles'
+import Task from "../../../../components/task/Task";
 
-interface IProps {
-  classes: IStyles
-}
+import './styles.scss'
 
 interface IState {
   createProjectOpen: boolean,
   createProjectValue: string
 }
 
-class Home extends React.Component<IProps, IState> {
+class Home extends React.Component<null, IState> {
 
   public state = {
     createProjectOpen: false,
@@ -24,10 +22,9 @@ class Home extends React.Component<IProps, IState> {
   private createProjectOpen = () => this.setState({createProjectOpen: true})
 
   public render() {
-    const {container} = this.props.classes
     return (
       <div>
-        <Grid container={true} justify="flex-end" classes={{container}}>
+        <Grid container={true} justify="flex-end" classes={{container: 'homeContainer'}}>
           <Fab color="primary" onClick={this.createProjectOpen}><AddIcon/></Fab>
         </Grid>
         <DialogAction open={this.state.createProjectOpen}
@@ -36,9 +33,10 @@ class Home extends React.Component<IProps, IState> {
                       agreeLabel="Создать проект">
           <TextField placeholder="Ввейдите имя проекта" value={this.state.createProjectValue} fullWidth={true}/>
         </DialogAction>
+        <Task value="123"/>
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Home)
+export default Home

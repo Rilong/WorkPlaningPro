@@ -1,6 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles'
+import JssProvider from 'react-jss/lib/JssProvider';
+import {createMuiTheme, MuiThemeProvider, createGenerateClassName, jssPreset} from '@material-ui/core/styles'
+import { create } from 'jss';
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, compose} from 'redux'
@@ -9,6 +11,19 @@ import registerServiceWorker from './registerServiceWorker'
 import RootReducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk'
 import red from '@material-ui/core/colors/red'
+
+const styleNode = document.createComment("jss-insertion-point");
+
+document.head.insertBefore(styleNode, document.head.firstChild);
+
+const generateClassName = createGenerateClassName({
+  dangerouslyUseGlobalCSS: true
+})
+
+const jss = create({
+  ...jssPreset(),
+  insertionPoint: 'jss-insertion-point'
+})
 
 const composeEnhancers =
   typeof window === 'object' &&
@@ -45,10 +60,12 @@ const theme = createMuiTheme({
 
 const app = (
   <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseLine/>
-      <App/>
-    </MuiThemeProvider>
+    <JssProvider jss={jss} generateClassName={generateClassName}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseLine/>
+        <App/>
+      </MuiThemeProvider>
+    </JssProvider>
   </Provider>
 )
 

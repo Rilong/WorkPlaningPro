@@ -1,22 +1,20 @@
 import * as React from 'react'
 import {IFormControl} from '../../validation/interfaces/validation'
 import Input from '../input/input'
-import {IStyles, styles} from './styles';
-import withStyles from "@material-ui/core/styles/withStyles";
+
+import './styles.scss' 
 
 
 interface IProps {
   formControls: IFormControl,
   change: (key: string, value: string) => void
-  classes?: IStyles
 }
 
 const renderInputs = (props: IProps) => {
-  const {classes} = props
   return (
     <>
       {Object.keys(props.formControls).map((key, index) => {
-        return <div className={classes.input} key={index + '__' + key}>
+        return <div className="renderInputsInput" key={index + '__' + key}>
           <Input type={props.formControls[key].type}
                        label={props.formControls[key].label}
                        name={key} value={props.formControls[key].value}
@@ -31,4 +29,4 @@ const renderInputs = (props: IProps) => {
   );
 }
 
-export default withStyles(styles)(renderInputs)
+export default renderInputs

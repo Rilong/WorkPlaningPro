@@ -2,11 +2,10 @@ import * as React from 'react';
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Card, Checkbox, Fab, Grid, Typography} from '@material-ui/core';
 import TaskField from '../taskField/TaskField';
-import {IStyles, styles} from './styles'
-import withStyles from "@material-ui/core/styles/withStyles";
 import CloseIcon from '@material-ui/icons/Close'
 import CalendarIcon from '@material-ui/icons/CalendarTodayRounded'
 
+import './styles.scss'
 import './animation.css'
 
 interface IProps {
@@ -17,7 +16,6 @@ interface IProps {
   checked?: boolean
   checkDisable?: boolean
   onCheckChange?: () => void
-  classes?: IStyles
 }
 
 interface IState {
@@ -34,11 +32,11 @@ class Task extends React.Component<IProps, IState> {
 
   public render(): React.ReactNode {
     return (
-      <Card className={this.props.classes.task} onMouseEnter={this.cardEnter} onMouseLeave={this.cardLeave}>
-        <div className={this.props.classes.controls}>
+      <Card className="task" onMouseEnter={this.cardEnter} onMouseLeave={this.cardLeave}>
+        <div className="controls">
           {typeof this.props.checked !== 'undefined'
             ? <Checkbox color="primary"
-                        classes={{root: this.props.classes.checkRoot}}
+                        classes={{root: 'checkRoot'}}
                         checked={this.props.checked}
                         onChange={this.props.onCheckChange}
                         disabled={typeof this.props.checkDisable === 'undefined' ? false : this.props.checkDisable}/> : null}
@@ -47,9 +45,9 @@ class Task extends React.Component<IProps, IState> {
             <Grid item={true} xs={10} style={{paddingRight: '10px'}}>
               <TaskField value={this.props.value}
                          change={this.props.onChange}/>
-              <Typography variant="body2" className={this.props.classes.dateText}>20.02.2019</Typography>
+              <Typography variant="body2" className="dateText">20.02.2019</Typography>
             </Grid>
-            <Grid item={true} xs={2} className={this.props.classes.controlsRoot}>
+            <Grid item={true} xs={2} className="controlsRoot">
               <TransitionGroup>
                 {this.state.showControls ?
                       <CSSTransition classNames="fade" timeout={300}>
@@ -69,4 +67,4 @@ class Task extends React.Component<IProps, IState> {
   }
 }
 
-export default withStyles(styles)(Task)
+export default Task

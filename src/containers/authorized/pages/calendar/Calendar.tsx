@@ -1,13 +1,10 @@
 import * as React from 'react'
 import CalendarUI from '../../../../components/ui/calendar/Calendar'
-import {Grid, withStyles} from '@material-ui/core';
-import {IStyles, styles} from './styles';
+import {Grid} from '@material-ui/core';
 
-interface IProps {
-  classes?: IStyles
-}
+import './styles.scss'
 
-class Calendar extends React.Component<IProps> {
+class Calendar extends React.Component {
 
   private handler(day: Date) {
     console.log(day);
@@ -15,11 +12,11 @@ class Calendar extends React.Component<IProps> {
 
   public render() {
     return (
-        <Grid container={true} className={this.props.classes.calendar}>
+        <Grid container={true} className="calendar">
           <CalendarUI onSelect={this.handler}/>
         </Grid>
     );
   }
 }
 
-export default withStyles(styles)(Calendar)
+export default Calendar

@@ -5,7 +5,5 @@ export interface IStyles {
 }
 
 export const styles = createStyles({
-    calendar: {
-        marginTop: '30px'
-    }
+
 })

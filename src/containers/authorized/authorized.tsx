@@ -1,7 +1,5 @@
 import * as React from 'react'
 import {Link, NavLink, Route, withRouter} from 'react-router-dom'
-import {styles, IStyles} from './styles'
-import { withStyles } from '@material-ui/core/styles'
 import Typography from "@material-ui/core/Typography/Typography";
 import Toolbar from "@material-ui/core/Toolbar/Toolbar";
 import AppBar from "@material-ui/core/AppBar/AppBar";
@@ -17,15 +15,16 @@ import Home from "./pages/home/Home";
 import AddProject from "./pages/add-project/AddProject";
 import CalendarPage from './pages/calendar/Calendar'
 
+import './styles.scss'
+
 interface IProps {
   singOut?: () => void,
-  classes?: IStyles
 }
 
 const authorized = class Authorized extends React.Component<IProps> {
 
   public menuLinks: IMenu[] = [
-    {label: 'Календарь', to: '/calendar', icon: <Calendar className={this.props.classes.iconLeft}/>},
+    {label: 'Календарь', to: '/calendar', icon: <Calendar className="iconLeft" />},
   ]
 
   public logout = () => {
@@ -42,14 +41,13 @@ const authorized = class Authorized extends React.Component<IProps> {
   }
 
   public render(): React.ReactNode {
-    const {classes} = this.props
     const linkHome = (props: any) => <Link to="/" {...props}/>
     return (
       <div>
         <AppBar position="static">
-          <Toolbar className={classes.toolbar}>
+          <Toolbar className="toolbar">
             <div>
-              <Typography variant="h5" color="inherit" component={linkHome} className={classes.logo}>
+              <Typography variant="h5" color="inherit" component={linkHome} className="logo">
                 Work Planing Pro
               </Typography>
             </div>
@@ -75,4 +73,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   }
 }
 
-export default withRouter<any>(connect(null, mapDispatchToProps)(withStyles(styles)(authorized)))
+export default withRouter<any>(connect(null, mapDispatchToProps)(authorized))
