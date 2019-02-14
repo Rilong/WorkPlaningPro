@@ -1,8 +1,9 @@
 import * as React from 'react'
+import {connect} from 'react-redux';
 import {Grid, Fab, TextField} from '@material-ui/core'
 import DialogAction from '../../../../components/DialogAction/DialogAction'
-import AddIcon from '@material-ui/icons/Add'
 import Task from "../../../../components/task/Task";
+import AddIcon from '@material-ui/icons/Add'
 
 import './styles.scss'
 
@@ -39,4 +40,12 @@ class Home extends React.Component<null, IState> {
   }
 }
 
-export default Home
+function mapStateToProps(state: any) {
+  return {}
+}
+
+function mapDispatchToProps(dispatch: any) {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
