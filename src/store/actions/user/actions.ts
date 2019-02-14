@@ -26,7 +26,7 @@ export const userRegister = ({email, password}: IUser) => {
       await firebase.auth().createUserWithEmailAndPassword(email, password)
       dispatch(endUserLoading())
       dispatch(userRegisterOff())
-      dispatch(openMessage('Ви успішно зареєструвались! Тепер ви можете увійти в систему'))
+      dispatch(openMessage('Вы успешно зарегистрировались! Теперь вы можете войти в систему'))
     } catch (e) {
       switch (e.code) {
         case 'auth/email-already-in-use':
