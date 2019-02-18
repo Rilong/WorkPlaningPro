@@ -8,5 +8,6 @@ export interface IProjectState {
   tasks: ITask[]
   notes: any
   attachmentFiles: any
-  loading: boolean
+  loading: boolean,
+  open: boolean
 }

@@ -2,22 +2,29 @@ import * as React from 'react'
 import {connect} from 'react-redux';
 import {Grid, Fab, TextField} from '@material-ui/core'
 import DialogAction from '../../../../components/DialogAction/DialogAction'
+import {closeWindow, createProject, openWindow} from '../../../../store/actions/project/actions';
 import AddIcon from '@material-ui/icons/Add'
 
 import './styles.scss'
 
+interface IProps {
+  createProjectOpen: boolean
+  onCreateProject?: (projectName: string) => void
+  loading?: boolean
+  openWindow?: () => void
+  closeWindow: () => void
+}
+
 interface IState {
-  createProjectOpen: boolean,
-  createProjectValue: string,
+  createProjectValue: string
   createProjectValid: boolean
 }
 
-class Home extends React.Component<null, IState> {
+class Home extends React.Component<IProps, IState> {
 
   public state = {
-    createProjectOpen: false,
     createProjectValue: '',
-    createProjectValid: false
+    createProjectValid: false,
   }
 
   private projectNameRef = React.createRef<HTMLInputElement>()
@@ -25,13 +32,13 @@ class Home extends React.Component<null, IState> {
 
   private onCreateProjectEntered = () => this.projectNameRef.current.focus()
 
-  private createProjectOpen = () => this.setState({createProjectOpen: true})
+  private createProjectOpen = () => this.props.openWindow()
 
   private createProjectClose = () => {
+    this.props.closeWindow()
     this.setState({
-      createProjectOpen: false,
       createProjectValue: '',
-      createProjectValid: false
+      createProjectValid: false,
     })
   }
 
@@ -43,11 +50,12 @@ class Home extends React.Component<null, IState> {
     } else if (value.trim().length === 0 && this.state.createProjectValid === true) {
       this.setState({createProjectValid: false})
     }
+  }
 
+  private onProjectAgree = () => {
     if (this.state.createProjectValid) {
-      // Next code...
+      this.props.onCreateProject(this.state.createProjectValue)
     }
-
   }
 
   public render() {
@@ -56,12 +64,13 @@ class Home extends React.Component<null, IState> {
         <Grid container={true} justify="flex-end" classes={{container: 'homeContainer'}}>
           <Fab color="primary" onClick={this.createProjectOpen}><AddIcon/></Fab>
         </Grid>
-        <DialogAction open={this.state.createProjectOpen}
+        <DialogAction open={this.props.createProjectOpen}
                       onEntered={this.onCreateProjectEntered}
+                      onAgree={this.onProjectAgree}
                       onClose={this.createProjectClose}
                       title="Добаления проекта"
                       agreeLabel="Создать проект"
-                      disabled={!this.state.createProjectValid}
+                      disabled={!this.state.createProjectValid || this.props.loading}
                       onDisagree={this.createProjectClose}
         >
           <TextField placeholder="Ввейдите имя проекта"
@@ -76,11 +85,18 @@ class Home extends React.Component<null, IState> {
 }
 
 function mapStateToProps(state: any) {
-  return {}
+  return {
+    createProjectOpen: state.ProjectReducer.open,
+    loading: state.ProjectReducer.loading
+  }
 }
 
 function mapDispatchToProps(dispatch: any) {
-  return {}
+  return {
+    openWindow: () => dispatch(openWindow()),
+    closeWindow: () => dispatch(closeWindow()),
+    onCreateProject: (projectName: string) => dispatch(createProject(projectName))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
