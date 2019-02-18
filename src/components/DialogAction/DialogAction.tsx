@@ -3,11 +3,13 @@ import * as React from "react";
 
 interface IProps {
   open: boolean
+  onEntered?: () => void
   onClose: () => void
   onAgree?: () => void
   onDisagree?: () => void
   disagreeLabel?: string
   agreeLabel?: string
+  disabled?: boolean
   title: string
   children: any
 }
@@ -15,6 +17,7 @@ interface IProps {
 const DialogAction = (props: IProps) => (
   <Dialog
     open={props.open}
+    onEntered={props.onEntered}
     onClose={props.onClose}
     fullWidth={true}
   >
@@ -24,7 +27,10 @@ const DialogAction = (props: IProps) => (
       <Button onClick={props.onDisagree} color="primary">
         {typeof props.disagreeLabel === 'undefined' ? 'Отменить' : props.disagreeLabel}
       </Button>
-      <Button onClick={props.onAgree} color="primary" autoFocus={true}>
+      <Button onClick={props.onAgree}
+              color="primary"
+              disabled={typeof props.disabled === 'undefined' ? false : props.disabled}
+              autoFocus={true}>
         {typeof props.agreeLabel === 'undefined' ? 'Прийнять' : props.agreeLabel}
       </Button>
     </DialogActions>
