@@ -1,5 +1,5 @@
-import {IProject} from "../interfaces/projects/IProject";
-import ITask from "../interfaces/projects/Task";
+import {IProject} from '../interfaces/projects/IProject'
+import ITask from '../interfaces/projects/Task'
 
 export class Project implements IProject {
   public id: string = null
@@ -13,12 +13,12 @@ export class Project implements IProject {
 
   constructor(id: string, name: string, startDate: Date, finishDate: Date, tasks: ITask[], notes: any, price: number, attachmentFiles: any) {
     this.id = id
-    this.name = name;
-    this.startDate = startDate;
-    this.finishDate = finishDate;
-    this.tasks = tasks;
-    this.notes = notes;
-    this.price = price;
-    this.attachmentFiles = attachmentFiles;
+    this.name = name
+    this.startDate = startDate
+    this.finishDate = finishDate
+    this.tasks = tasks
+    this.notes = notes
+    this.price = price
+    this.attachmentFiles = attachmentFiles
   }
 }

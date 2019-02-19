@@ -1,12 +1,12 @@
 import * as React from 'react'
-import {connect} from 'react-redux';
+import {connect} from 'react-redux'
 import {Grid, Fab, TextField} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import DialogAction from '../../../../components/DialogAction/DialogAction'
-import {createProject} from '../../../../store/actions/project/actions';
+import {createProject} from '../../../../store/actions/project/actions'
 
 import './styles.scss'
-import {getProjects} from "../../../../store/actions/project-list/actions";
+import {getProjects} from '../../../../store/actions/project-list/actions'
 
 interface IProps {
   createProjectOpen: boolean

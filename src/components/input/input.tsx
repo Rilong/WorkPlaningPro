@@ -1,7 +1,7 @@
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import * as React from 'react';
-import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
-import {TextField} from "@material-ui/core";
+import FormControl from '@material-ui/core/FormControl/FormControl'
+import * as React from 'react'
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText'
+import {TextField} from '@material-ui/core'
 
 interface IProps {
   value: string
@@ -12,7 +12,7 @@ interface IProps {
   errorMessage?: string
   change?: (e: any) => void,
   className?: string
-  variant?: "standard" | "outlined" | "filled"
+  variant?: 'standard' | 'outlined' | 'filled'
 }
 
 export default (props: IProps) => {
@@ -27,5 +27,5 @@ export default (props: IProps) => {
                  variant={typeof props.variant === 'undefined' ? 'standard' : props.variant as any}/>
       {props.hasError ? <FormHelperText id={errorId}>{props.errorMessage}</FormHelperText> : null}
     </FormControl>
-  );
+  )
 }

@@ -26,7 +26,7 @@ const renderInputs = (props: IProps) => {
         </div>
       })}
     </>
-  );
+  )
 }
 
 export default renderInputs

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Button from '@material-ui/core/Button/Button'
-import RenderInputs from '../renderInputs/renderInputs';
-import {IFormControl} from '../../validation/interfaces/validation';
+import RenderInputs from '../renderInputs/renderInputs'
+import {IFormControl} from '../../validation/interfaces/validation'
 
 import './styles.scss'
 

@@ -8,9 +8,9 @@ import {
   DialogActions,
   DialogContent,
   Dialog
-} from "@material-ui/core";
-import ArrowBack from "@material-ui/icons/ArrowBack"
-import ArrowForward from "@material-ui/icons/ArrowForward"
+} from '@material-ui/core'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import ArrowForward from '@material-ui/icons/ArrowForward'
 
 import './styles.scss'
 
@@ -60,8 +60,8 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   private headerRender() {
-    const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', {locale});
-    const currentYear = dateFns.format(this.state.currentDate, 'YYYY', {locale});
+    const currentMonth = dateFns.format(this.state.currentDate, 'MMMM', {locale})
+    const currentYear = dateFns.format(this.state.currentDate, 'YYYY', {locale})
 
     return (
       <div className="calendarHeader">
@@ -218,7 +218,7 @@ class Calendar extends React.Component<IProps, IState> {
           </>
         ) : this.renderCalendar()}
       </>
-    );
+    )
   }
 }
 

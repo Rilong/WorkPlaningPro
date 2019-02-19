@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import JssProvider from 'react-jss/lib/JssProvider';
+import JssProvider from 'react-jss/lib/JssProvider'
 import {createMuiTheme, MuiThemeProvider, createGenerateClassName, jssPreset} from '@material-ui/core/styles'
-import { create } from 'jss';
-import CssBaseLine from '@material-ui/core/CssBaseline';
+import { create } from 'jss'
+import CssBaseLine from '@material-ui/core/CssBaseline'
 import {Provider} from 'react-redux'
 import {createStore, applyMiddleware, compose} from 'redux'
 import App from './App'
@@ -12,9 +12,9 @@ import RootReducer from './store/reducers/rootReducer'
 import thunk from 'redux-thunk'
 import red from '@material-ui/core/colors/red'
 
-const styleNode = document.createComment("jss-insertion-point");
+const styleNode = document.createComment('jss-insertion-point')
 
-document.head.insertBefore(styleNode, document.head.firstChild);
+document.head.insertBefore(styleNode, document.head.firstChild)
 
 const generateClassName = createGenerateClassName({
   dangerouslyUseGlobalCSS: true
@@ -28,16 +28,16 @@ const jss = create({
 const composeEnhancers =
   typeof window === 'object' &&
   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose
 
 const enhancer = composeEnhancers(
   applyMiddleware(thunk)
-);
+)
 
 const store = createStore(RootReducer, enhancer)
 
-const primary = red["500"];
-const secondary = red["700"];
+const primary = red['500']
+const secondary = red['700']
 
 const theme = createMuiTheme({
 
@@ -72,5 +72,5 @@ const app = (
 ReactDOM.render(
   app,
   document.getElementById('root') as HTMLElement
-);
-registerServiceWorker();
+)
+registerServiceWorker()

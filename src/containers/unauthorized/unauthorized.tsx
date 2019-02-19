@@ -7,8 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar/Toolbar'
 import AppBar from '@material-ui/core/AppBar/AppBar'
 import Register from '../../components/register/register'
 import Login from '../../components/login/login'
-import {connect} from "react-redux";
-import {userRegisterOff, userRegisterOn} from "../../store/actions/user/actions";
+import {connect} from 'react-redux'
+import {userRegisterOff, userRegisterOn} from '../../store/actions/user/actions'
 
 import './styles.scss'
 

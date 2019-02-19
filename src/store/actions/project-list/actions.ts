@@ -1,13 +1,13 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
 
-import {IAction} from '../../../interfaces/IAction';
-import {PROJECTS_GET, PROJECTS_LOADING_END, PROJECTS_LOADING_START} from './actionTypes';
-import {Dispatch} from "redux";
-import {IProject} from "../../../interfaces/projects/IProject";
-import {Project} from "../../../models/Project";
-import {openMessage} from "../message/actions";
-import {ERROR_UNKNOWN} from "../../../validation/validationMessages";
+import {IAction} from '../../../interfaces/IAction'
+import {PROJECTS_GET, PROJECTS_LOADING_END, PROJECTS_LOADING_START} from './actionTypes'
+import {Dispatch} from 'redux'
+import {IProject} from '../../../interfaces/projects/IProject'
+import {Project} from '../../../models/Project'
+import {openMessage} from '../message/actions'
+import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 
 export const getProjects = () => async (dispatch: Dispatch) => {
   const projects: IProject[] = []

@@ -1,11 +1,11 @@
 import * as React from 'react'
 import UserForm from '../userForm/userForm'
-import {IFormControl} from '../../validation/interfaces/validation';
-import Validation from '../../validation/validation';
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
-import {IUser} from "../../interfaces/user/IUser";
-import {userLogin} from "../../store/actions/user/actions";
+import {IFormControl} from '../../validation/interfaces/validation'
+import Validation from '../../validation/validation'
+import {connect} from 'react-redux'
+import {Dispatch} from 'redux'
+import {IUser} from '../../interfaces/user/IUser'
+import {userLogin} from '../../store/actions/user/actions'
 
 interface IProps {
   changeForm: () => void,

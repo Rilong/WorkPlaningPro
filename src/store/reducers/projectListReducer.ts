@@ -1,6 +1,6 @@
 import {IAction} from '../../interfaces/IAction'
-import {IProjectListState} from '../../interfaces/projects/IProjectListState';
-import {PROJECTS_GET} from '../actions/project-list/actionTypes';
+import {IProjectListState} from '../../interfaces/projects/IProjectListState'
+import {PROJECTS_GET} from '../actions/project-list/actionTypes'
 
 const initialState: IProjectListState = {
   projects: [],

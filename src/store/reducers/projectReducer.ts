@@ -3,7 +3,7 @@ import {IProjectState} from '../../interfaces/projects/IProjectState'
 import {
   CREATE_PROJECT_END_LOADING,
   CREATE_PROJECT_START_LOADING
-} from '../actions/project/actionTypes';
+} from '../actions/project/actionTypes'
 
 const initialState: IProjectState = {
   name: null,

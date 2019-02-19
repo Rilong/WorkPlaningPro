@@ -7,7 +7,7 @@ import {
   USER_REGISTER_OFF,
   USER_SING_IN,
   USER_SING_OUT
-} from '../actions/user/actionTypes';
+} from '../actions/user/actionTypes'
 
 const initialState : IUserState = {
   isRegister: false,

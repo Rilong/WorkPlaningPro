@@ -1,7 +1,7 @@
-import {IBasic, IControl, IFormControl, IParams} from './interfaces/validation';
-import {IValidator, IValidators} from './interfaces/validators';
-import Validators from './validators';
-import {ERROR_EMAIL, ERROR_REQUIRED} from './validationMessages';
+import {IBasic, IControl, IFormControl, IParams} from './interfaces/validation'
+import {IValidator, IValidators} from './interfaces/validators'
+import Validators from './validators'
+import {ERROR_EMAIL, ERROR_REQUIRED} from './validationMessages'
 
 export default class Validation {
   public static createControl(params: IParams): IControl {

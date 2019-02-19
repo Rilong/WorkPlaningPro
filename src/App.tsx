@@ -5,13 +5,13 @@ import {connect} from 'react-redux'
 import {IUserState} from './interfaces/user/IUserState'
 import Authorized from './containers/authorized/authorized'
 import Unauthorized from './containers/unauthorized/unauthorized'
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {Dispatch} from "redux";
-import {closeMessage} from "./store/actions/message/actions";
-import {autoLogin} from "./store/actions/user/actions";
-import LinearProgress from "@material-ui/core/LinearProgress/LinearProgress";
-import {BrowserRouter} from "react-router-dom";
+import IconButton from '@material-ui/core/IconButton/IconButton'
+import Snackbar from '@material-ui/core/Snackbar/Snackbar'
+import {Dispatch} from 'redux'
+import {closeMessage} from './store/actions/message/actions'
+import {autoLogin} from './store/actions/user/actions'
+import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress'
+import {BrowserRouter} from 'react-router-dom'
 
 interface IProps {
   isAuthorized?: boolean
@@ -89,7 +89,7 @@ class App extends React.Component<IProps> {
           ]}
         />
       </div>
-    );
+    )
   }
 }
 
@@ -109,4 +109,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App)

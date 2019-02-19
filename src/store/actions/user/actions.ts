@@ -9,14 +9,14 @@ import {
   USER_SING_OUT
 } from './actionTypes'
 import {Dispatch} from 'redux'
-import {IUser} from '../../../interfaces/user/IUser';
-import {openMessage} from "../message/actions";
+import {IUser} from '../../../interfaces/user/IUser'
+import {openMessage} from '../message/actions'
 import {
   ERROR_AUTH_DATA_INVALID,
   ERROR_EMAIL_ALREADRY,
   ERROR_SERVER,
   ERROR_TOO_MANY_REQUESTS
-} from "../../../validation/validationMessages";
+} from '../../../validation/validationMessages'
 
 export const userRegister = ({email, password}: IUser) => {
   return async (dispatch: Dispatch) => {

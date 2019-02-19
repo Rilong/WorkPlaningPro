@@ -13,7 +13,7 @@ interface IState {
 
 class TaskField extends React.Component<IProps, IState> {
 
-  private input = React.createRef<HTMLInputElement>();
+  private input = React.createRef<HTMLInputElement>()
 
   public state = {
     inputShowed: true,

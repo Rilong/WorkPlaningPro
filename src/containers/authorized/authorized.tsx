@@ -1,18 +1,18 @@
 import * as React from 'react'
 import {Link, NavLink, Route, withRouter} from 'react-router-dom'
-import Typography from "@material-ui/core/Typography/Typography";
-import Toolbar from "@material-ui/core/Toolbar/Toolbar";
-import AppBar from "@material-ui/core/AppBar/AppBar";
-import IconButton from "@material-ui/core/IconButton/IconButton";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import {connect} from "react-redux";
-import {Dispatch} from "redux";
-import {userSingOut} from "../../store/actions/user/actions";
-import IMenu from "../../interfaces/IMenu";
+import Typography from '@material-ui/core/Typography/Typography'
+import Toolbar from '@material-ui/core/Toolbar/Toolbar'
+import AppBar from '@material-ui/core/AppBar/AppBar'
+import IconButton from '@material-ui/core/IconButton/IconButton'
+import ExitToApp from '@material-ui/icons/ExitToApp'
+import {connect} from 'react-redux'
+import {Dispatch} from 'redux'
+import {userSingOut} from '../../store/actions/user/actions'
+import IMenu from '../../interfaces/IMenu'
 import Calendar from '@material-ui/icons/CalendarToday'
-import Button from "@material-ui/core/Button/Button";
-import Home from "./pages/home/Home";
-import AddProject from "./pages/add-project/AddProject";
+import Button from '@material-ui/core/Button/Button'
+import Home from './pages/home/Home'
+import AddProject from './pages/add-project/AddProject'
 import CalendarPage from './pages/calendar/Calendar'
 
 import './styles.scss'
@@ -63,7 +63,7 @@ const authorized = class Authorized extends React.Component<IProps> {
           <Route path="/calendar" component={CalendarPage}/>
         </div>
       </div>
-    );
+    )
   }
 }
 

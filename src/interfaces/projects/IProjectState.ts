@@ -1,5 +1,5 @@
-import {IProject} from './IProject';
+import {IProject} from './IProject'
 
-export interface IProjectState extends IProject{
+export interface IProjectState extends IProject {
   loading: boolean
 }

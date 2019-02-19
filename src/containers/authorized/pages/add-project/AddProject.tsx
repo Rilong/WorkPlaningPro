@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {Grid, Card, TextField, Divider, Button, Typography, withStyles} from '@material-ui/core'
 import Input from '../../../../components/input/input'
-import Validation from '../../../../validation/validation';
-import {IFormControl} from '../../../../validation/interfaces/validation';
-import {IStyles, styles} from './styles';
-import ITask from "../../../../interfaces/projects/Task";
+import Validation from '../../../../validation/validation'
+import {IFormControl} from '../../../../validation/interfaces/validation'
+import {IStyles, styles} from './styles'
+import ITask from '../../../../interfaces/projects/Task'
 import Calendar from '../../../../components/ui/calendar/Calendar'
-import Task from "../../../../components/task/Task";
+import Task from '../../../../components/task/Task'
 
 interface IProps {
   classes?: IStyles
@@ -44,7 +44,7 @@ class AddProject extends React.Component<IProps, IState> {
   }
 
   private onInputHandler(name: string, value: string) {
-    const formControls: IFormControl = {...this.state.formControls};
+    const formControls: IFormControl = {...this.state.formControls}
 
     formControls[name].touched = true
     formControls[name].value = value
@@ -124,7 +124,7 @@ class AddProject extends React.Component<IProps, IState> {
           </Grid>
         </Grid>
       </div>
-    );
+    )
   }
 }
 

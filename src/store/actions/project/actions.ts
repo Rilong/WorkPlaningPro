@@ -1,11 +1,11 @@
 import firebase from 'firebase/app'
 import 'firebase/database'
-import {Dispatch} from 'redux';
+import {Dispatch} from 'redux'
 import {
   CREATE_PROJECT_END_LOADING,
   CREATE_PROJECT_START_LOADING
-} from './actionTypes';
-import {openMessage} from "../message/actions";
+} from './actionTypes'
+import {openMessage} from '../message/actions'
 
 export const createProject = (projectName: string) => async (dispatch: Dispatch) => {
   const newProject = {
@@ -25,7 +25,7 @@ export const createProject = (projectName: string) => async (dispatch: Dispatch)
     dispatch(openMessage('Проект создан'))
      return Promise.resolve()
   } catch (e) {
-    console.log(e);
+    console.log(e)
     return Promise.reject()
   }
 }

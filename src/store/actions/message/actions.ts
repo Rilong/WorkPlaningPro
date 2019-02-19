@@ -1,5 +1,5 @@
-import {MESSAGE_CLOSE, MESSAGE_OPEN} from "./actionsTypes";
-import {IAction} from "../../../interfaces/IAction";
+import {MESSAGE_CLOSE, MESSAGE_OPEN} from './actionsTypes'
+import {IAction} from '../../../interfaces/IAction'
 
 export const openMessage = (message: string) : IAction =>  {
    return {

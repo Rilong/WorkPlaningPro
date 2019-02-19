@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
-import {Card, Checkbox, Fab, Grid, Typography} from '@material-ui/core';
-import TaskField from '../taskField/TaskField';
+import {Card, Checkbox, Fab, Grid, Typography} from '@material-ui/core'
+import TaskField from '../taskField/TaskField'
 import CloseIcon from '@material-ui/icons/Close'
 import CalendarIcon from '@material-ui/icons/CalendarTodayRounded'
 

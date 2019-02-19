@@ -1,4 +1,4 @@
-import ITask from './Task';
+import ITask from './Task'
 
 export interface IProject {
   id?: string
