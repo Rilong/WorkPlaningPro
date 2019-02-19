@@ -14,7 +14,6 @@ const initialState: IProjectState = {
   notes: null,
   attachmentFiles: null,
   loading: false,
-  open: false
 }
 
 export default function (state: IProjectState = initialState, action: IAction): IProjectState {

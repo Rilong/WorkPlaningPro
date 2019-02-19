@@ -6,10 +6,12 @@ import DialogAction from '../../../../components/DialogAction/DialogAction'
 import {createProject} from '../../../../store/actions/project/actions';
 
 import './styles.scss'
+import {getProjects} from "../../../../store/actions/project-list/actions";
 
 interface IProps {
   createProjectOpen: boolean
   onCreateProject?: (projectName: string) => Promise<void>
+  getProjects?: () => void
   loading?: boolean
 }
 
@@ -28,6 +30,11 @@ class Home extends React.Component<IProps, IState> {
   }
 
   private projectNameRef = React.createRef<HTMLInputElement>()
+
+
+  public componentDidMount(): void {
+    this.props.getProjects()
+  }
 
   private onCreateProjectEntered = () => this.projectNameRef.current.focus()
 
@@ -78,6 +85,7 @@ class Home extends React.Component<IProps, IState> {
                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.onProjectNameChangeHandler(event.target.value)}
                      fullWidth={true}/>
         </DialogAction>
+
       </div>
     )
   }
@@ -92,6 +100,7 @@ function mapStateToProps(state: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
+    getProjects: () => dispatch(getProjects()),
     onCreateProject: (projectName: string) => dispatch(createProject(projectName))
   }
 }
