@@ -1,4 +1,5 @@
-
+import firebase from 'firebase/app'
+import 'firebase/auth'
 import {
   USER_LOADING_END,
   USER_LOADING_START,
@@ -8,8 +9,6 @@ import {
   USER_SING_OUT
 } from './actionTypes'
 import {Dispatch} from 'redux'
-import firebase from '../../../firebase'
-import 'firebase/auth'
 import {IUser} from '../../../interfaces/user/IUser';
 import {openMessage} from "../message/actions";
 import {

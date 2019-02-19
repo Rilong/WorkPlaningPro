@@ -1,4 +1,5 @@
 import './styles.css'
+import firebase from 'firebase/app'
 import * as React from 'react'
 import {connect} from 'react-redux'
 import {IUserState} from './interfaces/user/IUserState'
@@ -32,6 +33,15 @@ class App extends React.Component<IProps> {
   }
 
   public componentDidMount(): void {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyBEws4fbP-6aAt3VAXFAmcWR-8_ZrgJrDo',
+      authDomain: 'workplaningpro.firebaseapp.com',
+      databaseURL: 'https://workplaningpro.firebaseio.com',
+      projectId: 'workplaningpro',
+      storageBucket: 'workplaningpro.appspot.com',
+      messagingSenderId: '855410034243',
+    })
+
     this.setState({loadingApp: true})
     this.props.autoLogin().then(() => {
       this.setState({loadingApp: false})
