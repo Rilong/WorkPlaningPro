@@ -11,9 +11,9 @@ import {userSingOut} from '../../store/actions/user/actions'
 import IMenu from '../../interfaces/IMenu'
 import Calendar from '@material-ui/icons/CalendarToday'
 import Button from '@material-ui/core/Button/Button'
-import Home from './pages/home/Home'
-import AddProject from './pages/add-project/AddProject'
-import CalendarPage from './pages/calendar/Calendar'
+import Home from '../../pages/home/Home'
+import AddProject from '../../pages/add-project/AddProject'
+import CalendarPage from '../../pages/calendar/Calendar'
 
 import './styles.scss'
 

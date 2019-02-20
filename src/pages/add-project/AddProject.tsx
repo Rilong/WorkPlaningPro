@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {Grid, Card, TextField, Divider, Button, Typography, withStyles} from '@material-ui/core'
-import Input from '../../../../components/input/input'
-import Validation from '../../../../validation/validation'
-import {IFormControl} from '../../../../validation/interfaces/validation'
+import Input from '../../components/input/input'
+import Validation from '../../validation/validation'
+import {IFormControl} from '../../validation/interfaces/validation'
 import {IStyles, styles} from './styles'
-import ITask from '../../../../interfaces/projects/Task'
-import Calendar from '../../../../components/calendar/Calendar'
-import Task from '../../../../components/tasks/task/Task'
+import ITask from '../../interfaces/projects/Task'
+import Calendar from '../../components/calendar/Calendar'
+import Task from '../../components/tasks/task/Task'
 
 interface IProps {
   classes?: IStyles
