@@ -21,9 +21,9 @@ export const createProject = (projectName: string) => async (dispatch: Dispatch)
 
   try {
     await firebase.database().ref('projects').push(newProject)
-    createProjectEndLoading()
+    dispatch(createProjectEndLoading())
     dispatch(openMessage('Проект создан'))
-     return Promise.resolve()
+    return Promise.resolve()
   } catch (e) {
     console.log(e)
     return Promise.reject()
