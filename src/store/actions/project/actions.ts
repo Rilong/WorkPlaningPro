@@ -6,23 +6,19 @@ import {
   CREATE_PROJECT_START_LOADING
 } from './actionTypes'
 import {openMessage} from '../message/actions'
+import {Project} from '../../../models/Project'
+import {addProject} from '../project-list/actions'
 
 export const createProject = (projectName: string) => async (dispatch: Dispatch) => {
-  const newProject = {
-    name: projectName,
-    startDate: new Date(),
-    finishDate: null,
-    price: 0,
-    tasks: null,
-    notes: null,
-    attachmentFiles: null,
-  }
+  const newProject = new Project(null, projectName, new Date())
   dispatch(createProjectStartLoading())
 
   try {
-    await firebase.database().ref('projects').push(newProject)
+    const project = await firebase.database().ref('projects').push(newProject)
     dispatch(createProjectEndLoading())
     dispatch(openMessage('Проект создан'))
+    dispatch(addProject({...newProject, id: project.key}))
+
     return Promise.resolve()
   } catch (e) {
     console.log(e)

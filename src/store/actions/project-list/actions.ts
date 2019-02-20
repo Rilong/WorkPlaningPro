@@ -2,7 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 
 import {IAction} from '../../../interfaces/IAction'
-import {PROJECTS_GET, PROJECTS_LOADING_END, PROJECTS_LOADING_START} from './actionTypes'
+import {PROJECTS_ADD, PROJECTS_GET, PROJECTS_LOADING_END, PROJECTS_LOADING_START} from './actionTypes'
 import {Dispatch} from 'redux'
 import {IProject} from '../../../interfaces/projects/IProject'
 import {Project} from '../../../models/Project'
@@ -36,6 +36,13 @@ export const getProjects = () => async (dispatch: Dispatch) => {
   } catch (e) {
     dispatch(projectLoadingEnd())
     dispatch(openMessage(ERROR_UNKNOWN))
+  }
+}
+
+export const addProject = (project: IProject): IAction => {
+  return {
+    type: PROJECTS_ADD,
+    payload: project
   }
 }
 
