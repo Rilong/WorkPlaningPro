@@ -1,5 +1,6 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
 import * as React from 'react'
+import ExtendedButton from '../extendedButton/ExtendedButton'
 
 interface IProps {
   open: boolean
@@ -10,6 +11,7 @@ interface IProps {
   disagreeLabel?: string
   agreeLabel?: string
   disabled?: boolean
+  loading?: boolean
   title: string
   children: any
 }
@@ -27,12 +29,13 @@ const DialogAction = (props: IProps) => (
       <Button onClick={props.onDisagree} color="primary">
         {typeof props.disagreeLabel === 'undefined' ? 'Отменить' : props.disagreeLabel}
       </Button>
-      <Button onClick={props.onAgree}
+      <ExtendedButton onClick={props.onAgree}
               color="primary"
               disabled={typeof props.disabled === 'undefined' ? false : props.disabled}
-              autoFocus={true}>
+              autoFocus={true}
+              loading={props.loading}>
         {typeof props.agreeLabel === 'undefined' ? 'Прийнять' : props.agreeLabel}
-      </Button>
+      </ExtendedButton>
     </DialogActions>
   </Dialog>
 )
