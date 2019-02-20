@@ -1,6 +1,6 @@
-import {IProjectState} from './IProjectState'
+import {IProject} from './IProject'
 
 export interface IProjectListState {
-  projects: IProjectState[]
+  projects: IProject[]
   loading: boolean
 }
