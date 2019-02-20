@@ -1,0 +1,32 @@
+.ext-btn {
+    position: relative;
+}
+
+.ext-btn .ext-btn-text {
+    opacity: 1;
+}
+
+.ext-btn .ext-btn-loader {
+    position: absolute;
+    top: calc(50% +  4px);
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+
+.ext-btn.ext-btn-loader-active .ext-btn-loader {
+    opacity: 1;
+}
+
+.ext-btn.ext-btn-loader-active .ext-btn-text {
+    opacity: 0;
+}
+
+.ext-btn-loader-color {
+    color: #fff;
+}
+
+.MuiButton-disabled.ext-btn .ext-btn-loader-color {
+    color: rgba(0, 0, 0, 0.18);
+}
