@@ -1,5 +1,5 @@
 import * as React from 'react'
-import CalendarUI from '../../../../components/ui/calendar/Calendar'
+import CalendarUI from '../../../../components/calendar/Calendar'
 import {Grid} from '@material-ui/core'
 
 import './styles.scss'
