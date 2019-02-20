@@ -12,6 +12,7 @@ import {closeMessage} from './store/actions/message/actions'
 import {autoLogin} from './store/actions/user/actions'
 import LinearProgress from '@material-ui/core/LinearProgress/LinearProgress'
 import {BrowserRouter} from 'react-router-dom'
+import {getProjects} from './store/actions/project-list/actions'
 
 interface IProps {
   isAuthorized?: boolean
@@ -20,6 +21,7 @@ interface IProps {
   messageClose?: () => void
   messageText?: string,
   autoLogin?: () => Promise<any>
+  getProjects?: () => void
 }
 
 class App extends React.Component<IProps> {
@@ -48,6 +50,8 @@ class App extends React.Component<IProps> {
     }).catch(e => {
       this.setState({loadingApp: false})
     })
+
+    this.props.getProjects()
   }
 
   public render() {
@@ -105,7 +109,8 @@ function mapStateToProps(state: any): any {
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
     messageClose: () => dispatch(closeMessage()),
-    autoLogin: () => dispatch<any>(autoLogin())
+    autoLogin: () => dispatch<any>(autoLogin()),
+    getProjects: () => dispatch<any>(getProjects()),
   }
 }
 
