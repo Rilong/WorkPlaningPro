@@ -11,7 +11,12 @@ export class Project implements IProject {
   public price: number = null
   public attachmentFiles: any = null
 
-  constructor(id: string, name: string, startDate: Date, finishDate: Date, tasks: ITask[], notes: any, price: number, attachmentFiles: any) {
+  constructor(id: string,
+              name: string,
+              startDate: Date,
+              finishDate: Date = null,
+              tasks: ITask[] = null, notes: any = null, price: number = 0,
+              attachmentFiles: any = null) {
     this.id = id
     this.name = name
     this.startDate = startDate
