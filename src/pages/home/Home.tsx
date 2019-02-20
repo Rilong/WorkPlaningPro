@@ -77,6 +77,7 @@ class Home extends React.Component<IProps, IState> {
                       title="Добаления проекта"
                       agreeLabel="Создать проект"
                       disabled={!this.state.createProjectValid || this.props.loading}
+                      loading={this.props.loading}
                       onDisagree={this.createProjectClose}
         >
           <TextField placeholder="Ввейдите имя проекта"
