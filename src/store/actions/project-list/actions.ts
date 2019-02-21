@@ -19,21 +19,24 @@ export const getProjects = () => async (dispatch: Dispatch) => {
 
     const tmpProjects: IProject = projectValue.val()
 
-    Object.keys(tmpProjects).forEach(key => {
-      const id = key
-      const name = tmpProjects[key].name
-      const startDate = typeof tmpProjects.startDate === 'undefined' ? null : tmpProjects.startDate
-      const finishDate = typeof tmpProjects.finishDate === 'undefined' ? null : tmpProjects.finishDate
-      const price = typeof tmpProjects.price === 'undefined' ? 0 : tmpProjects.price
-      const tasks = typeof tmpProjects.tasks === 'undefined' ? null : tmpProjects.tasks
-      const notes = typeof tmpProjects.notes === 'undefined' ? null : tmpProjects.notes
-      const attachmentFiles = typeof tmpProjects.attachmentFiles === 'undefined' ? null : tmpProjects.attachmentFiles
+    if (tmpProjects !== null) {
+      Object.keys(tmpProjects).forEach(key => {
+        const id = key
+        const name = tmpProjects[key].name
+        const startDate = typeof tmpProjects.startDate === 'undefined' ? null : tmpProjects.startDate
+        const finishDate = typeof tmpProjects.finishDate === 'undefined' ? null : tmpProjects.finishDate
+        const price = typeof tmpProjects.price === 'undefined' ? 0 : tmpProjects.price
+        const tasks = typeof tmpProjects.tasks === 'undefined' ? null : tmpProjects.tasks
+        const notes = typeof tmpProjects.notes === 'undefined' ? null : tmpProjects.notes
+        const attachmentFiles = typeof tmpProjects.attachmentFiles === 'undefined' ? null : tmpProjects.attachmentFiles
 
-      projects.push(new Project(id, name, startDate, finishDate, tasks, notes, price, attachmentFiles))
-    })
+        projects.push(new Project(id, name, startDate, finishDate, tasks, notes, price, attachmentFiles))
+      })
 
-    dispatch(setProjectList(projects))
+      dispatch(setProjectList(projects))
+    }
   } catch (e) {
+    console.log(e)
     dispatch(projectLoadingEnd())
     dispatch(openMessage(ERROR_UNKNOWN))
   }
