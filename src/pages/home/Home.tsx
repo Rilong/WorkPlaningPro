@@ -56,9 +56,15 @@ class Home extends React.Component<IProps, IState> {
     }
   }
 
-  private onProjectAgree = () => {
+  private createProject = () => {
     if (this.state.createProjectValid) {
       this.props.onCreateProject(this.state.createProjectValue).then(() => this.createProjectClose())
+    }
+  }
+
+  private createProjectOnEnter(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter') {
+      this.createProject()
     }
   }
 
@@ -87,7 +93,7 @@ class Home extends React.Component<IProps, IState> {
         </Grid>
         <DialogAction open={this.state.createProjectOpen}
                       onEntered={this.onCreateProjectEntered}
-                      onAgree={this.onProjectAgree}
+                      onAgree={this.createProject}
                       onClose={this.createProjectClose}
                       title="Добаления проекта"
                       agreeLabel="Создать проект"
@@ -98,6 +104,7 @@ class Home extends React.Component<IProps, IState> {
           <TextField placeholder="Ввейдите имя проекта"
                      inputRef={this.projectNameRef}
                      value={this.state.createProjectValue}
+                     onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => this.createProjectOnEnter(event)}
                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.onProjectNameChangeHandler(event.target.value)}
                      fullWidth={true}/>
         </DialogAction>
