@@ -2,7 +2,6 @@ import './styles.css'
 import firebase from 'firebase/app'
 import * as React from 'react'
 import {connect} from 'react-redux'
-import {IUserState} from './interfaces/user/IUserState'
 import Authorized from './containers/authorized/authorized'
 import Unauthorized from './containers/unauthorized/unauthorized'
 import {Dispatch} from 'redux'
@@ -12,12 +11,13 @@ import {BrowserRouter} from 'react-router-dom'
 import {getProjects} from './store/actions/project-list/actions'
 import Message from './components/message/Message'
 import messageType from './interfaces/messages/MessageType'
+import User from './models/User'
 
 interface IProps {
   isAuthorized?: boolean
-  user?: IUserState
+  user?: User
   autoLogin?: () => Promise<any>
-  getProjects?: () => void
+  getProjects?: (userId: string) => void
   messageType?: messageType
 }
 
@@ -40,11 +40,15 @@ class App extends React.Component<IProps> {
     this.setState({loadingApp: true})
     this.props.autoLogin().then(() => {
       this.setState({loadingApp: false})
+
+      if (this.props.isAuthorized) {
+        this.props.getProjects(this.props.user.id)
+      }
     }).catch(e => {
       this.setState({loadingApp: false})
     })
 
-    this.props.getProjects()
+
   }
 
   public render() {
@@ -79,7 +83,7 @@ function mapStateToProps(state: any): any {
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
     autoLogin: () => dispatch<any>(autoLogin()),
-    getProjects: () => dispatch<any>(getProjects())
+    getProjects: (userId: string) => dispatch<any>(getProjects(userId))
   }
 }
 

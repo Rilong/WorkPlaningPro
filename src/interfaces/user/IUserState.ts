@@ -1,7 +1,7 @@
-import {IUser} from './IUser'
+import User from '../../models/User'
 
 export interface IUserState {
   isRegister: boolean
-  user: IUser
+  user: User
   userLoading: boolean
 }

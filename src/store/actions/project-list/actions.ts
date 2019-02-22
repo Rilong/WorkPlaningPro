@@ -9,12 +9,15 @@ import {Project} from '../../../models/Project'
 import {openMessage} from '../message/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 
-export const getProjects = () => async (dispatch: Dispatch) => {
+export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
   const projects: IProject[] = []
 
   try {
     dispatch(projectLoadingStart())
-    const projectValue = await firebase.database().ref('projects').once('value')
+    const projectValue = await firebase.database().ref('projects')
+      .orderByChild('userId')
+      .equalTo(userId)
+      .once('value')
     dispatch(projectLoadingEnd())
 
     const tmpProjects: IProject = projectValue.val()
@@ -22,15 +25,17 @@ export const getProjects = () => async (dispatch: Dispatch) => {
     if (tmpProjects !== null) {
       Object.keys(tmpProjects).forEach(key => {
         const id = key
+        const userIdVal = tmpProjects[key].userId
         const name = tmpProjects[key].name
-        const startDate = typeof tmpProjects.startDate === 'undefined' ? null : tmpProjects.startDate
-        const finishDate = typeof tmpProjects.finishDate === 'undefined' ? null : tmpProjects.finishDate
-        const price = typeof tmpProjects.price === 'undefined' ? 0 : tmpProjects.price
-        const tasks = typeof tmpProjects.tasks === 'undefined' ? null : tmpProjects.tasks
-        const notes = typeof tmpProjects.notes === 'undefined' ? null : tmpProjects.notes
-        const attachmentFiles = typeof tmpProjects.attachmentFiles === 'undefined' ? null : tmpProjects.attachmentFiles
+        const startDate = typeof tmpProjects[key].startDate === 'undefined' ? null : tmpProjects[key].startDate
+        const finishDate = typeof tmpProjects[key].finishDate === 'undefined' ? null : tmpProjects[key].finishDate
+        const price = typeof tmpProjects[key].price === 'undefined' ? 0 : tmpProjects[key].price
+        const tasks = typeof tmpProjects[key].tasks === 'undefined' ? null : tmpProjects[key].tasks
+        const notes = typeof tmpProjects[key].notes === 'undefined' ? null : tmpProjects[key].notes
+        const attachmentFiles = typeof tmpProjects[key].attachmentFiles === 'undefined' ? null : tmpProjects[key].attachmentFiles
 
-        projects.push(new Project(id, name, startDate, finishDate, tasks, notes, price, attachmentFiles))
+        projects.push(new Project(id, userIdVal, name, startDate, finishDate, tasks, notes, price, attachmentFiles))
+        console.log(projects)
       })
 
       dispatch(setProjectList(projects))

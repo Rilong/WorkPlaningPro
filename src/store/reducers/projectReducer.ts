@@ -6,6 +6,7 @@ import {
 } from '../actions/project/actionTypes'
 
 const initialState: IProjectState = {
+  userId: null,
   name: null,
   startDate: null,
   finishDate: null,

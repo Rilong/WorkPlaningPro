@@ -9,8 +9,8 @@ import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
 import {addProject} from '../project-list/actions'
 
-export const createProject = (projectName: string) => async (dispatch: Dispatch) => {
-  const newProject = new Project(null, projectName, new Date())
+export const createProject = (projectName: string, userId: string) => async (dispatch: Dispatch) => {
+  const newProject = new Project(null, userId, projectName, new Date())
   dispatch(createProjectStartLoading())
 
   try {

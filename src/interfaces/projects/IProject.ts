@@ -2,6 +2,7 @@ import ITask from './Task'
 
 export interface IProject {
   id?: string
+  userId: string
   name: string
   startDate: Date
   finishDate: Date

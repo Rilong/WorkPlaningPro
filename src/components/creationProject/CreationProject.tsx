@@ -4,9 +4,11 @@ import AddIcon from '@material-ui/icons/Add'
 import DialogAction from '../DialogAction/DialogAction'
 import {createProject} from '../../store/actions/project/actions'
 import {connect} from 'react-redux'
+import User from '../../models/User'
 
 interface IProps {
-  onCreateProject?: (projectName: string) => Promise<void>
+  user?: User
+  onCreateProject?: (projectName: string, userId: string) => Promise<void>
   loading?: boolean
 }
 
@@ -49,7 +51,8 @@ class CreationProject extends React.Component<IProps, IState> {
 
   private createProject = () => {
     if (this.state.createProjectValid) {
-      this.props.onCreateProject(this.state.createProjectValue).then(() => this.createProjectClose())
+      this.props.onCreateProject(this.state.createProjectValue, this.props.user.id)
+        .then(() => this.createProjectClose())
     }
   }
 
@@ -89,6 +92,7 @@ class CreationProject extends React.Component<IProps, IState> {
 
 function mapStateToProps(state: any) {
   return {
+    user: state.UserReducer.user,
     createProjectOpen: state.ProjectReducer.open,
     loading: state.ProjectReducer.loading,
   }
@@ -96,7 +100,7 @@ function mapStateToProps(state: any) {
 
 function mapDispatchToProps(dispatch: any) {
   return {
-    onCreateProject: (projectName: string) => dispatch(createProject(projectName))
+    onCreateProject: (projectName: string, userId: string) => dispatch(createProject(projectName, userId))
   }
 }
 

@@ -17,6 +17,7 @@ import {
   ERROR_SERVER,
   ERROR_TOO_MANY_REQUESTS
 } from '../../../validation/validationMessages'
+import User from '../../../models/User'
 
 export const userRegister = ({email, password}: IUser) => {
   return async (dispatch: Dispatch) => {
@@ -45,7 +46,7 @@ export const userLogin = ({email, password}: IUser) => {
     try {
       const userData = await firebase.auth().signInWithEmailAndPassword(email, password)
       dispatch(endUserLoading())
-      dispatch(userSingIn({id: userData.user.uid, email: userData.user.email}))
+      dispatch(userSingIn(new User(userData.user.uid, userData.user.email, null)))
     } catch (e) {
       dispatch(endUserLoading())
       switch (e.code) {
@@ -66,10 +67,10 @@ export const userLogin = ({email, password}: IUser) => {
   }
 }
 
-const userSingIn = (userData: IUser) => {
+const userSingIn = (user: User) => {
   return {
     type: USER_SING_IN,
-    payload: userData
+    payload: user
   }
 }
 
@@ -89,7 +90,7 @@ export const autoLogin = () => (dispatch: Dispatch) => {
     firebase.auth().onAuthStateChanged(user => {
       resolve()
       if (user) {
-        dispatch(userSingIn({id: user.uid, email: user.email}))
+        dispatch(userSingIn(new User(user.uid, user.email, null)))
       }
     }, e => {
       dispatch(openMessage(e.message))
