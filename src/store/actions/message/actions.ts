@@ -1,10 +1,13 @@
 import {MESSAGE_CLOSE, MESSAGE_OPEN} from './actionsTypes'
 import {IAction} from '../../../interfaces/IAction'
 
-export const openMessage = (message: string) : IAction =>  {
+export const openMessage = (message: string, messageType: 'success' | 'warning' | 'danger' | '' = '') : IAction =>  {
    return {
      type: MESSAGE_OPEN,
-     payload: message
+     payload: {
+       text: message,
+       type: messageType
+     }
    }
 }
 

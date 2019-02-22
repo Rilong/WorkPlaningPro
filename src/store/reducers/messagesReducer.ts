@@ -4,7 +4,8 @@ import {MESSAGE_CLOSE, MESSAGE_OPEN} from '../actions/message/actionsTypes'
 
 const initialState : IMessagesState = {
   messageOpen: false,
-  messageText: ''
+  messageText: '',
+  messageType: ''
 }
 
 export default function (state: IMessagesState = initialState, action: IAction) : IMessagesState {
@@ -12,7 +13,8 @@ export default function (state: IMessagesState = initialState, action: IAction) 
     case MESSAGE_OPEN:
       return {
         messageOpen: true,
-        messageText: action.payload
+        messageText: action.payload.text,
+        messageType: action.payload.type
       }
     case MESSAGE_CLOSE:
       return {

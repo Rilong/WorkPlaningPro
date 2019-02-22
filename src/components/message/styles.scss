@@ -1,0 +1,23 @@
+$success_color: #558B2F;
+$warning_color: #FBC02D;
+$danger_color: #D32F2F;
+$default_color: #ECEFF1;
+
+.mg {
+  &Success {
+    background-color: $success_color;
+  }
+
+  &Warning {
+    background-color: $warning_color;
+  }
+
+  &Danger {
+    background-color: $danger_color;
+  }
+
+  &Default {
+    background-color: $default_color;
+    color: #111;
+  }
+}
