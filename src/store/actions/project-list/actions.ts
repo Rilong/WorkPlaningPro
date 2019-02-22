@@ -35,7 +35,6 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
         const attachmentFiles = typeof tmpProjects[key].attachmentFiles === 'undefined' ? null : tmpProjects[key].attachmentFiles
 
         projects.push(new Project(id, userIdVal, name, startDate, finishDate, tasks, notes, price, attachmentFiles))
-        console.log(projects)
       })
 
       dispatch(setProjectList(projects))
