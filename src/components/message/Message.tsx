@@ -49,7 +49,7 @@ const Message = (props: IProps) => {
         ContentProps={{
           'aria-describedby': 'message-id',
           classes: {
-            root: colorClass
+            root: `mg ${colorClass}`
           }
         }}
         message={<span id="message-id">{props.messageText}</span>}
@@ -59,6 +59,7 @@ const Message = (props: IProps) => {
             aria-label="Close"
             color="inherit"
             onClick={handleClose}
+            classes={{root: 'closeBtn'}}
           >
             &times;
           </IconButton>,
