@@ -3,7 +3,10 @@ import {Dispatch} from 'redux'
 import {closeMessage} from '../../store/actions/message/actions'
 import {connect} from 'react-redux'
 import IconButton from '@material-ui/core/IconButton/IconButton'
-import {Snackbar} from '@material-ui/core'
+import CheckCircle from '@material-ui/icons/CheckCircle'
+import Warning from '@material-ui/icons/Warning'
+import HighlightOff from '@material-ui/icons/HighlightOff'
+import {Snackbar, Typography} from '@material-ui/core'
 
 import './styles.scss'
 import messageType from '../../interfaces/messages/MessageType'
@@ -18,18 +21,22 @@ interface IProps {
 const Message = (props: IProps) => {
   const classPrefix = 'mg'
   let colorClass = ''
+  let icon = null
 
   const handleClose = () => props.messageClose()
 
   switch (props.typeMessage) {
     case 'success':
       colorClass = `${classPrefix}Success`
+      icon = <CheckCircle className="icon"/>
       break
     case 'warning':
       colorClass = `${classPrefix}Warning`
+      icon = <Warning className="icon"/>
       break
     case 'danger':
       colorClass = `${classPrefix}Danger`
+      icon = <HighlightOff className="icon"/>
       break
     default:
       colorClass = `${classPrefix}Default`
@@ -52,7 +59,11 @@ const Message = (props: IProps) => {
             root: `mg ${colorClass}`
           }
         }}
-        message={<span id="message-id">{props.messageText}</span>}
+        message={
+          <span className="mgContainer">
+            <span className="mgIcon">{icon}</span>
+            <Typography variant="body1" className="mgText">{props.messageText}</Typography>
+          </span>}
         action={[
           <IconButton
             key="close"

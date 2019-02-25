@@ -1,5 +1,5 @@
 $success_color: #558B2F;
-$warning_color: #FBC02D;
+$warning_color: #F9A825;
 $danger_color: #D32F2F;
 $default_color: #ECEFF1;
 
@@ -7,12 +7,33 @@ $default_color: #ECEFF1;
   padding: {
     top: 10px;
     bottom: 10px;
-  }
+}
 
   .closeBtn {
     width: 40px;
     height: 40px;
     line-height: 1px;
+  }
+
+  &Container {
+    display: flex;
+    align-items: center;
+  }
+
+  &Text {
+    color: #fff;
+  }
+
+  &Icon {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    margin-right: 5px;
+
+    .icon {
+      width: 1.2em;
+      height: 1.2em;
+    }
   }
 
   &Success {
