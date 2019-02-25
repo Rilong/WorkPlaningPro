@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button/Button'
 import Home from '../../pages/home/Home'
 import AddProject from '../../pages/add-project/AddProject'
 import CalendarPage from '../../pages/calendar/Calendar'
+import ProjectPage from '../../pages/project/Project'
 
 import './styles.scss'
 
@@ -61,6 +62,7 @@ const authorized = class Authorized extends React.Component<IProps> {
           <Route path="/" exact={true} component={Home}/>
           <Route path="/new-project" component={AddProject}/>
           <Route path="/calendar" component={CalendarPage}/>
+          <Route path="/project/:id" exact={true} component={ProjectPage}/>
         </div>
       </div>
     )
