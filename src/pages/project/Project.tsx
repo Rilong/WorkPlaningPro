@@ -13,6 +13,7 @@ interface IProps {
 class Project extends React.Component<IProps> {
 
   public render(): React.ReactNode {
+
     return (
       <div>
         <Typography variant="h2">Project page - {this.props.match.params.id}</Typography>
