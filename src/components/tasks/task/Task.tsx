@@ -10,9 +10,10 @@ import './animation.css'
 
 interface IProps {
   value: string
+  className?: string
   onChange?: (value: string) => void
   onRemove?: () => void
-  onDatelinePicker?: () => void,
+  onDatelinePicker?: () => void
   checked?: boolean
   checkDisable?: boolean
   onCheckChange?: () => void
@@ -31,8 +32,14 @@ class Task extends React.Component<IProps, IState> {
   private cardLeave = () => this.setState({showControls: false})
 
   public render(): React.ReactNode {
+    let cssClass = ''
+
+    if (typeof this.props.className !== 'undefined') {
+      cssClass = ` ${this.props.className}`
+    }
+
     return (
-      <Card className="task" onMouseEnter={this.cardEnter} onMouseLeave={this.cardLeave}>
+      <Card className={`task${cssClass}`} onMouseEnter={this.cardEnter} onMouseLeave={this.cardLeave}>
         <div className="controls">
           {typeof this.props.checked !== 'undefined'
             ? <Checkbox color="primary"
