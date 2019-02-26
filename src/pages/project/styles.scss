@@ -1,0 +1,74 @@
+@import "../../variables";
+
+.pj {
+  &Container {
+    margin-top: 30px;
+  }
+
+  &Name {
+    margin-bottom: 20px;
+  }
+
+  &DateStartBtn {
+    margin-right: 15px;
+  }
+
+  &DateFinishBtn {
+    margin-left: 15px;
+  }
+
+  &Info {
+    margin-bottom: 10px;
+  }
+
+
+  &Progress {
+    width: 100%;
+
+    &Text {
+      margin: {
+        top: 10px;
+        right: 10px;
+      }
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 500;
+        font-size: 0.8rem;
+        color: rgba(0, 0, 0, 0.57);
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba($primary_color, .8);
+        border-radius: 50%;
+      }
+    }
+  }
+
+  &MoneyText {
+    display: flex;
+    align-items: center;
+    margin: {
+      top: 5px;
+      left: 10px;
+    }
+
+    span {
+      color: rgba(0, 0, 0, .6);
+    }
+
+    svg {
+      color: $primary_color;
+      margin-right: 5px;
+      font-size: 1.6rem;
+    }
+  }
+
+  &Tasks {
+    margin-top: 20px;
+  }
+
+  &Task {
+    background-color: #fafafa;
+  }
+}
