@@ -20,6 +20,7 @@ interface IProps {
   onCheckChange?: () => void
   children?: any[]
   sub?: boolean
+  progress?: number
 }
 
 interface IState {
@@ -66,7 +67,7 @@ class Task extends React.Component<IProps, IState> {
 
   private progressRender() {
     if (!this.isSub() && this.isExistsSubs()) {
-      return <LinearProgress variant="determinate" value={37} />
+      return <LinearProgress variant="determinate" value={this.props.progress} />
     }
     return null
   }
