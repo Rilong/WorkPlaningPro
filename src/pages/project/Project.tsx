@@ -1,7 +1,8 @@
 import React from 'react'
-import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider} from '@material-ui/core'
+import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider, Button} from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/Today'
 import MoneyIcon from '@material-ui/icons/MonetizationOn'
+import AddIcon from '@material-ui/icons/Add'
 import {match, withRouter} from 'react-router'
 import './styles.scss'
 import Task from '../../components/tasks/task/Task'
@@ -53,6 +54,7 @@ class Project extends React.Component<IProps> {
                   </Task>
                   <Task value="Тестовая задача" checked={false} className="pjTask"/>
                 </div>
+                <Button variant="extendedFab" color="primary" size="small" className="pjTasksAdd"><AddIcon/> Добавить задачу</Button>
               </CardContent>
             </Card>
           </Grid>

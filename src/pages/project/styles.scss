@@ -66,9 +66,19 @@
 
   &Tasks {
     margin-top: 20px;
+
+    &Add {
+      margin-top: 10px;
+    }
   }
 
   &Task {
     background-color: #fafafa;
+
+    .tasksSubs {
+      .task {
+        background-color: #f2f2f2;
+      }
+    }
   }
 }
