@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
-import {Card, Checkbox, Fab, Grid, Typography} from '@material-ui/core'
+import {Card, Checkbox, Fab, Grid, LinearProgress, Typography} from '@material-ui/core'
 import TaskField from '../taskField/TaskField'
 import CloseIcon from '@material-ui/icons/Close'
 import CalendarIcon from '@material-ui/icons/CalendarTodayRounded'
@@ -38,7 +38,7 @@ class Task extends React.Component<IProps, IState> {
     return typeof this.props.sub !== 'undefined' || this.props.sub === true
   }
 
-  private isExitsSubs() {
+  private isExistsSubs() {
     return typeof this.props.children !== 'undefined' && this.props.children.length > 0
   }
 
@@ -60,6 +60,13 @@ class Task extends React.Component<IProps, IState> {
       return (
         <Fab color="primary" size="small" style={{marginRight: '10px'}} onClick={this.props.onDatelinePicker}><AddIcon/></Fab>
       )
+    }
+    return null
+  }
+
+  private progressRender() {
+    if (!this.isSub() && this.isExistsSubs()) {
+      return <LinearProgress variant="determinate" value={37} />
     }
     return null
   }
@@ -101,8 +108,9 @@ class Task extends React.Component<IProps, IState> {
               </Grid>
             </Grid>
           </div>
+          {this.progressRender()}
         </Card>
-        {this.isExitsSubs() ? <div className="tasksSubs">{this.props.children}</div> : null}
+        {this.isExistsSubs() ? <div className="tasksSubs">{this.props.children}</div> : null}
       </>
     )
   }
