@@ -40,7 +40,12 @@ class Project extends React.Component<IProps> {
               <Grid container={true} className="pjInfo">
                 <LinearProgress variant="determinate" value={67} className="pjProgress"/>
                 <Grid container={true} justify="space-between">
-                  <Typography variant="body1" className="pjMoneyText"><MoneyIcon/> <span>0</span></Typography>
+                  <Typography variant="body1" className="pjMoneyText">
+                    <Fab size="small" color="primary">
+                      <MoneyIcon/>
+                    </Fab>
+                    <span className="text">0</span>
+                  </Typography>
                   <Typography variant="body1" className="pjProgressText"><span>67%</span></Typography>
                 </Grid>
               </Grid>
@@ -54,7 +59,8 @@ class Project extends React.Component<IProps> {
                   </Task>
                   <Task value="Тестовая задача" checked={false} className="pjTask"/>
                 </div>
-                <Button variant="extendedFab" color="primary" size="small" className="pjTasksAdd"><AddIcon/> Добавить задачу</Button>
+                <Button variant="extendedFab" color="primary" size="small" className="pjTasksAdd"><AddIcon/> Добавить
+                  задачу</Button>
               </CardContent>
             </Card>
           </Grid>

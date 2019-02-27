@@ -53,14 +53,14 @@
       left: 10px;
     }
 
-    span {
+    span.text {
       color: rgba(0, 0, 0, .6);
+      margin-left: 10px;
+      font-size: 18px;
     }
 
     svg {
-      color: $primary_color;
-      margin-right: 5px;
-      font-size: 1.6rem;
+      color: #fff;
     }
   }
 
