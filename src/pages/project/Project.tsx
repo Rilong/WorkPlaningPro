@@ -47,9 +47,10 @@ class Project extends React.Component<IProps> {
               <CardContent>
                 <Typography variant="h6" align="center">Задачи</Typography>
                 <div className="pjTasks">
-                  <Task value="Тестовая задача" checked={true} className="pjTask"/>
-                  <Task value="Тестовая задача" checked={true} className="pjTask"/>
-                  <Task value="Тестовая задача" checked={false} className="pjTask"/>
+                  <Task value="Тестовая задача" checked={false} className="pjTask">
+                    <Task value="Тестовая задача" checked={true} sub={true} className="pjTask"/>
+                    <Task value="Тестовая задача" checked={false} sub={true} className="pjTask"/>
+                  </Task>
                   <Task value="Тестовая задача" checked={false} className="pjTask"/>
                 </div>
               </CardContent>
