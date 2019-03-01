@@ -14,7 +14,7 @@ const ExtendedButton = (props: IExtendedButton) => {
 
   let classes = 'ext-btn'
 
-  if (typeof props.loading !== 'undefined' && props.loading !== false) {
+  if (props.loading) {
     classes += ' ext-btn-loader-active'
   }
 
@@ -28,6 +28,10 @@ const ExtendedButton = (props: IExtendedButton) => {
       </span>
     </Button>
   )
+}
+
+ExtendedButton.defaultProps = {
+  loading: false
 }
 
 export default ExtendedButton

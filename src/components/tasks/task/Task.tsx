@@ -32,32 +32,37 @@ class Task extends React.Component<IProps, IState> {
     showControls: false
   }
 
+  public static defaultProps = {
+    className: null,
+    checked: null,
+    children: null,
+    checkDisable: false,
+    sub: false,
+    progress: 0
+  }
+
   private cardEnter = () => this.setState({showControls: true})
   private cardLeave = () => this.setState({showControls: false})
 
-  private isSub() {
-    return typeof this.props.sub !== 'undefined' || this.props.sub === true
-  }
-
   private isExistsSubs() {
-    return typeof this.props.children !== 'undefined' && this.props.children.length > 0
+    return this.props.children !== null && this.props.children.length > 0
   }
 
   private checkRender() {
-    if (typeof this.props.checked !== 'undefined') {
+    if (this.props.checked !== null) {
       return (
         <Checkbox color="primary"
                   classes={{root: 'checkRoot'}}
                   checked={this.props.checked}
                   onChange={this.props.onCheckChange}
-                  disabled={typeof this.props.checkDisable === 'undefined' ? false : this.props.checkDisable}/>
+                  disabled={this.props.checkDisable}/>
       )
     }
     return null
   }
 
   private addSubButtonRender() {
-    if (!this.isSub()) {
+    if (!this.props.sub) {
       return (
         <Fab color="primary" size="small" style={{marginRight: '10px'}} onClick={this.props.onDatelinePicker}><AddIcon/></Fab>
       )
@@ -66,7 +71,7 @@ class Task extends React.Component<IProps, IState> {
   }
 
   private progressRender() {
-    if (!this.isSub() && this.isExistsSubs()) {
+    if (!this.props.sub && this.isExistsSubs()) {
       return <LinearProgress variant="determinate" value={this.props.progress} />
     }
     return null
@@ -75,9 +80,11 @@ class Task extends React.Component<IProps, IState> {
   public render(): React.ReactNode {
     let cssClass = ''
 
-    if (typeof this.props.className !== 'undefined') {
+    if (this.props.className !== null) {
       cssClass = ` ${this.props.className}`
     }
+
+    const {sub} = this.props
 
     return (
       <>
@@ -85,14 +92,14 @@ class Task extends React.Component<IProps, IState> {
           <div className="controls" onMouseEnter={this.cardEnter} onMouseLeave={this.cardLeave}>
             {this.checkRender()}
             <Grid container={true} alignItems="center" justify="space-between">
-              <Grid item={true} xs={!this.isSub() ? 9 : 10} style={{paddingRight: '10px'}}>
+              <Grid item={true} xs={!sub ? 9 : 10} style={{paddingRight: '10px'}}>
 
                 <TaskField value={this.props.value}
                            change={this.props.onChange}/>
                 <Typography variant="body2" className="dateText">20.02.2019</Typography>
 
               </Grid>
-              <Grid item={true} xs={!this.isSub() ? 3 : 2} className="controlsRoot">
+              <Grid item={true} xs={!sub ? 3 : 2} className="controlsRoot">
                 <TransitionGroup>
                   {this.state.showControls ?
                     <CSSTransition classNames="fade" timeout={300}>
