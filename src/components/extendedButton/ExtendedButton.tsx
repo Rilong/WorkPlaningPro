@@ -4,14 +4,14 @@ import {ButtonProps} from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import './styles.css'
+import {FunctionComponent} from 'react'
 
 export interface IExtendedButton extends ButtonProps {
   loading?: boolean
 }
 
-const ExtendedButton = (props: IExtendedButton) => {
+const ExtendedButton: FunctionComponent<IExtendedButton> = (props: IExtendedButton) => {
   const clonedProps: IExtendedButton = {...props}
-
   let classes = 'ext-btn'
 
   if (props.loading) {
