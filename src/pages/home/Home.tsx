@@ -8,6 +8,7 @@ import {IProject} from '../../interfaces/projects/IProject'
 import {GridSpacing} from '@material-ui/core/Grid'
 import {Link} from 'react-router-dom'
 import CreationProject from '../../components/creationProject/CreationProject'
+import TextEditor from '../../components/textEditor/TextEditor'
 
 interface IProps {
   createProjectOpen: boolean
@@ -39,6 +40,7 @@ class Home extends React.Component<IProps> {
       <div>
         <CreationProject/>
         {this.projectsList()}
+        <TextEditor />
       </div>
     )
   }
