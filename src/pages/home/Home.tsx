@@ -40,7 +40,9 @@ class Home extends React.Component<IProps> {
       <div>
         <CreationProject/>
         {this.projectsList()}
-        <TextEditor />
+        <div style={{padding: '10px', width: '600px'}}>
+          <TextEditor />
+        </div>
       </div>
     )
   }
