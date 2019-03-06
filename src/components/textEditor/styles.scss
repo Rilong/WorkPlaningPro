@@ -12,6 +12,10 @@
       height: 35px;
       min-height: 35px;
       margin-right: 10px;
+
+      &.MuiFab-root.active {
+        background-color: $secondary_color;
+      }
     }
   }
 

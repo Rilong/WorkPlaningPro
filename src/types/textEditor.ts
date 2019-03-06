@@ -1,0 +1,1 @@
+export type inlineStyle = 'BOLD' | 'ITALIC' | 'UNDERLINE'
