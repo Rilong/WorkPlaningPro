@@ -1,5 +1,13 @@
 import * as React from 'react'
-import {Editor, EditorState, ContentState, RichUtils, DefaultDraftBlockRenderMap, convertFromHTML} from 'draft-js'
+import {
+  Editor,
+  EditorState,
+  ContentState,
+  RichUtils,
+  DefaultDraftBlockRenderMap,
+  convertFromHTML,
+  convertToRaw
+} from 'draft-js'
 import * as Immutable from 'immutable'
 import {Card, Fab} from '@material-ui/core'
 import Align from './blocks/Align/Align'
@@ -96,7 +104,7 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private onChangeHandler = (editorState: EditorState) => {
-    // console.log(editorState.getCurrentContent().getBlocksAsArray())
+    this.props.onChange(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
     this.setState({editor: editorState})
   }
 

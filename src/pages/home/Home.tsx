@@ -41,7 +41,7 @@ class Home extends React.Component<IProps> {
         <CreationProject/>
         {this.projectsList()}
         <div style={{padding: '10px', width: '600px'}}>
-          <TextEditor />
+          <TextEditor onChange={(raw: string) =>  console.log(raw)} />
         </div>
       </div>
     )
