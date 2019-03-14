@@ -8,6 +8,7 @@ import {
   convertFromHTML,
   convertToRaw
 } from 'draft-js'
+import {stateToHTML} from 'draft-js-export-html'
 import * as Immutable from 'immutable'
 import {Card, Fab} from '@material-ui/core'
 import Align from './blocks/Align/Align'
@@ -18,13 +19,14 @@ import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft'
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter'
 import FormatAlignRightIcon from '@material-ui/icons/FormatAlignRight'
 import ListIcon from '@material-ui/icons/List'
+import TextEditorModel from '../../models/TextEditor'
 
 import './styles.scss'
 import {blockType, inlineStyle} from '../../types/textEditor'
 
 interface IProps {
   value?: string
-  onChange?: (value:  string) => void
+  onChange?: (model: TextEditorModel) => void
   placeholder?: string
 }
 
@@ -104,12 +106,33 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private onChangeHandler = (editorState: EditorState) => {
-    this.props.onChange(JSON.stringify(convertToRaw(editorState.getCurrentContent())))
+    const contentState = editorState.getCurrentContent()
+    const html = this.toHtml(contentState)
+    const raw = JSON.stringify(convertToRaw(contentState))
+    this.props.onChange(new TextEditorModel(raw, html))
     this.setState({editor: editorState})
   }
 
   private onFocusHandler = (event: React.SyntheticEvent) => this.setState({isFocused: true})
   private onBlurHandler = (event: React.SyntheticEvent) => this.setState({isFocused: false})
+
+  private toHtml(contentState: ContentState) {
+    const options = {
+      blockRenderers: {
+        'align-left': (block) => {
+          return '<div style="text-align: left">' + escape(block.getText()) + '</div>'
+        },
+        'align-center': (block) => {
+          return '<div style="text-align: center">' + escape(block.getText()) + '</div>'
+        },
+        'align-right': (block) => {
+          return '<div style="text-align: right">' + escape(block.getText()) + '</div>'
+        }
+      }
+    }
+
+    return stateToHTML(contentState, options)
+  }
 
   public render(): React.ReactNode {
     let textFieldClassName = 'TxEditor-textField'
