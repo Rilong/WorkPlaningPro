@@ -8,8 +8,6 @@ import {IProject} from '../../interfaces/projects/IProject'
 import {GridSpacing} from '@material-ui/core/Grid'
 import {Link} from 'react-router-dom'
 import CreationProject from '../../components/creationProject/CreationProject'
-import TextEditor from '../../components/textEditor/TextEditor'
-import TextEditorModel from '../../models/TextEditor'
 
 interface IProps {
   createProjectOpen: boolean
@@ -41,9 +39,6 @@ class Home extends React.Component<IProps> {
       <div>
         <CreationProject/>
         {this.projectsList()}
-        <div style={{padding: '10px', width: '600px'}}>
-          <TextEditor onChange={(model: TextEditorModel) => console.log(model)} />
-        </div>
       </div>
     )
   }
