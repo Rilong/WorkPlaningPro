@@ -27,6 +27,7 @@ import {blockType, inlineStyle} from '../../types/textEditor'
 interface IProps {
   value?: string
   onChange?: (model: TextEditorModel) => void
+  className?: string
   placeholder?: string
 }
 
@@ -39,7 +40,8 @@ class TextEditor extends React.Component<IProps, IState> {
 
   public static defaultProps:IProps = {
     value: null,
-    placeholder: ''
+    placeholder: '',
+    className: null
   }
 
   private editorRef: Editor
@@ -137,6 +139,7 @@ class TextEditor extends React.Component<IProps, IState> {
   public render(): React.ReactNode {
     let textFieldClassName = 'TxEditor-textField'
 
+    const mainClassName = 'TxEditor' + this.props.className !== null ? ` ${this.props.className}` : ''
     const btnClassName = 'TxEditor-toolbar-btn'
     const boldClassName = btnClassName + (this.isCurrentInlineStyle('BOLD') ? ' active' : '')
     const italicClassName = btnClassName + (this.isCurrentInlineStyle('ITALIC') ? ' active' : '')
@@ -152,7 +155,7 @@ class TextEditor extends React.Component<IProps, IState> {
     }
 
     return (
-      <div className="TxEditor" onFocus={this.focus}>
+      <div className={mainClassName} onFocus={this.focus}>
         <Card className="TxEditor-toolbar">
           <Fab color="primary"
                size="small"
