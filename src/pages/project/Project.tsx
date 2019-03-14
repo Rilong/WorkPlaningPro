@@ -6,6 +6,8 @@ import AddIcon from '@material-ui/icons/Add'
 import {match, withRouter} from 'react-router'
 import './styles.scss'
 import Task from '../../components/tasks/task/Task'
+import TextEditor from '../../components/textEditor/TextEditor'
+import Note from '../../components/note/Note'
 
 interface IParams {
   id: string
@@ -61,6 +63,14 @@ class Project extends React.Component<IProps> {
                 </div>
                 <Fab color="primary" variant="extended" size="small" className="pjTasksAdd"><AddIcon/> Добавить
                   задачу</Fab>
+              </CardContent>
+              <Divider/>
+              <CardContent>
+                <Typography variant="h6" align="center" className="pj-mb">Примечания</Typography>
+                <Note content={'<b>dsd</b>'} onEdit={() => null} onRemove={() => null}/>
+                <TextEditor onChange={(model) => console.log(model)} className="pjTextEditor"/>
+                <Fab color="primary" variant="extended" size="small" className="pjNotesAdd"><AddIcon/> Добавить
+                  примечание</Fab>
               </CardContent>
             </Card>
           </Grid>

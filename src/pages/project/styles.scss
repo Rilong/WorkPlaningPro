@@ -1,8 +1,18 @@
 @import "../../variables";
 
 .pj {
+  &-mb {
+    margin-bottom: 20px;
+  }
+
   &Container {
     margin-top: 30px;
+
+    .TxEditor {
+      &-toolbar {
+        background-color: #fafafa;
+      }
+    }
   }
 
   &Name {
@@ -69,6 +79,7 @@
 
     &Add {
       margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
 
@@ -80,5 +91,16 @@
         background-color: #f2f2f2;
       }
     }
+  }
+
+  &Notes {
+    &Add {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &TextEditor {
+    margin-top: 20px;
   }
 }
