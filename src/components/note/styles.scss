@@ -1,0 +1,14 @@
+.Note {
+  &-content {
+    font-family: Roboto, sans-serif;
+  }
+
+  .MuiCardActions-action {
+    button {
+      margin-right: 10px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
