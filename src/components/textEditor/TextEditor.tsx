@@ -139,7 +139,7 @@ class TextEditor extends React.Component<IProps, IState> {
   public render(): React.ReactNode {
     let textFieldClassName = 'TxEditor-textField'
 
-    const mainClassName = 'TxEditor' + this.props.className !== null ? ` ${this.props.className}` : ''
+    const mainClassName = 'TxEditor' + (this.props.className !== null ? ` ${this.props.className}` : '')
     const btnClassName = 'TxEditor-toolbar-btn'
     const boldClassName = btnClassName + (this.isCurrentInlineStyle('BOLD') ? ' active' : '')
     const italicClassName = btnClassName + (this.isCurrentInlineStyle('ITALIC') ? ' active' : '')
