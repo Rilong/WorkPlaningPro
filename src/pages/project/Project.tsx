@@ -8,6 +8,7 @@ import './styles.scss'
 import Task from '../../components/tasks/task/Task'
 import TextEditor from '../../components/textEditor/TextEditor'
 import Note from '../../components/note/Note'
+import Files from '../../components/files/Files'
 
 interface IParams {
   id: string
@@ -71,6 +72,11 @@ class Project extends React.Component<IProps> {
                 <TextEditor onChange={(model) => console.log(model)} className="pjTextEditor"/>
                 <Fab color="primary" variant="extended" size="small" className="pjNotesAdd"><AddIcon/> Добавить
                   примечание</Fab>
+              </CardContent>
+              <Divider/>
+              <CardContent>
+                <Typography variant="h6" align="center" className="pj-mb">Прикрепления файлов</Typography>
+                <Files>Test</Files>
               </CardContent>
             </Card>
           </Grid>
