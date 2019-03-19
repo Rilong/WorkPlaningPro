@@ -51,16 +51,16 @@ export const userLogin = ({email, password}: IUser) => {
       dispatch(endUserLoading())
       switch (e.code) {
         case 'auth/too-many-requests':
-          dispatch(openMessage(ERROR_TOO_MANY_REQUESTS))
+          dispatch(openMessage(ERROR_TOO_MANY_REQUESTS, 'danger'))
           break
         case 'auth/user-not-found':
-          dispatch(openMessage(ERROR_AUTH_DATA_INVALID))
+          dispatch(openMessage(ERROR_AUTH_DATA_INVALID, 'danger'))
           break
         case 'auth/wrong-password':
-          dispatch(openMessage(ERROR_AUTH_DATA_INVALID))
+          dispatch(openMessage(ERROR_AUTH_DATA_INVALID, 'danger'))
           break
         default:
-          dispatch(openMessage(ERROR_SERVER))
+          dispatch(openMessage(ERROR_SERVER, 'danger'))
 
       }
     }
