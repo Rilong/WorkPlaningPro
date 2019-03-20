@@ -8,7 +8,7 @@ import './styles.scss'
 import Task from '../../components/tasks/task/Task'
 import TextEditor from '../../components/textEditor/TextEditor'
 import Note from '../../components/note/Note'
-import Files from '../../components/files/Files'
+import File from '../../components/file/File'
 
 interface IParams {
   id: string
@@ -76,7 +76,18 @@ class Project extends React.Component<IProps> {
               <Divider/>
               <CardContent>
                 <Typography variant="h6" align="center" className="pj-mb">Прикрепления файлов</Typography>
-                <Files>Test</Files>
+                <div className="files pj-mb">
+                  <File link="#"
+                        download={'file.jpg'}
+                        onRemove={() => null}>File name 1</File>
+                  <File link="#"
+                        download={'file.jpg'}
+                        onRemove={() => null}>File name 2</File>
+                  <File link="#"
+                        download={'file.jpg'}
+                        onRemove={() => null}>File name 3</File>
+                </div>
+                <Fab variant="extended" color="primary">Загрузить файл</Fab>
               </CardContent>
             </Card>
           </Grid>

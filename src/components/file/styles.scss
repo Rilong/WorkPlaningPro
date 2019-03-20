@@ -1,0 +1,21 @@
+.file  {
+  display: inline-block;
+  margin-right: 5px;
+
+  a {
+    text-decoration: none;
+  }
+
+  &-paper {
+    padding: 1rem;
+    background-color: #fafafa;
+    .file-text {
+      display: flex;
+      align-items: center;
+
+      span.text {
+        margin: 3px 10px 0;
+      }
+    }
+  }
+}
