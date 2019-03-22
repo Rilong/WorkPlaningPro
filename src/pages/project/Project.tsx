@@ -3,6 +3,7 @@ import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider} from 
 import CalendarIcon from '@material-ui/icons/Today'
 import MoneyIcon from '@material-ui/icons/MonetizationOn'
 import AddIcon from '@material-ui/icons/Add'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import {match, withRouter} from 'react-router'
 import './styles.scss'
 import Task from '../../components/tasks/task/Task'
@@ -88,7 +89,12 @@ class Project extends React.Component<IProps> {
                         download={'file.jpg'}
                         onRemove={() => null}>File name 3</File>
                 </div>
-                <Fab variant="extended" color="primary">Загрузить файл</Fab>
+                <Fab variant="extended"
+                     size="small"
+                     color="primary"
+                     className="pjUploadBtn">
+                  <CloudUploadIcon className="pjUploadBtnIcon"/> Загрузить файл
+                </Fab>
               </CardContent>
             </Card>
           </Grid>

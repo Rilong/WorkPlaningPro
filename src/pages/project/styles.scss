@@ -103,4 +103,12 @@
   &TextEditor {
     margin-top: 20px;
   }
+
+  &Upload {
+    &Btn {
+      &Icon {
+        margin-right: 5px;
+      }
+    }
+  }
 }
