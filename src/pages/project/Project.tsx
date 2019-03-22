@@ -27,7 +27,7 @@ class Project extends React.Component<IProps> {
         <Grid container={true} justify="center" className="pjContainer">
           <Grid item={true} xs={5}>
             <Card>
-              <CardContent>
+              <CardContent> {/* Info */}
                 <Typography variant="h4" className="pjName">Test</Typography>
                 <Grid container={true} justify="space-between">
                   <Typography variant="subtitle2">
@@ -53,7 +53,7 @@ class Project extends React.Component<IProps> {
                 </Grid>
               </Grid>
               <Divider/>
-              <CardContent>
+              <CardContent> {/* Tasks */}
                 <Typography variant="h6" align="center">Задачи</Typography>
                 <div className="pjTasks">
                   <Task value="Тестовая задача" checked={false} className="pjTask">
@@ -66,15 +66,16 @@ class Project extends React.Component<IProps> {
                   задачу</Fab>
               </CardContent>
               <Divider/>
-              <CardContent>
+              <CardContent> {/* Notes */}
                 <Typography variant="h6" align="center" className="pj-mb">Примечания</Typography>
-                <Note content={'<b>dsd</b>'} onEdit={() => null} onRemove={() => null}/>
+                <Note content={'<b>dsd</b>'} onEdit={(content: string) => console.log(content)} onRemove={() => null}/>
+
                 <TextEditor onChange={(model) => console.log(model)} className="pjTextEditor"/>
                 <Fab color="primary" variant="extended" size="small" className="pjNotesAdd"><AddIcon/> Добавить
                   примечание</Fab>
               </CardContent>
               <Divider/>
-              <CardContent>
+              <CardContent> {/* Upload files */}
                 <Typography variant="h6" align="center" className="pj-mb">Прикрепления файлов</Typography>
                 <div className="files pj-mb">
                   <File link="#"
