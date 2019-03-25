@@ -10,6 +10,7 @@ import Task from '../../components/tasks/task/Task'
 import TextEditor from '../../components/textEditor/TextEditor'
 import Note from '../../components/note/Note'
 import File from '../../components/file/File'
+import DropZone from '../../components/dropZone/DropZone'
 
 interface IParams {
   id: string
@@ -19,15 +20,29 @@ interface IProps {
   match?: match<IParams>
 }
 
-class Project extends React.Component<IProps> {
+interface IState {
+  view: boolean
+}
 
-  public render(): React.ReactNode {
 
+
+class Project extends React.Component<IProps, IState> {
+
+  public state: IState = {
+    view: false
+  }
+
+  public componentDidMount(): void {
+    setTimeout(() => this.setState({view: true}), 50)
+  }
+
+  private contentRender(): React.ReactNode {
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
           <Grid item={true} xs={5}>
             <Card>
+              <DropZone>
               <CardContent> {/* Info */}
                 <Typography variant="h4" className="pjName">Test</Typography>
                 <Grid container={true} justify="space-between">
@@ -96,10 +111,19 @@ class Project extends React.Component<IProps> {
                   <CloudUploadIcon className="pjUploadBtnIcon"/> Загрузить файл
                 </Fab>
               </CardContent>
+            </DropZone>
             </Card>
           </Grid>
         </Grid>
       </div>
+    )
+  }
+  public render(): React.ReactNode {
+
+    return (
+      <>
+        {this.state.view ? this.contentRender() : null}
+      </>
     )
   }
 
