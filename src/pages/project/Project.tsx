@@ -36,13 +36,17 @@ class Project extends React.Component<IProps, IState> {
     setTimeout(() => this.setState({view: true}), 50)
   }
 
+  private addFiles = (files: FileList) => {
+    console.log(files.item(0))
+  }
+
   private contentRender(): React.ReactNode {
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
           <Grid item={true} xs={5}>
             <Card>
-              <DropZone>
+              <DropZone onDrop={this.addFiles}>
               <CardContent> {/* Info */}
                 <Typography variant="h4" className="pjName">Test</Typography>
                 <Grid container={true} justify="space-between">
