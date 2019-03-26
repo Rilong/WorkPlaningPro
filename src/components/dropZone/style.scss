@@ -15,6 +15,15 @@
     z-index: 99;
 
     background-color: rgba(#000, .7);
+
+    &-label {
+      position: relative;
+
+      &-text {
+        color: #fff;
+        text-align: center;
+      }
+    }
   }
 
   &Fade {

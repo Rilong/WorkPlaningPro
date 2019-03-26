@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {Typography} from '@material-ui/core'
 import {TransitionGroup, CSSTransition} from 'react-transition-group'
 import './style.scss'
 
@@ -19,6 +20,7 @@ class DropZone extends React.Component<IProps, IState> {
   private dragCounter: number = 0
 
   private dragEnterHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    console.log()
     event.preventDefault()
     event.stopPropagation()
     this.dragCounter++
@@ -36,6 +38,11 @@ class DropZone extends React.Component<IProps, IState> {
     }
   }
 
+  private calculateLabelPos() {
+    const scroll = window.scrollY
+    return Math.floor(200 + scroll - 3)
+  }
+
   public render(): React.ReactNode {
     const {children} = this.props
 
@@ -48,7 +55,11 @@ class DropZone extends React.Component<IProps, IState> {
             <TransitionGroup>
               {this.state.dragging ? (
                 <CSSTransition classNames="DropZoneFade" timeout={300}>
-                  <div className="DropZone-overlay"/>
+                  <div className="DropZone-overlay">
+                    <div className="DropZone-overlay-label" style={{top: this.calculateLabelPos() + 'px'}}>
+                      <Typography variant="h6" className="DropZone-overlay-label-text">Загрузить файл</Typography>
+                    </div>
+                  </div>
                 </CSSTransition>
               ) : null}
             </TransitionGroup>
