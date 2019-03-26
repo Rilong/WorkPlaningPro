@@ -4,6 +4,7 @@ import {TransitionGroup, CSSTransition} from 'react-transition-group'
 import './style.scss'
 
 interface IProps {
+  onDrop: (files: FileList) => void
   children: React.ReactNode
 }
 
@@ -20,22 +21,43 @@ class DropZone extends React.Component<IProps, IState> {
   private dragCounter: number = 0
 
   private dragEnterHandler = (event: React.DragEvent<HTMLDivElement>) => {
-    console.log()
     event.preventDefault()
     event.stopPropagation()
-    this.dragCounter++
 
-    this.setState({dragging: true})
+    if (event.dataTransfer.items.length > 0 && event.dataTransfer.types.indexOf('Files') > -1) {
+      this.dragCounter++
+      this.setState({dragging: true})
+    }
   }
 
   private dragLeaveHandler = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    this.dragCounter--
 
-    if (this.dragCounter === 0) {
-      this.setState({dragging: false})
+    if (event.dataTransfer.items.length > 0 && event.dataTransfer.types.indexOf('Files') > -1) {
+      this.dragCounter--
+
+      if (this.dragCounter === 0) {
+        this.setState({dragging: false})
+      }
     }
+  }
+
+  private dragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  private dropHandler = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (event.dataTransfer.files.length > 0) {
+      this.props.onDrop(event.dataTransfer.files)
+    }
+
+    this.setState({dragging: false})
+    this.dragCounter = 0
   }
 
   private calculateLabelPos() {
@@ -50,7 +72,9 @@ class DropZone extends React.Component<IProps, IState> {
       <div className="DropZone"
            ref={this.zone}
            onDragEnter={this.dragEnterHandler}
-           onDragLeave={this.dragLeaveHandler}>
+           onDragLeave={this.dragLeaveHandler}
+           onDragOver={this.dragOverHandler}
+           onDrop={this.dropHandler}>
         <div className="DropZone-content">{children}</div>
             <TransitionGroup>
               {this.state.dragging ? (
