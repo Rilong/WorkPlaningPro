@@ -2,7 +2,14 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 
 import {IAction} from '../../../interfaces/IAction'
-import {PROJECTS_ADD, PROJECTS_GET, PROJECTS_LOADING_END, PROJECTS_LOADING_START} from './actionTypes'
+import {
+  PROJECTS_ADD,
+  PROJECTS_GET,
+  PROJECTS_LOADED,
+  PROJECTS_LOADING_END,
+  PROJECTS_LOADING_START,
+  PROJECTS_UNLOADED
+} from './actionTypes'
 import {Dispatch} from 'redux'
 import {IProject} from '../../../interfaces/projects/IProject'
 import {Project} from '../../../models/Project'
@@ -14,6 +21,7 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
 
   try {
     dispatch(projectLoadingStart())
+    dispatch(projectUnloaded())
     const projectValue = await firebase.database().ref('projects')
       .orderByChild('userId')
       .equalTo(userId)
@@ -38,6 +46,7 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
       })
 
       dispatch(setProjectList(projects))
+      dispatch(projectLoaded())
     }
   } catch (e) {
     console.log(e)
@@ -68,5 +77,17 @@ const projectLoadingStart = (): IAction => {
 const projectLoadingEnd = (): IAction => {
   return {
     type: PROJECTS_LOADING_END
+  }
+}
+
+const projectLoaded = (): IAction => {
+  return {
+    type: PROJECTS_LOADED
+  }
+}
+
+const projectUnloaded = (): IAction => {
+  return {
+    type: PROJECTS_UNLOADED
   }
 }
