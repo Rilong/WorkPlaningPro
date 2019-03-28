@@ -1,5 +1,5 @@
 import React from 'react'
-import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider} from '@material-ui/core'
+import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider, TextField} from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/Today'
 import MoneyIcon from '@material-ui/icons/MonetizationOn'
 import AddIcon from '@material-ui/icons/Add'
@@ -15,6 +15,7 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 import {getProjectById} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
+import DialogAction from '../../components/DialogAction/DialogAction'
 
 interface IParams {
   id: string
@@ -29,14 +30,24 @@ interface IProps {
 interface IState {
   view: boolean
   project: ProjectModel
+  dialog: boolean
+  dialogTitle: string
+  dialogAction: string
 }
 
 class Project extends React.Component<IProps, IState> {
 
+  private readonly EDIT_PROJECT_NAME = 'EDIT_PROJECT_NAME'
+
   public state: IState = {
     view: false,
-    project: null
+    project: null,
+    dialog: false,
+    dialogTitle: '',
+    dialogAction: ''
   }
+
+  private dialogContent: React.ReactNode = null
 
   public componentDidMount(): void {
     setTimeout(() => this.setState({view: true}), 50)
@@ -59,9 +70,39 @@ class Project extends React.Component<IProps, IState> {
     console.log(files.item(0))
   }
 
+  private projectNameEdit = () => {
+    this.dialogOpen('Изменения названия проекта', this.EDIT_PROJECT_NAME, this.textFieldRender)
+  }
+
+  private dialogOpen = (title: string, action: string, renderFunc: () => React.ReactNode) => {
+    this.dialogContent = renderFunc()
+    this.setState({dialog: true, dialogTitle: title, dialogAction: action})
+  }
+
+  private dialogAgree = () => {
+    // Next code
+  }
+
+  private dialogClose = () => {
+    this.setState({dialog: false, dialogAction: ''})
+  }
+
+  private dialogRender(): React.ReactNode {
+    return <DialogAction open={this.state.dialog}
+                         onClose={this.dialogClose}
+                         onAgree={this.dialogAgree}
+                         onDisagree={this.dialogClose}
+                         title={this.state.dialogTitle}>
+      {this.dialogContent}
+    </DialogAction>
+  }
+
+  private textFieldRender(): React.ReactNode {
+    return <TextField/>
+  }
+
   private contentRender(): React.ReactNode {
     const {project} = this.state
-    console.log(project)
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
@@ -69,7 +110,9 @@ class Project extends React.Component<IProps, IState> {
             <Card>
               <DropZone onDrop={this.addFiles}>
                 <CardContent> {/* Info */}
-                  <Typography variant="h4" className="pjName">{project ? project.name : ''}</Typography>
+                  <Typography variant="h4"
+                              onClick={this.projectNameEdit}
+                              className="pjName">{project ? project.name : ''}</Typography>
                   <Grid container={true} justify="space-between">
                     <Typography variant="subtitle2">
                       <Fab size="small" color="primary" className="pjDateStartBtn"><CalendarIcon/></Fab>
@@ -141,6 +184,7 @@ class Project extends React.Component<IProps, IState> {
             </Card>
           </Grid>
         </Grid>
+        {this.dialogRender()}
       </div>
     )
   }
