@@ -96,13 +96,7 @@ class Project extends React.Component<IProps, IState> {
   }
 
   private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let disabled = false
-
-    if (Validators.isRequired(event.target.value)) {
-      disabled = true
-    } else {
-      disabled = false
-    }
+    const disabled = Validators.isRequired(event.target.value)
     this.setState({dialog: {...this.state.dialog, value: event.target.value, disabled}})
   }
 
