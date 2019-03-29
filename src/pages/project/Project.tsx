@@ -88,6 +88,10 @@ class Project extends React.Component<IProps, IState> {
     this.setState({dialog: {...this.state.dialog, open: false, action: ''}})
   }
 
+  private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({dialog: {...this.state.dialog, value: event.target.value}})
+  }
+
   private dialogRender(): React.ReactNode {
     return <DialogAction open={this.state.dialog.open}
                          onClose={this.dialogClose}
@@ -98,8 +102,8 @@ class Project extends React.Component<IProps, IState> {
     </DialogAction>
   }
 
-  private textFieldRender(): React.ReactNode {
-    return <TextField/>
+  private textFieldRender = (): React.ReactNode => {
+    return <TextField fullWidth={true} onChange={this.dialogTextChangeHandler}/>
   }
 
   private contentRender(): React.ReactNode {
