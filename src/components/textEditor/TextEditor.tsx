@@ -148,7 +148,6 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
-    console.log('TextEditor is updated')
     let textFieldClassName = 'TxEditor-textField'
 
     const mainClassName = 'TxEditor' + (this.props.className !== null ? ` ${this.props.className}` : '')
