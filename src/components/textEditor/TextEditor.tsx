@@ -95,6 +95,17 @@ class TextEditor extends React.Component<IProps, IState> {
     return blockTypeSelection === type
   }
 
+  public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+    const oldTextLength = this.state.editor.getCurrentContent().getPlainText().length
+    const nextTextLength = nextState.editor.getCurrentContent().getPlainText().length
+
+    if (oldTextLength !== nextTextLength || this.state.isFocused !== nextState.isFocused) {
+      return true
+    }
+
+    return false
+  }
+
   private setInlineStyle = (style: inlineStyle) => {
     this.onChangeHandler(RichUtils.toggleInlineStyle(this.state.editor, style))
   }
@@ -137,6 +148,7 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
+    console.log('TextEditor is updated')
     let textFieldClassName = 'TxEditor-textField'
 
     const mainClassName = 'TxEditor' + (this.props.className !== null ? ` ${this.props.className}` : '')
