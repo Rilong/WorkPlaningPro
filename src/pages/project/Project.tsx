@@ -30,9 +30,7 @@ interface IProps {
 interface IState {
   view: boolean
   project: ProjectModel
-  dialog: boolean
-  dialogTitle: string
-  dialogAction: string
+  dialog: {open: boolean, title: string, action: string, value: any}
 }
 
 class Project extends React.Component<IProps, IState> {
@@ -42,9 +40,12 @@ class Project extends React.Component<IProps, IState> {
   public state: IState = {
     view: false,
     project: null,
-    dialog: false,
-    dialogTitle: '',
-    dialogAction: ''
+    dialog: {
+      open: false,
+      title: '',
+      action: '',
+      value: null
+    }
   }
 
   private dialogContent: React.ReactNode = null
@@ -76,7 +77,7 @@ class Project extends React.Component<IProps, IState> {
 
   private dialogOpen = (title: string, action: string, renderFunc: () => React.ReactNode) => {
     this.dialogContent = renderFunc()
-    this.setState({dialog: true, dialogTitle: title, dialogAction: action})
+    this.setState({dialog: {...this.state.dialog, open: true, title, action}})
   }
 
   private dialogAgree = () => {
@@ -84,15 +85,15 @@ class Project extends React.Component<IProps, IState> {
   }
 
   private dialogClose = () => {
-    this.setState({dialog: false, dialogAction: ''})
+    this.setState({dialog: {...this.state.dialog, open: false, action: ''}})
   }
 
   private dialogRender(): React.ReactNode {
-    return <DialogAction open={this.state.dialog}
+    return <DialogAction open={this.state.dialog.open}
                          onClose={this.dialogClose}
                          onAgree={this.dialogAgree}
                          onDisagree={this.dialogClose}
-                         title={this.state.dialogTitle}>
+                         title={this.state.dialog.title}>
       {this.dialogContent}
     </DialogAction>
   }
