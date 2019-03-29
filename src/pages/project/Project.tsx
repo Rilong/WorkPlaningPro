@@ -16,6 +16,7 @@ import {Dispatch} from 'redux'
 import {getProjectById} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
 import DialogAction from '../../components/DialogAction/DialogAction'
+import Validators from '../../validation/validators'
 
 interface IParams {
   id: string
@@ -30,7 +31,7 @@ interface IProps {
 interface IState {
   view: boolean
   project: ProjectModel
-  dialog: {open: boolean, title: string, action: string, value: any}
+  dialog: {open: boolean, title: string, action: string, value: any, disabled: boolean}
 }
 
 class Project extends React.Component<IProps, IState> {
@@ -44,7 +45,8 @@ class Project extends React.Component<IProps, IState> {
       open: false,
       title: '',
       action: '',
-      value: null
+      value: null,
+      disabled: true
     }
   }
 
@@ -54,7 +56,6 @@ class Project extends React.Component<IProps, IState> {
     setTimeout(() => this.setState({view: true}), 50)
     this.loadProject()
   }
-
 
   public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
     if (prevProps.loaded === false && this.props.loaded === true) {
@@ -81,7 +82,13 @@ class Project extends React.Component<IProps, IState> {
   }
 
   private dialogAgree = () => {
-    // Next code
+    switch (this.state.dialog.action) {
+      case this.EDIT_PROJECT_NAME:
+        if (!this.state.dialog.disabled) {
+          // call server function
+        }
+        break
+    }
   }
 
   private dialogClose = () => {
@@ -89,7 +96,18 @@ class Project extends React.Component<IProps, IState> {
   }
 
   private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({dialog: {...this.state.dialog, value: event.target.value}})
+    let disabled = false
+
+    if (Validators.isRequired(event.target.value)) {
+      disabled = true
+    } else {
+      disabled = false
+    }
+    this.setState({dialog: {...this.state.dialog, value: event.target.value, disabled}})
+  }
+
+  private textFieldRender = (): React.ReactNode => {
+    return <TextField fullWidth={true} onChange={this.dialogTextChangeHandler}/>
   }
 
   private dialogRender(): React.ReactNode {
@@ -97,13 +115,9 @@ class Project extends React.Component<IProps, IState> {
                          onClose={this.dialogClose}
                          onAgree={this.dialogAgree}
                          onDisagree={this.dialogClose}
-                         title={this.state.dialog.title}>
+                         title={this.state.dialog.title} disabled={this.state.dialog.disabled}>
       {this.dialogContent}
     </DialogAction>
-  }
-
-  private textFieldRender = (): React.ReactNode => {
-    return <TextField fullWidth={true} onChange={this.dialogTextChangeHandler}/>
   }
 
   private contentRender(): React.ReactNode {
