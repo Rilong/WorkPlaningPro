@@ -96,10 +96,10 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
-    const oldTextLength = this.state.editor.getCurrentContent().getPlainText().length
-    const nextTextLength = nextState.editor.getCurrentContent().getPlainText().length
+    const oldHtml = this.toHtml(this.state.editor.getCurrentContent())
+    const nextHtml = this.toHtml(nextState.editor.getCurrentContent())
 
-    if (oldTextLength !== nextTextLength || this.state.isFocused !== nextState.isFocused) {
+    if (oldHtml !== nextHtml || this.state.isFocused !== nextState.isFocused) {
       return true
     }
 
