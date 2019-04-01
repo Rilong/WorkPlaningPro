@@ -5,7 +5,7 @@ import * as _ from 'lodash'
 import {CREATE_PROJECT_END_LOADING, CREATE_PROJECT_START_LOADING} from './actionTypes'
 import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
-import {addProject} from '../project-list/actions'
+import {addProject, editProjectNameInList} from '../project-list/actions'
 
 export const createProject = (projectName: string, userId: string) => async (dispatch: Dispatch) => {
   const newProject = new Project(null, userId, projectName, new Date())
@@ -24,8 +24,28 @@ export const createProject = (projectName: string, userId: string) => async (dis
   }
 }
 
+export const changeProjectName = (name: string, id: string) => async (dispatch: Dispatch) => {
+  const project: Project = {...dispatch<any>(getProjectById(id))}
+  const projectIndex: number = dispatch<any>(getProjectIndexById(id))
+
+  project.name = name
+
+  try {
+    await firebase.database().ref(`projects/${id}`).set(project)
+    dispatch(editProjectNameInList(name, projectIndex))
+    return Promise.resolve()
+  } catch (e) {
+    dispatch(openMessage('Error', 'danger'))
+    return Promise.reject()
+  }
+}
+
 export const getProjectById = (id: string) => (dispatch: Dispatch, getState): Project => {
-  return _.find(getState().ProjectListReducer.projects, {id}) as Project
+  return _.find<Project>(getState().ProjectListReducer.projects, {id})
+}
+
+export const getProjectIndexById = (id: string) => (dispatch: Dispatch, getState) => {
+    return _.findIndex(getState().ProjectListReducer.projects, {id})
 }
 
 const createProjectStartLoading = () => {

@@ -13,7 +13,7 @@ import File from '../../components/file/File'
 import DropZone from '../../components/dropZone/DropZone'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {getProjectById} from '../../store/actions/project/actions'
+import {changeProjectName, getProjectById} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
 import DialogAction from '../../components/DialogAction/DialogAction'
 import Validators from '../../validation/validators'
@@ -25,13 +25,14 @@ interface IParams {
 interface IProps {
   match?: match<IParams>
   getProjectById: (id: string) => any
+  changeProjectName: (name: string, id: string) => Promise<null>
   loaded: boolean
 }
 
 interface IState {
   view: boolean
   project: ProjectModel
-  dialog: {open: boolean, title: string, action: string, value: any, disabled: boolean}
+  dialog: {open: boolean, title: string, action: string, value: any, type: string, loading: boolean, disabled: boolean}
 }
 
 class Project extends React.Component<IProps, IState> {
@@ -46,11 +47,11 @@ class Project extends React.Component<IProps, IState> {
       title: '',
       action: '',
       value: null,
+      type: '',
+      loading: false,
       disabled: true
     }
   }
-
-  private dialogContent: React.ReactNode = null
 
   public componentDidMount(): void {
     setTimeout(() => this.setState({view: true}), 50)
@@ -73,44 +74,66 @@ class Project extends React.Component<IProps, IState> {
   }
 
   private projectNameEdit = () => {
-    this.dialogOpen('Изменения названия проекта', this.EDIT_PROJECT_NAME, this.textFieldRender)
+    this.dialogOpen(
+      'Изменения названия проекта',
+      this.EDIT_PROJECT_NAME,
+      this.state.project.name
+    )
   }
 
-  private dialogOpen = (title: string, action: string, renderFunc: () => React.ReactNode) => {
-    this.dialogContent = renderFunc()
-    this.setState({dialog: {...this.state.dialog, open: true, title, action}})
-  }
-
-  private dialogAgree = () => {
-    switch (this.state.dialog.action) {
-      case this.EDIT_PROJECT_NAME:
-        if (!this.state.dialog.disabled) {
-          // call server function
-        }
-        break
-    }
+  private dialogOpen = (title: string, action: string, value: string  = '', type = 'textField') => {
+    this.setState({dialog: {...this.state.dialog, open: true, title, action, value, type}})
   }
 
   private dialogClose = () => {
     this.setState({dialog: {...this.state.dialog, open: false, action: ''}})
   }
 
+  private dialogAgree = () => {
+    switch (this.state.dialog.action) {
+      case this.EDIT_PROJECT_NAME:
+        if (!this.state.dialog.disabled) {
+          this.dialogLoading()
+          this.props.changeProjectName(this.state.dialog.value, this.state.project.id)
+            .then(() => {
+              this.dialogUnloading()
+              this.dialogClose()
+            })
+            .catch(() => this.dialogUnloading())
+        }
+        break
+    }
+  }
+
+  private dialogLoading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: true}})
+  }
+
+  private dialogUnloading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: false}})
+  }
+
   private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const disabled = Validators.isRequired(event.target.value)
     this.setState({dialog: {...this.state.dialog, value: event.target.value, disabled}})
-  }
 
-  private textFieldRender = (): React.ReactNode => {
-    return <TextField fullWidth={true} onChange={this.dialogTextChangeHandler}/>
   }
 
   private dialogRender(): React.ReactNode {
-    return <DialogAction open={this.state.dialog.open}
+    const {dialog} = this.state
+
+    return <DialogAction open={dialog.open}
                          onClose={this.dialogClose}
                          onAgree={this.dialogAgree}
                          onDisagree={this.dialogClose}
-                         title={this.state.dialog.title} disabled={this.state.dialog.disabled}>
-      {this.dialogContent}
+                         title={dialog.title}
+                         disabled={dialog.disabled || dialog.loading}
+                         loading={dialog.loading}>
+      {dialog.type === 'textField'
+        ? <TextField fullWidth={true}
+                     onChange={this.dialogTextChangeHandler}
+                     value={dialog.value}/>
+       : null}
     </DialogAction>
   }
 
@@ -221,7 +244,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
-    getProjectById: (id: string) => dispatch<any>(getProjectById(id))
+    getProjectById: (id: string) => dispatch<any>(getProjectById(id)),
+    changeProjectName: (name: string, id: string) => dispatch<any>(changeProjectName(name, id))
   }
 }
 
