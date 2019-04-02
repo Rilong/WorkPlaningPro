@@ -1,15 +1,7 @@
 import React from 'react'
-import {Typography, Grid, Card, CardContent, LinearProgress, Fab, Divider, TextField} from '@material-ui/core'
-import CalendarIcon from '@material-ui/icons/Today'
-import MoneyIcon from '@material-ui/icons/MonetizationOn'
-import AddIcon from '@material-ui/icons/Add'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import {Typography, Grid, Card, CardContent, Divider, TextField} from '@material-ui/core'
 import {match, withRouter} from 'react-router'
 import './styles.scss'
-import Task from '../../components/tasks/task/Task'
-import TextEditor from '../../components/textEditor/TextEditor'
-import Note from '../../components/note/Note'
-import File from '../../components/file/File'
 import DropZone from '../../components/dropZone/DropZone'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
@@ -17,6 +9,11 @@ import {changeProjectName, getProjectById} from '../../store/actions/project/act
 import {Project as ProjectModel} from '../../models/Project'
 import DialogAction from '../../components/DialogAction/DialogAction'
 import Validators from '../../validation/validators'
+import Deadlines from '../../components/project/date/Deadlines'
+import Info from '../../components/project/info/Info'
+import TaskList from '../../components/project/taskList/taskList'
+import NoteList from '../../components/project/noteList/NoteList'
+import FilesList from '../../components/project/fileList/FileList'
 
 interface IParams {
   id: string
@@ -32,22 +29,17 @@ interface IProps {
 interface IState {
   view: boolean
   project: ProjectModel
-  dialog: {open: boolean, title: string, action: string, value: any, type: string, loading: boolean, disabled: boolean}
+  dialog: {open: boolean, value: string, loading: boolean, disabled: boolean}
 }
 
 class Project extends React.Component<IProps, IState> {
-
-  private readonly EDIT_PROJECT_NAME = 'EDIT_PROJECT_NAME'
 
   public state: IState = {
     view: false,
     project: null,
     dialog: {
       open: false,
-      title: '',
-      action: '',
-      value: null,
-      type: '',
+      value: '',
       loading: false,
       disabled: true
     }
@@ -73,36 +65,22 @@ class Project extends React.Component<IProps, IState> {
     console.log(files.item(0))
   }
 
-  private projectNameEdit = () => {
-    this.dialogOpen(
-      'Изменения названия проекта',
-      this.EDIT_PROJECT_NAME,
-      this.state.project.name
-    )
-  }
-
-  private dialogOpen = (title: string, action: string, value: string  = '', type = 'textField') => {
-    this.setState({dialog: {...this.state.dialog, open: true, title, action, value, type}})
+  private dialogOpen = () => {
+    this.setState({dialog: {...this.state.dialog, open: true, value: this.state.project.name}})
   }
 
   private dialogClose = () => {
-    this.setState({dialog: {...this.state.dialog, open: false, action: ''}})
+    this.setState({dialog: {...this.state.dialog, open: false}})
   }
 
   private dialogAgree = () => {
-    switch (this.state.dialog.action) {
-      case this.EDIT_PROJECT_NAME:
-        if (!this.state.dialog.disabled) {
-          this.dialogLoading()
-          this.props.changeProjectName(this.state.dialog.value, this.state.project.id)
-            .then(() => {
-              this.dialogUnloading()
-              this.dialogClose()
-            })
-            .catch(() => this.dialogUnloading())
-        }
-        break
-    }
+    this.dialogLoading()
+    this.props.changeProjectName(this.state.dialog.value, this.state.project.id)
+      .then(() => {
+        this.dialogUnloading()
+        this.dialogClose()
+      })
+      .catch(() => this.dialogUnloading())
   }
 
   private dialogLoading = () => {
@@ -116,7 +94,6 @@ class Project extends React.Component<IProps, IState> {
   private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const disabled = Validators.isRequired(event.target.value)
     this.setState({dialog: {...this.state.dialog, value: event.target.value, disabled}})
-
   }
 
   private dialogRender(): React.ReactNode {
@@ -126,14 +103,12 @@ class Project extends React.Component<IProps, IState> {
                          onClose={this.dialogClose}
                          onAgree={this.dialogAgree}
                          onDisagree={this.dialogClose}
-                         title={dialog.title}
+                         title="Изменения названия проекта"
                          disabled={dialog.disabled || dialog.loading}
                          loading={dialog.loading}>
-      {dialog.type === 'textField'
-        ? <TextField fullWidth={true}
+      <TextField fullWidth={true}
                      onChange={this.dialogTextChangeHandler}
                      value={dialog.value}/>
-       : null}
     </DialogAction>
   }
 
@@ -147,74 +122,22 @@ class Project extends React.Component<IProps, IState> {
               <DropZone onDrop={this.addFiles}>
                 <CardContent> {/* Info */}
                   <Typography variant="h4"
-                              onClick={this.projectNameEdit}
+                              onClick={this.dialogOpen}
                               className="pjName">{project ? project.name : ''}</Typography>
-                  <Grid container={true} justify="space-between">
-                    <Typography variant="subtitle2">
-                      <Fab size="small" color="primary" className="pjDateStartBtn"><CalendarIcon/></Fab>
-                      Дата начала 26.02.2019
-                    </Typography>
-                    <Typography variant="subtitle2">
-                      Дата завершения 05.03.2019
-                      <Fab size="small" color="primary" className="pjDateFinishBtn"><CalendarIcon/></Fab>
-                    </Typography>
-                  </Grid>
+                  <Deadlines/>
                 </CardContent>
-                <Grid container={true} className="pjInfo">
-                  <LinearProgress variant="determinate" value={67} className="pjProgress"/>
-                  <Grid container={true} justify="space-between">
-                    <Typography variant="body1" className="pjMoneyText">
-                      <Fab size="small" color="primary">
-                        <MoneyIcon/>
-                      </Fab>
-                      <span className="text">0</span>
-                    </Typography>
-                    <Typography variant="body1" className="pjProgressText"><span>67%</span></Typography>
-                  </Grid>
-                </Grid>
+                <Info/>
                 <Divider/>
                 <CardContent> {/* Tasks */}
-                  <Typography variant="h6" align="center">Задачи</Typography>
-                  <div className="pjTasks">
-                    <Task value="Тестовая задача" checked={false} className="pjTask">
-                      <Task value="Тестовая задача" checked={true} sub={true} className="pjTask"/>
-                      <Task value="Тестовая задача" checked={false} sub={true} className="pjTask"/>
-                    </Task>
-                    <Task value="Тестовая задача" checked={false} className="pjTask"/>
-                  </div>
-                  <Fab color="primary" variant="extended" size="small" className="pjTasksAdd"><AddIcon/> Добавить
-                    задачу</Fab>
+                  <TaskList/>
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Notes */}
-                  <Typography variant="h6" align="center" className="pj-mb">Примечания</Typography>
-                  <Note content={'<b>dsd</b>'} onEdit={(content: string) => console.log(content)}
-                        onRemove={() => null}/>
-
-                  <TextEditor onChange={(model) => console.log(model)} className="pjTextEditor"/>
-                  <Fab color="primary" variant="extended" size="small" className="pjNotesAdd"><AddIcon/> Добавить
-                    примечание</Fab>
+                  <NoteList/>
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Upload files */}
-                  <Typography variant="h6" align="center" className="pj-mb">Прикрепления файлов</Typography>
-                  <div className="files pj-mb">
-                    <File link="#"
-                          download={'file.jpg'}
-                          onRemove={() => null}>File name 1</File>
-                    <File link="#"
-                          download={'file.jpg'}
-                          onRemove={() => null}>File name 2</File>
-                    <File link="#"
-                          download={'file.jpg'}
-                          onRemove={() => null}>File name 3</File>
-                  </div>
-                  <Fab variant="extended"
-                       size="small"
-                       color="primary"
-                       className="pjUploadBtn">
-                    <CloudUploadIcon className="pjUploadBtnIcon"/> Загрузить файл
-                  </Fab>
+                  <FilesList/>
                 </CardContent>
               </DropZone>
             </Card>
