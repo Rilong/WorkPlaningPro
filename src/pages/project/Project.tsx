@@ -45,6 +45,8 @@ class Project extends React.Component<IProps, IState> {
     }
   }
 
+  private inputRef = React.createRef<HTMLInputElement>()
+
   public componentDidMount(): void {
     setTimeout(() => this.setState({view: true}), 50)
     this.loadProject()
@@ -65,13 +67,33 @@ class Project extends React.Component<IProps, IState> {
     console.log(files.item(0))
   }
 
+  /**
+   * Open dialog
+   */
+
   private dialogOpen = () => {
     this.setState({dialog: {...this.state.dialog, open: true, value: this.state.project.name}})
   }
 
+  /**
+   * Close dialog
+   */
+
   private dialogClose = () => {
     this.setState({dialog: {...this.state.dialog, open: false}})
   }
+
+  /**
+   * Handling enter dialog
+   */
+
+  private dialogEntered = () => {
+    this.inputRef.current.focus()
+  }
+
+  /**
+   * Handling agree action
+   */
 
   private dialogAgree = () => {
     this.dialogLoading()
@@ -83,18 +105,44 @@ class Project extends React.Component<IProps, IState> {
       .catch(() => this.dialogUnloading())
   }
 
+  /**
+   * Set loading to agree button
+   */
+
   private dialogLoading = () => {
     this.setState({dialog: {...this.state.dialog, loading: true}})
   }
+
+  /**
+   * Set unloading to agree button
+   */
 
   private dialogUnloading = () => {
     this.setState({dialog: {...this.state.dialog, loading: false}})
   }
 
+  /**
+   * Handling text field on change
+   */
+
   private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const disabled = Validators.isRequired(event.target.value)
     this.setState({dialog: {...this.state.dialog, value: event.target.value, disabled}})
   }
+
+  /**
+   * Agree by Enter key
+   */
+
+  private dialogAgreeByEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13 && !this.state.dialog.disabled) {
+      this.dialogAgree()
+    }
+  }
+
+  /**
+   * Render dialog window
+   */
 
   private dialogRender(): React.ReactNode {
     const {dialog} = this.state
@@ -103,14 +151,21 @@ class Project extends React.Component<IProps, IState> {
                          onClose={this.dialogClose}
                          onAgree={this.dialogAgree}
                          onDisagree={this.dialogClose}
+                         onEntered={this.dialogEntered}
                          title="Изменения названия проекта"
                          disabled={dialog.disabled || dialog.loading}
                          loading={dialog.loading}>
       <TextField fullWidth={true}
-                     onChange={this.dialogTextChangeHandler}
-                     value={dialog.value}/>
+                 inputRef={this.inputRef}
+                 onChange={this.dialogTextChangeHandler}
+                 onKeyUp={this.dialogAgreeByEnter}
+                 value={dialog.value}/>
     </DialogAction>
   }
+
+  /**
+   * Render content
+   */
 
   private contentRender(): React.ReactNode {
     const {project} = this.state

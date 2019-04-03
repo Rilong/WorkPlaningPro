@@ -17,6 +17,12 @@
 
   &Name {
     margin-bottom: 20px;
+    transition: opacity ease .25s;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .7;
+    }
   }
 
   &DateStartBtn {
