@@ -179,7 +179,9 @@ class Project extends React.Component<IProps, IState> {
                   <Typography variant="h4"
                               onClick={this.dialogOpen}
                               className="pjName">{project ? project.name : ''}</Typography>
-                  <Deadlines/>
+                  <Deadlines start={project ? project.startDate : null}
+                             finish={project ? project.finishDate : null}
+                             onChoose={(start, finish) => console.log(`start - ${start}`, `finish - ${finish}`)}/>
                 </CardContent>
                 <Info/>
                 <Divider/>
