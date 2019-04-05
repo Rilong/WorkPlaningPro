@@ -94,10 +94,10 @@ class Deadlines extends React.Component<IProps, IState> {
           <Typography variant="subtitle2">
             <Fab size="small" color="primary" className="pjDateStartBtn"
                  onClick={this.chooseStart}><CalendarIcon/></Fab>
-            Дата начала {this.props.start ? '26.02.2019' : 'не задано'}
+            Дата начала {this.props.start ? '26.02.2019' : 'не задана'}
           </Typography>
           <Typography variant="subtitle2">
-            Дата завершения {this.props.finish ? '26.02.2019' : 'не задано'}
+            Дата завершения {this.props.finish ? '26.02.2019' : 'не задана'}
             <Fab size="small" color="primary" className="pjDateFinishBtn"
                  onClick={this.chooseFinish}><CalendarIcon/></Fab>
           </Typography>
