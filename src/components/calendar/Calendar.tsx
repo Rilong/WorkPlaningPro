@@ -19,7 +19,8 @@ interface IProps {
   picker?: boolean
   dialog?: boolean
   onClose?: () => void
-  onAccept?: () => void
+  onAgree?: () => void
+  onDisagree?: () => void
 }
 
 interface IState {
@@ -37,7 +38,9 @@ class Calendar extends React.Component<IProps, IState> {
   }
 
   public static defaultProps = {
-    picker: false
+    picker: false,
+    onAgree: () => null,
+    onDisagree: () => null
   }
 
   constructor(props: IProps) {
@@ -51,7 +54,6 @@ class Calendar extends React.Component<IProps, IState> {
   private prevMonthHandler = () => {
     this.setState({currentDate: dateFns.subMonths(this.state.currentDate, 1)})
   }
-
 
   private calculateHeight(item: HTMLButtonElement) {
     if (item !== null && this.props.picker === true) {
@@ -207,10 +209,10 @@ class Calendar extends React.Component<IProps, IState> {
                 {this.renderCalendar()}
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.props.onClose && null} color="primary" autoFocus={true}>
+                <Button onClick={this.props.onDisagree} color="primary">
                   Отменить
                 </Button>
-                <Button onClick={this.props.onAccept && null} color="primary">
+                <Button onClick={this.props.onAgree} color="primary">
                   Принять
                 </Button>
               </DialogActions>
