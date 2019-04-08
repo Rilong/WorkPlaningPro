@@ -42,7 +42,7 @@ class Project extends React.Component<IProps, IState> {
       value: '',
       loading: false,
       disabled: true
-    }
+    },
   }
 
   private inputRef = React.createRef<HTMLInputElement>()
@@ -169,6 +169,7 @@ class Project extends React.Component<IProps, IState> {
 
   private contentRender(): React.ReactNode {
     const {project} = this.state
+    console.log(project ? project.startDate : '')
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
@@ -179,9 +180,9 @@ class Project extends React.Component<IProps, IState> {
                   <Typography variant="h4"
                               onClick={this.dialogOpen}
                               className="pjName">{project ? project.name : ''}</Typography>
-                  <Deadlines start={project ? project.startDate : null}
-                             finish={project ? project.finishDate : null}
-                             onChoose={(start, finish) => console.log(`start - ${start}`, `finish - ${finish}`)}/>
+                  <Deadlines start={project ? new Date(project.startDate) : null}
+                             finish={project ? new Date(project.finishDate) : null}
+                             id={this.props.match.params.id}/>
                 </CardContent>
                 <Info/>
                 <Divider/>

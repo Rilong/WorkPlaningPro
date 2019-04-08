@@ -3,11 +3,15 @@ import {Fab, Grid, Typography} from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/Today'
 import IDialog from '../../../interfaces/IDialog'
 import Calendar from '../../calendar/Calendar'
+import {Dispatch} from 'redux'
+import {setProjectDeadlines} from '../../../store/actions/project/actions'
+import {connect} from 'react-redux'
 
 interface IProps {
   start: Date
   finish: Date
-  onChoose: (start: Date, finish: Date) => void
+  id: string
+  setProjectDeadlines: (start: Date, finish: Date, id: string) => Promise<void>
 }
 
 interface IState {
@@ -26,7 +30,8 @@ class Deadlines extends React.Component<IProps, IState> {
     dialog: {
       open: false,
       action: null,
-      disabled: true
+      disabled: true,
+      loading: false
     }
   }
 
@@ -34,6 +39,10 @@ class Deadlines extends React.Component<IProps, IState> {
    super(props)
    this.startDate = props.start
    this.finishDate = props.finish
+  }
+
+  private getDateWithFormat(date: Date) {
+    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
   }
 
   private chooseStart = () => {
@@ -49,6 +58,10 @@ class Deadlines extends React.Component<IProps, IState> {
   }
 
   private selectDateHandler = (date: Date) => {
+    if (this.state.dialog.disabled) {
+      this.setState({dialog: {...this.state.dialog, disabled: false}})
+    }
+
     if (this.state.dialog.open && this.state.dialog.action === this.START_DATE) {
       this.startDate = date
     }
@@ -59,8 +72,13 @@ class Deadlines extends React.Component<IProps, IState> {
   }
 
   private dialogAgreeHandler = () => {
-    this.props.onChoose(this.startDate, this.finishDate)
-    this.dialogClose()
+    this.setDialogLoading()
+    this.props.setProjectDeadlines(this.startDate, this.finishDate, this.props.id)
+      .then(() => {
+        this.setDialogUnloading()
+        this.dialogClose()
+      })
+      .catch(() => this.setDialogUnloading())
   }
 
   private dialogDisagreeHandler = () => {
@@ -75,6 +93,13 @@ class Deadlines extends React.Component<IProps, IState> {
     this.setState({dialog: {...this.state.dialog, open: false, action: null}})
   }
 
+  private setDialogLoading() {
+    this.setState({dialog: {...this.state.dialog, loading: true}})
+  }
+  private setDialogUnloading() {
+    this.setState({dialog: {...this.state.dialog, loading: false}})
+  }
+
   private dialogRender = () => {
     return (
       <Calendar onSelect={this.selectDateHandler}
@@ -83,6 +108,8 @@ class Deadlines extends React.Component<IProps, IState> {
                 onClose={this.dialogCloseHandler}
                 onAgree={this.dialogAgreeHandler}
                 onDisagree={this.dialogDisagreeHandler}
+                disabled={this.state.dialog.disabled || this.state.dialog.loading}
+                loading={this.state.dialog.loading}
                 />
     )
   }
@@ -94,10 +121,10 @@ class Deadlines extends React.Component<IProps, IState> {
           <Typography variant="subtitle2">
             <Fab size="small" color="primary" className="pjDateStartBtn"
                  onClick={this.chooseStart}><CalendarIcon/></Fab>
-            Дата начала {this.props.start ? '26.02.2019' : 'не задана'}
+            Дата начала {this.props.start ? this.getDateWithFormat(this.props.start) : 'не задана'}
           </Typography>
           <Typography variant="subtitle2">
-            Дата завершения {this.props.finish ? '26.02.2019' : 'не задана'}
+            Дата завершения {this.props.finish ? this.getDateWithFormat(this.props.finish) : 'не задана'}
             <Fab size="small" color="primary" className="pjDateFinishBtn"
                  onClick={this.chooseFinish}><CalendarIcon/></Fab>
           </Typography>
@@ -108,4 +135,10 @@ class Deadlines extends React.Component<IProps, IState> {
   }
 }
 
-export default Deadlines
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    setProjectDeadlines: (start: Date, finish: Date, id: string) => dispatch<any>(setProjectDeadlines(start, finish, id))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Deadlines)

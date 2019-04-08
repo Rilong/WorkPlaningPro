@@ -3,6 +3,7 @@ import 'firebase/database'
 
 import {IAction} from '../../../interfaces/IAction'
 import {
+  EDIT_PROJECT_DEADLINES_IN_LIST,
   EDIT_PROJECT_NAME_IN_LIST,
   PROJECTS_ADD,
   PROJECTS_GET,
@@ -67,6 +68,13 @@ export const editProjectNameInList = (name: string, index: number): IAction => {
   return {
     type: EDIT_PROJECT_NAME_IN_LIST,
     payload: {index, name}
+  }
+}
+
+export const editProjectDeadlinesInList = (start: number, finish: number, index: number): IAction => {
+  return {
+    type: EDIT_PROJECT_DEADLINES_IN_LIST,
+    payload: {index, start, finish}
   }
 }
 

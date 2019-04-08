@@ -13,6 +13,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack'
 import ArrowForward from '@material-ui/icons/ArrowForward'
 
 import './styles.scss'
+import ExtendedButton from '../extendedButton/ExtendedButton'
 
 interface IProps {
   onSelect: (day: Date) => void,
@@ -20,7 +21,9 @@ interface IProps {
   dialog?: boolean
   onClose?: () => void
   onAgree?: () => void
-  onDisagree?: () => void
+  onDisagree?: () => void,
+  loading?: boolean,
+  disabled: boolean
 }
 
 interface IState {
@@ -40,7 +43,9 @@ class Calendar extends React.Component<IProps, IState> {
   public static defaultProps = {
     picker: false,
     onAgree: () => null,
-    onDisagree: () => null
+    onDisagree: () => null,
+    loading: false,
+    disabled: false
   }
 
   constructor(props: IProps) {
@@ -212,9 +217,12 @@ class Calendar extends React.Component<IProps, IState> {
                 <Button onClick={this.props.onDisagree} color="primary">
                   Отменить
                 </Button>
-                <Button onClick={this.props.onAgree} color="primary">
+                <ExtendedButton onClick={this.props.onAgree}
+                                color="primary"
+                                disabled={this.props.disabled || this.props.loading}
+                                loading={this.props.loading}>
                   Принять
-                </Button>
+                </ExtendedButton>
               </DialogActions>
             </Dialog>
           </>

@@ -5,8 +5,8 @@ export class Project implements IProject {
   public id: string = null
   public userId: string
   public name: string = null
-  public startDate: Date = null
-  public finishDate: Date = null
+  public startDate: number = null
+  public finishDate: number = null
   public tasks: ITask[] = null
   public notes: any = 0
   public price: number = null
@@ -15,9 +15,10 @@ export class Project implements IProject {
   constructor(id: string,
               userId: string,
               name: string,
-              startDate: Date,
-              finishDate: Date = null,
-              tasks: ITask[] = null, notes: any = null, price: number = 0,
+              startDate: number = null,
+              finishDate: number = null,
+              tasks: ITask[] = null,
+              notes: any = null, price: number = 0,
               attachmentFiles: any = null) {
     this.id = id
     this.userId = userId
@@ -28,5 +29,23 @@ export class Project implements IProject {
     this.notes = notes
     this.price = price
     this.attachmentFiles = attachmentFiles
+  }
+
+  public getStartDateAsDate() {
+    return new Date(this.startDate)
+  }
+
+  public getFinishDateAsDate() {
+    return new Date(this.finishDate)
+  }
+
+  public getStartDateAsFormated(): string {
+    const date = this.getStartDateAsDate()
+    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
+  }
+
+  public getFinishDateAsFormated(): string {
+    const date = this.getStartDateAsDate()
+    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
   }
 }

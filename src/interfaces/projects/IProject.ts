@@ -4,8 +4,8 @@ export interface IProject {
   id?: string
   userId: string
   name: string
-  startDate: Date
-  finishDate: Date
+  startDate: number
+  finishDate: number
   price: number
   tasks: ITask[]
   notes: any
