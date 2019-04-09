@@ -1,5 +1,6 @@
 import {IProject} from '../interfaces/projects/IProject'
 import ITask from '../interfaces/projects/Task'
+import * as dateFns from 'date-fns'
 
 export class Project implements IProject {
   public id: string = null
@@ -40,12 +41,10 @@ export class Project implements IProject {
   }
 
   public getStartDateAsFormated(): string {
-    const date = this.getStartDateAsDate()
-    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
+    return dateFns.format(this.getStartDateAsDate(), 'DD.MM.YYYY')
   }
 
   public getFinishDateAsFormated(): string {
-    const date = this.getStartDateAsDate()
-    return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
+    return dateFns.format(this.getFinishDateAsDate(), 'DD.MM.YYYY')
   }
 }

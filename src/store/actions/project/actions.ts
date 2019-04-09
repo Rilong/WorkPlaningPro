@@ -41,7 +41,7 @@ export const changeProjectName = (name: string, id: string) => async (dispatch: 
 }
 
 export const setProjectDeadlines = (start: Date, finish: Date, id: string) => async (dispatch: Dispatch): Promise<void> => {
-  const project: Project = {...dispatch<any>(getProjectById(id))}
+  const project: Project = dispatch<any>(getProjectById(id))
   const projectIndex: number = dispatch<any>(getProjectIndexById(id))
 
   if (start !== null) {
@@ -58,12 +58,12 @@ export const setProjectDeadlines = (start: Date, finish: Date, id: string) => as
     return Promise.resolve()
   } catch (e) {
     dispatch(openMessage('Error', 'danger'))
-    return Promise.reject()
+    return Promise.reject(e)
   }
 }
 
 export const getProjectById = (id: string) => (dispatch: Dispatch, getState): Project => {
-  return _.find<Project>(getState().ProjectListReducer.projects, {id})
+  return _.clone<Project>(_.find<Project>(getState().ProjectListReducer.projects, {id}))
 }
 
 export const getProjectIndexById = (id: string) => (dispatch: Dispatch, getState) => {

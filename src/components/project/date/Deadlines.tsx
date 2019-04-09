@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as dateFns from 'date-fns'
 import {Fab, Grid, Typography} from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/Today'
 import IDialog from '../../../interfaces/IDialog'
@@ -12,6 +13,7 @@ interface IProps {
   finish: Date
   id: string
   setProjectDeadlines: (start: Date, finish: Date, id: string) => Promise<void>
+  onLoad: () => void
 }
 
 interface IState {
@@ -42,7 +44,7 @@ class Deadlines extends React.Component<IProps, IState> {
   }
 
   private getDateWithFormat(date: Date) {
-    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+    return dateFns.format(date, 'DD.MM.YYYY')
   }
 
   private chooseStart = () => {
@@ -76,6 +78,7 @@ class Deadlines extends React.Component<IProps, IState> {
     this.props.setProjectDeadlines(this.startDate, this.finishDate, this.props.id)
       .then(() => {
         this.setDialogUnloading()
+        this.props.onLoad()
         this.dialogClose()
       })
       .catch(() => this.setDialogUnloading())

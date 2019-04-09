@@ -58,7 +58,7 @@ class Project extends React.Component<IProps, IState> {
     }
   }
 
-  private loadProject() {
+  private loadProject = () => {
     const project: ProjectModel = this.props.getProjectById(this.props.match.params.id)
     this.setState({project})
   }
@@ -100,6 +100,7 @@ class Project extends React.Component<IProps, IState> {
     this.props.changeProjectName(this.state.dialog.value, this.state.project.id)
       .then(() => {
         this.dialogUnloading()
+        this.loadProject()
         this.dialogClose()
       })
       .catch(() => this.dialogUnloading())
@@ -169,7 +170,7 @@ class Project extends React.Component<IProps, IState> {
 
   private contentRender(): React.ReactNode {
     const {project} = this.state
-    console.log(project ? project.startDate : '')
+
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
@@ -182,7 +183,8 @@ class Project extends React.Component<IProps, IState> {
                               className="pjName">{project ? project.name : ''}</Typography>
                   <Deadlines start={project ? new Date(project.startDate) : null}
                              finish={project ? new Date(project.finishDate) : null}
-                             id={this.props.match.params.id}/>
+                             id={this.props.match.params.id}
+                             onLoad={this.loadProject} />
                 </CardContent>
                 <Info/>
                 <Divider/>
