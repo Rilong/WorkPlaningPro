@@ -1,6 +1,7 @@
 import {IAction} from '../../interfaces/IAction'
 import {IProjectListState} from '../../interfaces/projects/IProjectListState'
 import {
+  EDIT_PROJECT_BUDGET_IN_LIST,
   EDIT_PROJECT_DEADLINES_IN_LIST,
   EDIT_PROJECT_NAME_IN_LIST,
   PROJECTS_ADD,
@@ -36,9 +37,12 @@ export default function (state: IProjectListState = initialState, action: IActio
       projects[action.payload.index].name = action.payload.name
       return {...state, projects}
     case EDIT_PROJECT_DEADLINES_IN_LIST:
-    projects[action.payload.index].startDate = action.payload.start
-    projects[action.payload.index].finishDate = action.payload.finish
-    return {...state, projects}
+      projects[action.payload.index].startDate = action.payload.start
+      projects[action.payload.index].finishDate = action.payload.finish
+      return {...state, projects}
+    case EDIT_PROJECT_BUDGET_IN_LIST:
+      projects[action.payload.index].budget = action.payload.budget
+      return {...state, projects}
     default:
       return state
   }

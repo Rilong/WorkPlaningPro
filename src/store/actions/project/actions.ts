@@ -5,7 +5,13 @@ import * as _ from 'lodash'
 import {CREATE_PROJECT_END_LOADING, CREATE_PROJECT_START_LOADING} from './actionTypes'
 import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
-import {addProject, editProjectDeadlinesInList, editProjectNameInList} from '../project-list/actions'
+import {
+  addProject,
+  editProjectBudgetInList,
+  editProjectDeadlinesInList,
+  editProjectNameInList
+} from '../project-list/actions'
+import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 
 export const createProject = (projectName: string, userId: string) => async (dispatch: Dispatch) => {
   const newProject = new Project(null, userId, projectName, new Date().getTime())
@@ -57,7 +63,23 @@ export const setProjectDeadlines = (start: Date, finish: Date, id: string) => as
     dispatch(editProjectDeadlinesInList(project.startDate, project.finishDate, projectIndex))
     return Promise.resolve()
   } catch (e) {
-    dispatch(openMessage('Error', 'danger'))
+    dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
+    return Promise.reject(e)
+  }
+}
+
+export const setProjectBudget = (budget: number, id: string) => async (dispatch: Dispatch): Promise<void> =>{
+  const project: Project = dispatch<any>(getProjectById(id))
+  const projectIndex: number = dispatch<any>(getProjectIndexById(id))
+
+  project.budget = budget
+
+  try {
+    await updateProjectById(project, id)
+    dispatch(editProjectBudgetInList(budget, projectIndex))
+    return Promise.resolve()
+  } catch (e) {
+    dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
     return Promise.reject(e)
   }
 }

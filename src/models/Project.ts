@@ -10,7 +10,7 @@ export class Project implements IProject {
   public finishDate: number = null
   public tasks: ITask[] = null
   public notes: any = 0
-  public price: number = null
+  public budget: number = null
   public attachmentFiles: any = null
 
   constructor(id: string,
@@ -28,7 +28,7 @@ export class Project implements IProject {
     this.finishDate = finishDate
     this.tasks = tasks
     this.notes = notes
-    this.price = price
+    this.budget = price
     this.attachmentFiles = attachmentFiles
   }
 

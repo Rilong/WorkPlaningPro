@@ -6,7 +6,7 @@ export interface IProject {
   name: string
   startDate: number
   finishDate: number
-  price: number
+  budget: number
   tasks: ITask[]
   notes: any
   attachmentFiles: any

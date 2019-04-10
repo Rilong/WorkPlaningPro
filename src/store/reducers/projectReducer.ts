@@ -10,7 +10,7 @@ const initialState: IProjectState = {
   name: null,
   startDate: null,
   finishDate: null,
-  price: 0,
+  budget: 0,
   tasks: null,
   notes: null,
   attachmentFiles: null,

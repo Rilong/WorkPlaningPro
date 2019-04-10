@@ -3,6 +3,7 @@ import 'firebase/database'
 
 import {IAction} from '../../../interfaces/IAction'
 import {
+  EDIT_PROJECT_BUDGET_IN_LIST,
   EDIT_PROJECT_DEADLINES_IN_LIST,
   EDIT_PROJECT_NAME_IN_LIST,
   PROJECTS_ADD,
@@ -39,7 +40,7 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
         const name = tmpProjects[key].name
         const startDate = typeof tmpProjects[key].startDate === 'undefined' ? null : tmpProjects[key].startDate
         const finishDate = typeof tmpProjects[key].finishDate === 'undefined' ? null : tmpProjects[key].finishDate
-        const price = typeof tmpProjects[key].price === 'undefined' ? 0 : tmpProjects[key].price
+        const price = typeof tmpProjects[key].budget === 'undefined' ? 0 : tmpProjects[key].budget
         const tasks = typeof tmpProjects[key].tasks === 'undefined' ? null : tmpProjects[key].tasks
         const notes = typeof tmpProjects[key].notes === 'undefined' ? null : tmpProjects[key].notes
         const attachmentFiles = typeof tmpProjects[key].attachmentFiles === 'undefined' ? null : tmpProjects[key].attachmentFiles
@@ -75,6 +76,13 @@ export const editProjectDeadlinesInList = (start: number, finish: number, index:
   return {
     type: EDIT_PROJECT_DEADLINES_IN_LIST,
     payload: {index, start, finish}
+  }
+}
+
+export const editProjectBudgetInList = (budget: number, index: number): IAction => {
+  return {
+    type: EDIT_PROJECT_BUDGET_IN_LIST,
+    payload: {budget, index}
   }
 }
 

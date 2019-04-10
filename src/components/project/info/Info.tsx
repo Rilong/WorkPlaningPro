@@ -3,12 +3,23 @@ import {Fab, Grid, LinearProgress, TextField, Typography} from '@material-ui/cor
 import MoneyIcon from '@material-ui/icons/MonetizationOn'
 import IDialog from '../../../interfaces/IDialog'
 import DialogAction from '../../DialogAction/DialogAction'
+import {Dispatch} from 'redux'
+import {connect} from 'react-redux'
+import {setProjectBudget} from '../../../store/actions/project/actions'
 
 interface IState {
   dialog: IDialog
 }
 
-class Info extends React.Component<{}, IState> {
+interface IProps {
+  id: string
+  budget: string
+  onLoad: () => void
+  progress: number
+  setProjectBudget?: (budget: number, id: string) => Promise<void>
+}
+
+class Info extends React.Component<IProps, IState> {
   public state:IState = {
     dialog: {
       open: false,
@@ -21,6 +32,12 @@ class Info extends React.Component<{}, IState> {
   private inputRef = React.createRef<HTMLInputElement>()
 
 
+  public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+    if (prevProps.budget !== this.props.budget) {
+      this.setState({dialog: {...this.state.dialog, value: this.props.budget}})
+    }
+  }
+
   private dialogOpen = () => {
     this.setState({dialog: {...this.state.dialog, open: true}})
   }
@@ -30,19 +47,53 @@ class Info extends React.Component<{}, IState> {
   }
 
   private dialogAgree = () => {
-    //
+    this.dialogLoading()
+    if (!this.state.dialog.disabled) {
+      this.props.setProjectBudget(+this.state.dialog.value, this.props.id)
+        .then(() => {
+          this.dialogUnloading()
+          this.props.onLoad()
+          this.dialogClose()
+        })
+        .catch(() => this.dialogUnloading())
+    }
   }
+
+  private dialogLoading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: true}})
+  }
+
+  private dialogUnloading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: false}})
+  }
+
 
   private dialogEntered = () => {
     this.inputRef.current.focus()
   }
 
-  private dialogTextChangeHandler = () => {
-    //
+  private dialogTextChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const dialog = {...this.state.dialog}
+    let value = dialog.value
+    let disabled = dialog.disabled
+
+    if (event.target.value.match(/(^[0-9.]+$)|(^$)/)) {
+      value = event.target.value
+
+      if (value.length !== 0) {
+        disabled = false
+      } else {
+        disabled = true
+      }
+    }
+
+    this.setState({dialog: {...dialog, value, disabled}})
   }
 
-  private dialogAgreeByEnter = () => {
-    //
+  private dialogAgreeByEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13 && !this.state.dialog.disabled) {
+      this.dialogAgree()
+    }
   }
 
   private dialogRender() {
@@ -67,15 +118,15 @@ class Info extends React.Component<{}, IState> {
     return (
       <>
         <Grid container={true} className="pjInfo">
-          <LinearProgress variant="determinate" value={67} className="pjProgress"/>
+          <LinearProgress variant="determinate" value={this.props.progress} className="pjProgress"/>
           <Grid container={true} justify="space-between">
             <Typography variant="body1" className="pjMoneyText">
               <Fab size="small" color="primary" onClick={this.dialogOpen}>
                 <MoneyIcon/>
               </Fab>
-              <span className="text">0</span>
+              <span className="text">{this.props.budget}</span>
             </Typography>
-            <Typography variant="body1" className="pjProgressText"><span>67%</span></Typography>
+            <Typography variant="body1" className="pjProgressText"><span>{this.props.progress}%</span></Typography>
           </Grid>
         </Grid>
         {this.dialogRender()}
@@ -84,4 +135,10 @@ class Info extends React.Component<{}, IState> {
   }
 }
 
-export default Info
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    setProjectBudget: (budget: number, id: string) => dispatch<any>(setProjectBudget(budget, id))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Info)

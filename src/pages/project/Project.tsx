@@ -186,7 +186,10 @@ class Project extends React.Component<IProps, IState> {
                              id={this.props.match.params.id}
                              onLoad={this.loadProject} />
                 </CardContent>
-                <Info/>
+                <Info id={this.props.match.params.id}
+                      budget={project ? this.state.project.budget.toString() : '0'}
+                      progress={50}
+                      onLoad={this.loadProject} />
                 <Divider/>
                 <CardContent> {/* Tasks */}
                   <TaskList/>
