@@ -4,7 +4,10 @@ import {Typography, TextField} from '@material-ui/core'
 interface IProps {
   autofocus?: boolean
   value: string
+  onFocus?: () => void
+  onFocusLost?: () => void
   change?: (value: string) => void
+  loading?: boolean
 }
 
 interface IState {
@@ -16,11 +19,14 @@ class TaskField extends React.Component<IProps, IState> {
   private input = React.createRef<HTMLInputElement>()
 
   public state = {
-    inputShowed: true,
+    inputShowed: true
   }
 
   public static defaultProps = {
-    autofocus: false
+    autofocus: false,
+    loading: false,
+    onFocus: () => {/* */},
+    onFocusLost: () => {/* */}
   }
 
   public componentDidMount() {
@@ -33,10 +39,12 @@ class TaskField extends React.Component<IProps, IState> {
 
   private focusLost = () => {
     this.setState({inputShowed: false})
+    this.props.onFocusLost()
   }
 
   private makeFocus = () => {
     this.setState({inputShowed: true})
+    this.props.onFocus()
     setTimeout(() => this.input.current.focus(), 50)
   }
 
@@ -50,7 +58,7 @@ class TaskField extends React.Component<IProps, IState> {
   public render(): React.ReactNode {
     return (
       <React.Fragment>
-        {this.state.inputShowed !== true
+        {this.state.inputShowed !== true || this.props.loading !== true
          ? <Typography variant="body1" onClick={this.makeFocus} style={{cursor: 'pointer'}}>{this.props.value}</Typography>
          : <TextField placeholder="Введите название задачи"
                       autoFocus={this.props.autofocus}

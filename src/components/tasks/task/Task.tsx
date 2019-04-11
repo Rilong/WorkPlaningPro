@@ -15,12 +15,15 @@ interface IProps {
   onChange?: (value: string) => void
   onRemove?: () => void
   onDatelinePicker?: () => void
+  onFocus: () => void
+  onFocusLost: () => void
   checked?: boolean
   checkDisable?: boolean
   onCheckChange?: () => void
   children?: any[]
   sub?: boolean
   progress?: number
+  loading: boolean
 }
 
 interface IState {
@@ -38,7 +41,10 @@ class Task extends React.Component<IProps, IState> {
     children: null,
     checkDisable: false,
     sub: false,
-    progress: 0
+    progress: 0,
+    loading: false,
+    onFocus: () => {/* */},
+    onFocusLost: () => {/* */}
   }
 
   private cardEnter = () => this.setState({showControls: true})
@@ -71,10 +77,14 @@ class Task extends React.Component<IProps, IState> {
   }
 
   private progressRender() {
-    if (!this.props.sub && this.isExistsSubs()) {
-      return <LinearProgress variant="determinate" value={this.props.progress} />
+    if (!this.props.loading) {
+      if (!this.props.sub && this.isExistsSubs()) {
+        return <LinearProgress variant="determinate" value={this.props.progress}/>
+      }
+      return null
+    } else {
+      return <LinearProgress color="secondary" />
     }
-    return null
   }
 
   public render(): React.ReactNode {
@@ -95,7 +105,10 @@ class Task extends React.Component<IProps, IState> {
               <Grid item={true} xs={!sub ? 9 : 10} style={{paddingRight: '10px'}}>
 
                 <TaskField value={this.props.value}
-                           change={this.props.onChange}/>
+                           change={this.props.onChange}
+                           loading={this.props.loading}
+                           onFocus={this.props.onFocus}
+                           onFocusLost={this.props.onFocusLost}/>
                 <Typography variant="body2" className="dateText">20.02.2019</Typography>
 
               </Grid>
