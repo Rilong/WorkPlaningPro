@@ -59,8 +59,8 @@ class AddProject extends React.Component<IProps, IState> {
 
   private onAddTaskHandler = () => {
     const tasks = this.state.tasks.concat()
-    const newTask: ITask = {name: '', deadline: null}
-    tasks.push(newTask)
+    // const newTask: ITask = {name: '', deadline: null}
+    // tasks.push(newTask)
 
     this.setState({...this.state, tasks})
   }

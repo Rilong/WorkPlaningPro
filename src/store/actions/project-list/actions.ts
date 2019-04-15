@@ -41,8 +41,8 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
         const startDate = typeof tmpProjects[key].startDate === 'undefined' ? null : tmpProjects[key].startDate
         const finishDate = typeof tmpProjects[key].finishDate === 'undefined' ? null : tmpProjects[key].finishDate
         const price = typeof tmpProjects[key].budget === 'undefined' ? 0 : tmpProjects[key].budget
-        const tasks = typeof tmpProjects[key].tasks === 'undefined' ? null : tmpProjects[key].tasks
-        const notes = typeof tmpProjects[key].notes === 'undefined' ? null : tmpProjects[key].notes
+        const tasks = typeof tmpProjects[key].tasks === 'undefined' ? [] : tmpProjects[key].tasks
+        const notes = typeof tmpProjects[key].notes === 'undefined' ? [] : tmpProjects[key].notes
         const attachmentFiles = typeof tmpProjects[key].attachmentFiles === 'undefined' ? null : tmpProjects[key].attachmentFiles
 
         projects.push(new Project(id, userIdVal, name, startDate, finishDate, tasks, notes, price, attachmentFiles))

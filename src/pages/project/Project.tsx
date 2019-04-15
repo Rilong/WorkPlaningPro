@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
 import {changeProjectName, getProjectById} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
+import TaskModel from '../../models/Task'
 import DialogAction from '../../components/DialogAction/DialogAction'
 import Validators from '../../validation/validators'
 import Deadlines from '../../components/project/date/Deadlines'
@@ -141,6 +142,31 @@ class Project extends React.Component<IProps, IState> {
     }
   }
 
+  /*
+  * *********** Tasks **************
+  */
+
+  /*
+  * Add task
+  */
+
+  private addTask = () => {
+    const taskList: TaskModel[] = [...this.state.project.tasks]
+    const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
+    taskList.push(new TaskModel())
+    project.tasks = taskList
+    this.setState({project})
+  }
+
+  private taskChangeHandler = (value: string, index: number, isSub: boolean = false) => {
+    const taskList: TaskModel[] = [...this.state.project.tasks]
+    const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
+    taskList[index].name = value
+    project.tasks = taskList
+
+    this.setState({project})
+  }
+
   /**
    * Render dialog window
    */
@@ -180,19 +206,21 @@ class Project extends React.Component<IProps, IState> {
                 <CardContent> {/* Info */}
                   <Typography variant="h4"
                               onClick={this.dialogOpen}
-                              className="pjName">{project ? project.name : ''}</Typography>
-                  <Deadlines start={project ? new Date(project.startDate) : null}
-                             finish={project ? new Date(project.finishDate) : null}
+                              className="pjName">{project.name}</Typography>
+                  <Deadlines start={new Date(project.startDate)}
+                             finish={new Date(project.finishDate)}
                              id={this.props.match.params.id}
                              onLoad={this.loadProject} />
                 </CardContent>
                 <Info id={this.props.match.params.id}
-                      budget={project ? this.state.project.budget.toString() : '0'}
+                      budget={this.state.project.budget.toString()}
                       progress={50}
                       onLoad={this.loadProject} />
                 <Divider/>
                 <CardContent> {/* Tasks */}
-                  <TaskList/>
+                  <TaskList tasks={project ? this.state.project.tasks : null}
+                            onAdd={this.addTask}
+                            onChange={this.taskChangeHandler}/>
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Notes */}
@@ -215,7 +243,7 @@ class Project extends React.Component<IProps, IState> {
 
     return (
       <>
-        {this.state.view ? this.contentRender() : null}
+        {this.state.view ? (this.state.project ? this.contentRender() : null) : null}
       </>
     )
   }
