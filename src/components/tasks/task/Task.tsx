@@ -47,6 +47,21 @@ class Task extends React.Component<IProps, IState> {
     onFocusLost: () => {/* */}
   }
 
+  public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+
+    if (nextProps.value !== this.props.value ||
+        nextProps.loading !== this.props.loading ||
+        nextProps.progress !== this.props.progress ||
+        nextProps.checked !== this.props.checked ||
+        nextProps.checkDisable !== this.props.checkDisable ||
+        nextProps.sub !== this.props.sub ||
+        nextState.showControls !== this.state.showControls) {
+      return true
+    }
+
+    return false
+  }
+
   private cardEnter = () => this.setState({showControls: true})
   private cardLeave = () => this.setState({showControls: false})
 
@@ -88,6 +103,7 @@ class Task extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
+    console.log('rendering...')
     let cssClass = ''
 
     if (this.props.className !== null) {
