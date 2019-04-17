@@ -5,7 +5,7 @@ import './styles.scss'
 import DropZone from '../../components/dropZone/DropZone'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {changeProjectName, getProjectById} from '../../store/actions/project/actions'
+import {changeProjectName, getProjectById, saveTaskInProject} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
 import TaskModel from '../../models/Task'
 import DialogAction from '../../components/DialogAction/DialogAction'
@@ -24,13 +24,14 @@ interface IProps {
   match?: match<IParams>
   getProjectById: (id: string) => any
   changeProjectName: (name: string, id: string) => Promise<null>
+  saveTaskInProject: (id: string, task: TaskModel, parentIndex?: number, subIndex?: number) => Promise<void>
   loaded: boolean
 }
 
 interface IState {
   view: boolean
   project: ProjectModel
-  dialog: {open: boolean, value: string, loading: boolean, disabled: boolean}
+  dialog: { open: boolean, value: string, loading: boolean, disabled: boolean }
 }
 
 class Project extends React.Component<IProps, IState> {
@@ -167,6 +168,28 @@ class Project extends React.Component<IProps, IState> {
     this.setState({project})
   }
 
+  private saveTask = (task: TaskModel, parentIndex: number, subIndex: number = null) => {
+    const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
+    const tasksCloned = Object.assign(Object.create(this.state.project.tasks), this.state.project.tasks)
+    task.loading = true
+
+    project.tasks[parentIndex] = task
+    this.setState({project})
+
+    this.props.saveTaskInProject(this.state.project.id, tasksCloned[parentIndex], parentIndex, subIndex)
+      .then(() => {
+        task.loading = false
+        project.tasks[parentIndex] = task
+        this.setState({project}, () => this.loadProject())
+      })
+      .catch(() => {
+        task.loading = false
+        project.tasks[parentIndex] = task
+        this.setState({project}, () => this.loadProject())
+      })
+  }
+
+
   /**
    * Render dialog window
    */
@@ -210,17 +233,20 @@ class Project extends React.Component<IProps, IState> {
                   <Deadlines start={new Date(project.startDate)}
                              finish={new Date(project.finishDate)}
                              id={this.props.match.params.id}
-                             onLoad={this.loadProject} />
+                             onLoad={this.loadProject}/>
                 </CardContent>
                 <Info id={this.props.match.params.id}
                       budget={this.state.project.budget.toString()}
                       progress={50}
-                      onLoad={this.loadProject} />
+                      onLoad={this.loadProject}/>
                 <Divider/>
                 <CardContent> {/* Tasks */}
-                  <TaskList tasks={project ? this.state.project.tasks : null}
+                  <TaskList id={this.state.project.id}
+                            tasks={this.state.project.tasks}
                             onAdd={this.addTask}
-                            onChange={this.taskChangeHandler}/>
+                            onChange={this.taskChangeHandler}
+                            onSave={this.saveTask}
+                  />
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Notes */}
@@ -259,7 +285,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
     getProjectById: (id: string) => dispatch<any>(getProjectById(id)),
-    changeProjectName: (name: string, id: string) => dispatch<any>(changeProjectName(name, id))
+    changeProjectName: (name: string, id: string) => dispatch<any>(changeProjectName(name, id)),
+    saveTaskInProject: (id: string, task: TaskModel, parentIndex: number = null, subIndex: number = null) => dispatch<any>(saveTaskInProject(
+      id,
+      task,
+      parentIndex,
+      subIndex
+    )),
   }
 }
 

@@ -6,12 +6,14 @@ import {CREATE_PROJECT_END_LOADING, CREATE_PROJECT_START_LOADING} from './action
 import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
 import {
+  addParentTaskInProject,
   addProject,
   editProjectBudgetInList,
   editProjectDeadlinesInList,
   editProjectNameInList
 } from '../project-list/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
+import TaskModel from '../../../models/Task'
 
 export const createProject = (projectName: string, userId: string) => async (dispatch: Dispatch) => {
   const newProject = new Project(null, userId, projectName, new Date().getTime())
@@ -82,6 +84,27 @@ export const setProjectBudget = (budget: number, id: string) => async (dispatch:
     dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
     return Promise.reject(e)
   }
+}
+
+export const saveTaskInProject = (id: string, task: TaskModel, parentIndex: number = null, subIndex: number = null) => async (dispatch: Dispatch) : Promise<void> => {
+  const project: Project = dispatch<any>(getProjectById(id))
+  const projectIndex: number = dispatch<any>(getProjectIndexById(id))
+
+  if (typeof project.tasks[parentIndex] === 'undefined') {
+    project.tasks.push(task)
+  } else {
+    project.tasks[parentIndex] = task
+  }
+
+  try {
+      await updateProjectById(project, id)
+      task.saved = true
+      dispatch(addParentTaskInProject(project.tasks, projectIndex))
+      return Promise.resolve()
+    } catch (e) {
+      dispatch(openMessage(ERROR_UNKNOWN))
+      return Promise.reject()
+    }
 }
 
 export const getProjectById = (id: string) => (dispatch: Dispatch, getState): Project => {

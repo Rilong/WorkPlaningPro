@@ -11,13 +11,14 @@ import {
   PROJECTS_LOADED,
   PROJECTS_LOADING_END,
   PROJECTS_LOADING_START,
-  PROJECTS_UNLOADED
+  PROJECTS_UNLOADED, UPDATE_TASKS_IN_PROJECT
 } from './actionTypes'
 import {Dispatch} from 'redux'
 import {IProject} from '../../../interfaces/projects/IProject'
 import {Project} from '../../../models/Project'
 import {openMessage} from '../message/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
+import Task from '../../../models/Task'
 
 export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
   const projects: IProject[] = []
@@ -86,7 +87,14 @@ export const editProjectBudgetInList = (budget: number, index: number): IAction 
   }
 }
 
-const setProjectList = (list: IProject[]): IAction => {
+export const addParentTaskInProject = (tasks: Task[], index: number): IAction => {
+  return {
+    type: UPDATE_TASKS_IN_PROJECT,
+    payload: {tasks, index}
+  }
+}
+
+export const setProjectList = (list: IProject[]): IAction => {
   return {
     type: PROJECTS_GET,
     payload: list

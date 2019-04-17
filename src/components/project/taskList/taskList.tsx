@@ -5,9 +5,11 @@ import AddIcon from '@material-ui/icons/Add'
 import TaskModel from '../../../models/Task'
 
 interface IProps {
+  id: string
   onAdd: () => void
   tasks: TaskModel[]
   onChange: (value: string, index: number, isSub?: boolean) => void
+  onSave?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
 }
 
 class TaskList extends React.Component<IProps> {
@@ -20,7 +22,9 @@ class TaskList extends React.Component<IProps> {
     return this.props.tasks.map((task: TaskModel, index: number) => (
         <Task value={task.name}
               key={`task__${index}`}
-              checked={false}
+              checked={task.done}
+              loading={task.loading}
+              onFocusLost={() => this.props.onSave(Object.assign(Object.create(task), task), index)}
               className="pjTask"
               onChange={value => this.props.onChange(value, index)}/>
       )

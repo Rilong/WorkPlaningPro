@@ -8,7 +8,7 @@ import {
   PROJECTS_GET,
   PROJECTS_LOADED, PROJECTS_LOADING_END,
   PROJECTS_LOADING_START,
-  PROJECTS_UNLOADED
+  PROJECTS_UNLOADED, UPDATE_TASKS_IN_PROJECT
 } from '../actions/project-list/actionTypes'
 
 const initialState: IProjectListState = {
@@ -42,6 +42,9 @@ export default function (state: IProjectListState = initialState, action: IActio
       return {...state, projects}
     case EDIT_PROJECT_BUDGET_IN_LIST:
       projects[action.payload.index].budget = action.payload.budget
+      return {...state, projects}
+    case UPDATE_TASKS_IN_PROJECT:
+      projects[action.payload.index].tasks = action.payload.tasks
       return {...state, projects}
     default:
       return state

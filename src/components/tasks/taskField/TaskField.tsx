@@ -19,7 +19,7 @@ class TaskField extends React.Component<IProps, IState> {
   private input = React.createRef<HTMLInputElement>()
 
   public state = {
-    inputShowed: true
+    inputShowed: false
   }
 
   public static defaultProps = {
@@ -31,9 +31,7 @@ class TaskField extends React.Component<IProps, IState> {
   }
 
   public componentDidMount() {
-    if (this.props.value) {
-      this.focusLost()
-    } else {
+    if (!this.props.value) {
       this.makeFocus()
     }
   }
