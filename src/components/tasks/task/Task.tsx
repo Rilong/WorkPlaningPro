@@ -103,7 +103,6 @@ class Task extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
-    console.log('rendering...')
     let cssClass = ''
 
     if (this.props.className !== null) {
