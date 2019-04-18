@@ -6,7 +6,7 @@ import {CREATE_PROJECT_END_LOADING, CREATE_PROJECT_START_LOADING} from './action
 import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
 import {
-  addParentTaskInProject,
+  updateTasksInProject,
   addProject,
   editProjectBudgetInList,
   editProjectDeadlinesInList,
@@ -91,6 +91,7 @@ export const saveTaskInProject = (id: string, task: TaskModel, parentIndex: numb
   const projectIndex: number = dispatch<any>(getProjectIndexById(id))
 
   if (typeof project.tasks[parentIndex] === 'undefined') {
+    task.saved = true
     project.tasks.push(task)
   } else {
     project.tasks[parentIndex] = task
@@ -98,13 +99,31 @@ export const saveTaskInProject = (id: string, task: TaskModel, parentIndex: numb
 
   try {
       await updateProjectById(project, id)
-      task.saved = true
-      dispatch(addParentTaskInProject(project.tasks, projectIndex))
+      dispatch(updateTasksInProject(project.tasks, projectIndex))
       return Promise.resolve()
     } catch (e) {
       dispatch(openMessage(ERROR_UNKNOWN))
       return Promise.reject()
     }
+}
+
+export const removeTaskInProject = (id: string, parentIndex: number, subIndex: number = null) => async (dispatch: Dispatch) : Promise<void> => {
+  const project: Project = dispatch<any>(getProjectById(id))
+  const projectIndex: number = dispatch<any>(getProjectIndexById(id))
+
+  if (subIndex === null) {
+    project.tasks.splice(parentIndex, 1)
+  } else {
+    project.tasks[parentIndex].tasks.splice(subIndex, 1)
+  }
+  try {
+    await updateProjectById(project, id)
+    dispatch(updateTasksInProject(project.tasks, projectIndex))
+    return Promise.resolve()
+  } catch (e) {
+    dispatch(openMessage(ERROR_UNKNOWN))
+    return Promise.reject()
+  }
 }
 
 export const getProjectById = (id: string) => (dispatch: Dispatch, getState): Project => {

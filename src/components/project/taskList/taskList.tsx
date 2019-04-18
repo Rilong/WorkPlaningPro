@@ -10,6 +10,7 @@ interface IProps {
   tasks: TaskModel[]
   onChange: (value: string, index: number, isSub?: boolean) => void
   onSave?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
+  onRemove: (parentIndex: number, subIndex?: number) => void
 }
 
 class TaskList extends React.Component<IProps> {
@@ -26,7 +27,8 @@ class TaskList extends React.Component<IProps> {
               loading={task.loading}
               onFocusLost={() => this.props.onSave(Object.assign(Object.create(task), task), index)}
               className="pjTask"
-              onChange={value => this.props.onChange(value, index)}/>
+              onChange={value => this.props.onChange(value, index)}
+              onRemove={() => this.props.onRemove(index)}/>
       )
     )
   }

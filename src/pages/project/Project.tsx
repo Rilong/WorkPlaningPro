@@ -5,7 +5,12 @@ import './styles.scss'
 import DropZone from '../../components/dropZone/DropZone'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {changeProjectName, getProjectById, saveTaskInProject} from '../../store/actions/project/actions'
+import {
+  changeProjectName,
+  getProjectById,
+  removeTaskInProject,
+  saveTaskInProject
+} from '../../store/actions/project/actions'
 import {Project as ProjectModel} from '../../models/Project'
 import TaskModel from '../../models/Task'
 import DialogAction from '../../components/DialogAction/DialogAction'
@@ -25,6 +30,7 @@ interface IProps {
   getProjectById: (id: string) => any
   changeProjectName: (name: string, id: string) => Promise<null>
   saveTaskInProject: (id: string, task: TaskModel, parentIndex?: number, subIndex?: number) => Promise<void>
+  removeTaskInProject: (id: string, parentIndex: number, subIndex?: number) => Promise<void>
   loaded: boolean
 }
 
@@ -189,6 +195,30 @@ class Project extends React.Component<IProps, IState> {
       })
   }
 
+  private removeTask = (parentIndex: number, subIndex: number = null) => {
+    const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
+    const tasks = [...this.state.project.tasks]
+    const current = tasks[parentIndex]
+
+    if (!current.saved) {
+      tasks.splice(parentIndex, 1)
+      project.tasks = tasks
+      this.setState({project})
+    } else {
+      current.loading = true
+      project.tasks = tasks
+      this.setState({project})
+
+      this.props.removeTaskInProject(project.id, parentIndex)
+        .then(() => this.loadProject())
+        .catch(() => {
+          current.loading = false
+          project.tasks = tasks
+          this.setState({project})
+        })
+    }
+  }
+
 
   /**
    * Render dialog window
@@ -219,7 +249,6 @@ class Project extends React.Component<IProps, IState> {
 
   private contentRender(): React.ReactNode {
     const {project} = this.state
-
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
@@ -246,6 +275,7 @@ class Project extends React.Component<IProps, IState> {
                             onAdd={this.addTask}
                             onChange={this.taskChangeHandler}
                             onSave={this.saveTask}
+                            onRemove={this.removeTask}
                   />
                 </CardContent>
                 <Divider/>
@@ -292,6 +322,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       parentIndex,
       subIndex
     )),
+    removeTaskInProject: (id: string, parentIndex: number, subIndex: number = null) => dispatch<any>(removeTaskInProject(id, parentIndex, subIndex))
   }
 }
 

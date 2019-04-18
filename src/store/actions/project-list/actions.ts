@@ -87,7 +87,7 @@ export const editProjectBudgetInList = (budget: number, index: number): IAction 
   }
 }
 
-export const addParentTaskInProject = (tasks: Task[], index: number): IAction => {
+export const updateTasksInProject = (tasks: Task[], index: number): IAction => {
   return {
     type: UPDATE_TASKS_IN_PROJECT,
     payload: {tasks, index}

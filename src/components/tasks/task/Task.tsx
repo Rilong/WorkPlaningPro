@@ -85,7 +85,11 @@ class Task extends React.Component<IProps, IState> {
   private addSubButtonRender() {
     if (!this.props.sub) {
       return (
-        <Fab color="primary" size="small" style={{marginRight: '10px'}} onClick={this.props.onDatelinePicker}><AddIcon/></Fab>
+        <Fab color="primary"
+             size="small"
+             style={{marginRight: '10px'}}
+             onClick={this.props.onDatelinePicker}
+             disabled={this.props.loading}><AddIcon/></Fab>
       )
     }
     return null
@@ -133,9 +137,15 @@ class Task extends React.Component<IProps, IState> {
                     <CSSTransition classNames="fade" timeout={300}>
                       <div>
                         {this.addSubButtonRender()}
-                        <Fab color="primary" size="small" style={{marginRight: '10px'}}
-                             onClick={this.props.onDatelinePicker}><CalendarIcon/></Fab>
-                        <Fab color="primary" size="small" onClick={this.props.onRemove}><CloseIcon/></Fab>
+                        <Fab color="primary"
+                             size="small"
+                             style={{marginRight: '10px'}}
+                             onClick={this.props.onDatelinePicker}
+                             disabled={this.props.loading}><CalendarIcon/></Fab>
+                        <Fab color="primary"
+                             size="small"
+                             onClick={this.props.onRemove}
+                             disabled={this.props.loading}><CloseIcon/></Fab>
                       </div>
                     </CSSTransition>
                     : null

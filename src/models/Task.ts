@@ -6,11 +6,13 @@ export default class Task implements ITask {
   public done: boolean = null
   public saved: boolean = null
   public loading: boolean = false
+  public tasks: Task[] = null
 
-  public constructor(name: string = null, deadline: null = null, done: boolean = false, saved: boolean = false) {
+  public constructor(name: string = null, deadline: number = null, tasks: Task[] = [], done: boolean = false, saved: boolean = false) {
     this.name = name
     this.deadline = deadline
     this.done = done
     this.saved = saved
+    this.tasks = tasks
   }
 }

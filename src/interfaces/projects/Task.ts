@@ -4,4 +4,5 @@ export default interface ITask {
   done?: boolean
   saved?: boolean
   loading?: boolean
+  tasks?: ITask[]
 }
