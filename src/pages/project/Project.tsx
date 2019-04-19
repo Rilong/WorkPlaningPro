@@ -177,22 +177,23 @@ class Project extends React.Component<IProps, IState> {
   private saveTask = (task: TaskModel, parentIndex: number, subIndex: number = null) => {
     const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
     const tasksCloned = Object.assign(Object.create(this.state.project.tasks), this.state.project.tasks)
+    tasksCloned[parentIndex] = task
     task.loading = true
 
     project.tasks[parentIndex] = task
-    this.setState({project})
-
-    this.props.saveTaskInProject(this.state.project.id, tasksCloned[parentIndex], parentIndex, subIndex)
-      .then(() => {
-        task.loading = false
-        project.tasks[parentIndex] = task
-        this.setState({project}, () => this.loadProject())
-      })
-      .catch(() => {
-        task.loading = false
-        project.tasks[parentIndex] = task
-        this.setState({project}, () => this.loadProject())
-      })
+    this.setState({project}, () => {
+      this.props.saveTaskInProject(this.state.project.id, tasksCloned[parentIndex], parentIndex, subIndex)
+        .then(() => {
+          task.loading = false
+          project.tasks[parentIndex] = task
+          this.setState({project}, () => this.loadProject())
+        })
+        .catch(() => {
+          task.loading = false
+          project.tasks[parentIndex] = task
+          this.setState({project}, () => this.loadProject())
+        })
+    })
   }
 
   private removeTask = (parentIndex: number, subIndex: number = null) => {
@@ -219,6 +220,10 @@ class Project extends React.Component<IProps, IState> {
     }
   }
 
+  private checkToggleTask = (task: TaskModel, parentIndex: number, subIndex: number = null) => {
+    task.done = !task.done
+    this.saveTask(task, parentIndex, subIndex)
+  }
 
   /**
    * Render dialog window
@@ -276,6 +281,7 @@ class Project extends React.Component<IProps, IState> {
                             onChange={this.taskChangeHandler}
                             onSave={this.saveTask}
                             onRemove={this.removeTask}
+                            onCheck={this.checkToggleTask}
                   />
                 </CardContent>
                 <Divider/>

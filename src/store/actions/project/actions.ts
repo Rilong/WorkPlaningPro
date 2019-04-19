@@ -90,6 +90,7 @@ export const saveTaskInProject = (id: string, task: TaskModel, parentIndex: numb
   const project: Project = dispatch<any>(getProjectById(id))
   const projectIndex: number = dispatch<any>(getProjectIndexById(id))
 
+  task.loading = false
   if (typeof project.tasks[parentIndex] === 'undefined') {
     task.saved = true
     project.tasks.push(task)
@@ -135,7 +136,6 @@ export const getProjectIndexById = (id: string) => (dispatch: Dispatch, getState
 }
 
 const updateProjectById = (project: Project, id: string): Promise<void> => {
-  console.log('updateProjectById', project, id)
   return firebase.database().ref(`projects/${id}`).set(project)
 }
 
