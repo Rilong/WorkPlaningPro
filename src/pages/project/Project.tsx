@@ -157,18 +157,27 @@ class Project extends React.Component<IProps, IState> {
   * Add task
   */
 
-  private addTask = () => {
+  private addTask = (parentIndex: number = null) => {
     const taskList: TaskModel[] = [...this.state.project.tasks]
     const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
-    taskList.push(new TaskModel())
+
+    if (parentIndex === null) {
+      taskList.push(new TaskModel())
+    } else {
+      taskList[parentIndex].tasks.push(new TaskModel())
+    }
     project.tasks = taskList
     this.setState({project})
   }
 
-  private taskChangeHandler = (value: string, index: number, isSub: boolean = false) => {
+  private taskChangeHandler = (value: string, index: number, subIndex: number = null) => {
     const taskList: TaskModel[] = [...this.state.project.tasks]
     const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
-    taskList[index].name = value
+    if (subIndex === null) {
+      taskList[index].name = value
+    } else {
+      taskList[index].tasks[subIndex].name = value
+    }
     project.tasks = taskList
 
     this.setState({project})

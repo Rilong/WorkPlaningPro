@@ -6,9 +6,9 @@ import TaskModel from '../../../models/Task'
 
 interface IProps {
   id: string
-  onAdd: () => void
+  onAdd: (parentIndex?: number) => void
   tasks: TaskModel[]
-  onChange: (value: string, index: number, isSub?: boolean) => void
+  onChange: (value: string, index: number, subIndex?: number) => void
   onSave?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
   onCheck?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
   onRemove: (parentIndex: number, subIndex?: number) => void
@@ -30,8 +30,24 @@ class TaskList extends React.Component<IProps> {
               className="pjTask"
               onChange={value => this.props.onChange(value, index)}
               onRemove={() => this.props.onRemove(index)}
+              onSubAdd={() => this.props.onAdd(index)}
               onCheckChange={() => this.props.onCheck(Object.assign(Object.create(task), task), index)}
-              checkDisable={task.loading}/>
+              checkDisable={task.loading}
+        >
+          {task.tasks.map((taskSub: TaskModel, indexSub: number) => (
+            <Task value={taskSub.name}
+                  key={`task__${index}__sub__${indexSub}`}
+                  sub={true}
+                  checked={taskSub.done}
+                  loading={taskSub.loading}
+                  onFocusLost={() => this.props.onSave(Object.assign(Object.create(taskSub), taskSub), index, indexSub)}
+                  className="pjTask"
+                  onChange={value => this.props.onChange(value, index, indexSub)}
+                  onRemove={() => this.props.onRemove(index, indexSub)}
+                  onCheckChange={() => this.props.onCheck(Object.assign(Object.create(taskSub), taskSub), index, indexSub)}
+                  checkDisable={taskSub.loading} />
+          ))}
+        </Task>
       )
     )
   }
@@ -47,7 +63,7 @@ class TaskList extends React.Component<IProps> {
              variant="extended"
              size="small"
              className="pjTasksAdd"
-             onClick={this.props.onAdd}><AddIcon/> Добавить
+             onClick={() => this.props.onAdd()}><AddIcon/> Добавить
           задачу</Fab>
       </>
     )

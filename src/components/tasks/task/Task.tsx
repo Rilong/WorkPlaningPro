@@ -14,13 +14,14 @@ interface IProps {
   className?: string
   onChange?: (value: string) => void
   onRemove?: () => void
+  onSubAdd?: () => void
   onDatelinePicker?: () => void
   onFocus: () => void
   onFocusLost: () => void
   checked?: boolean
   checkDisable?: boolean
   onCheckChange?: () => void
-  children?: any[]
+  children?: React.ReactNode[]
   sub?: boolean
   progress?: number
   loading: boolean
@@ -44,10 +45,18 @@ class Task extends React.Component<IProps, IState> {
     progress: 0,
     loading: false,
     onFocus: () => {/* */},
-    onFocusLost: () => {/* */}
+    onFocusLost: () => {/* */},
+    onSubAdd: () => {/* */}
   }
 
   public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+
+
+    if (nextProps.children !== null) {
+      if (nextProps.children.length > 0) {
+        return true
+      }
+    }
 
     if (nextProps.value !== this.props.value ||
         nextProps.loading !== this.props.loading ||
@@ -88,7 +97,7 @@ class Task extends React.Component<IProps, IState> {
         <Fab color="primary"
              size="small"
              style={{marginRight: '10px'}}
-             onClick={this.props.onDatelinePicker}
+             onClick={this.props.onSubAdd}
              disabled={this.props.loading}><AddIcon/></Fab>
       )
     }
