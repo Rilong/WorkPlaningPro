@@ -51,9 +51,8 @@ class Task extends React.Component<IProps, IState> {
 
   public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
 
-
-    if (nextProps.children !== null) {
-      if (nextProps.children.length > 0) {
+    if (nextProps.children !== null || this.props.children !== null) {
+      if (nextProps.children.length > 0 || this.props.children.length > 0) {
         return true
       }
     }

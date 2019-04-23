@@ -91,11 +91,23 @@ export const saveTaskInProject = (id: string, task: TaskModel, parentIndex: numb
   const projectIndex: number = dispatch<any>(getProjectIndexById(id))
 
   task.loading = false
-  if (typeof project.tasks[parentIndex] === 'undefined') {
-    task.saved = true
-    project.tasks.push(task)
+
+  if (subIndex === null) {
+    if (typeof project.tasks[parentIndex] === 'undefined') {
+      task.saved = true
+      project.tasks.push(task)
+    } else {
+      task.saved = true
+      project.tasks[parentIndex] = task
+    }
   } else {
-    project.tasks[parentIndex] = task
+    if (typeof project.tasks[parentIndex].tasks[subIndex] === 'undefined') {
+      task.saved = true
+      project.tasks[parentIndex].tasks.push(task)
+    } else {
+      task.saved = true
+      project.tasks[parentIndex].tasks[subIndex] = task
+    }
   }
 
   try {

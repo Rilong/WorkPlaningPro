@@ -186,20 +186,37 @@ class Project extends React.Component<IProps, IState> {
   private saveTask = (task: TaskModel, parentIndex: number, subIndex: number = null) => {
     const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
     const tasksCloned = Object.assign(Object.create(this.state.project.tasks), this.state.project.tasks)
-    tasksCloned[parentIndex] = task
+    let tasks: TaskModel = null
+
+    if(subIndex === null) {
+      tasksCloned[parentIndex] = task
+      project.tasks[parentIndex] = task
+      tasks = tasksCloned[parentIndex]
+    } else {
+      tasksCloned[parentIndex].tasks[subIndex] = task
+      project.tasks[parentIndex].tasks[subIndex] = task
+      tasks = tasksCloned[parentIndex].tasks[subIndex]
+    }
     task.loading = true
 
-    project.tasks[parentIndex] = task
     this.setState({project}, () => {
-      this.props.saveTaskInProject(this.state.project.id, tasksCloned[parentIndex], parentIndex, subIndex)
+      this.props.saveTaskInProject(this.state.project.id, tasks, parentIndex, subIndex)
         .then(() => {
           task.loading = false
-          project.tasks[parentIndex] = task
+          if(subIndex === null) {
+            project.tasks[parentIndex] = task
+          } else {
+            project.tasks[parentIndex].tasks[subIndex] = task
+          }
           this.setState({project}, () => this.loadProject())
         })
         .catch(() => {
           task.loading = false
-          project.tasks[parentIndex] = task
+          if(subIndex === null) {
+            project.tasks[parentIndex] = task
+          } else {
+            project.tasks[parentIndex].tasks[subIndex] = task
+          }
           this.setState({project}, () => this.loadProject())
         })
     })
@@ -208,10 +225,14 @@ class Project extends React.Component<IProps, IState> {
   private removeTask = (parentIndex: number, subIndex: number = null) => {
     const project: ProjectModel = Object.assign(Object.create(this.state.project), this.state.project)
     const tasks = [...this.state.project.tasks]
-    const current = tasks[parentIndex]
+    const current = subIndex === null ? tasks[parentIndex] : tasks[parentIndex].tasks[subIndex]
 
     if (!current.saved) {
-      tasks.splice(parentIndex, 1)
+      if (subIndex === null) {
+        tasks.splice(parentIndex, 1)
+      } else {
+        tasks[parentIndex].tasks.splice(subIndex, 1)
+      }
       project.tasks = tasks
       this.setState({project})
     } else {
@@ -219,7 +240,7 @@ class Project extends React.Component<IProps, IState> {
       project.tasks = tasks
       this.setState({project})
 
-      this.props.removeTaskInProject(project.id, parentIndex)
+      this.props.removeTaskInProject(project.id, parentIndex, subIndex)
         .then(() => this.loadProject())
         .catch(() => {
           current.loading = false
