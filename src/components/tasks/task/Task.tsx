@@ -20,6 +20,8 @@ interface IProps {
   onFocusLost: () => void
   checked?: boolean
   checkDisable?: boolean
+  addSubDisable?: boolean
+  calendarDisable?: boolean
   onCheckChange?: () => void
   children?: React.ReactNode[]
   sub?: boolean
@@ -41,6 +43,8 @@ class Task extends React.Component<IProps, IState> {
     checked: null,
     children: null,
     checkDisable: false,
+    addSubDisable: false,
+    calendarDisable: false,
     sub: false,
     progress: 0,
     loading: false,
@@ -63,6 +67,8 @@ class Task extends React.Component<IProps, IState> {
         nextProps.checked !== this.props.checked ||
         nextProps.checkDisable !== this.props.checkDisable ||
         nextProps.sub !== this.props.sub ||
+        nextProps.calendarDisable !== this.props.calendarDisable ||
+        nextProps.addSubDisable !== this.props.addSubDisable ||
         nextState.showControls !== this.state.showControls) {
       return true
     }
@@ -97,7 +103,7 @@ class Task extends React.Component<IProps, IState> {
              size="small"
              style={{marginRight: '10px'}}
              onClick={this.props.onSubAdd}
-             disabled={this.props.loading}><AddIcon/></Fab>
+             disabled={this.props.loading || this.props.addSubDisable}><AddIcon/></Fab>
       )
     }
     return null
@@ -149,7 +155,7 @@ class Task extends React.Component<IProps, IState> {
                              size="small"
                              style={{marginRight: '10px'}}
                              onClick={this.props.onDatelinePicker}
-                             disabled={this.props.loading}><CalendarIcon/></Fab>
+                             disabled={this.props.loading || this.props.calendarDisable}><CalendarIcon/></Fab>
                         <Fab color="primary"
                              size="small"
                              onClick={this.props.onRemove}

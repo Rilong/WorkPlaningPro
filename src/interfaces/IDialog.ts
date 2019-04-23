@@ -3,5 +3,5 @@ export default interface IDialog {
   disabled?: boolean
   loading?: boolean
   action?: string
-  value?: string
+  value?: any
 }
