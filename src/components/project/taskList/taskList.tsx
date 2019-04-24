@@ -5,15 +5,20 @@ import AddIcon from '@material-ui/icons/Add'
 import TaskModel from '../../../models/Task'
 import IDialog from '../../../interfaces/IDialog'
 import Calendar from '../../calendar/Calendar'
+import {Dispatch} from 'redux'
+import {saveTaskInProject} from '../../../store/actions/project/actions'
+import {connect} from 'react-redux'
 
 interface IProps {
   id: string
   onAdd: (parentIndex?: number) => void
   tasks: TaskModel[]
+  saveTaskInProject: (id: string, task: TaskModel, parentIndex?: number, subIndex?: number) => Promise<void>
   onChange: (value: string, index: number, subIndex?: number) => void
   onSave?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
   onCheck?: (task: TaskModel, parentIndex?: number, subIndex?: number) => void
   onRemove: (parentIndex: number, subIndex?: number) => void
+  onLoad: () => void
 }
 
 interface IState {
@@ -37,28 +42,83 @@ class TaskList extends React.Component<IProps, IState> {
   }
 
   private selectDateHandler = (date: Date) => {
-    const disabled: boolean = this.state.dialog.value.date === null
+    const disabled: boolean = false
 
     this.setState({dialog: {...this.state.dialog, disabled, value: {
-          ...this.state.dialog,
-          date
+          ...this.state.dialog.value,
+          date: date.getTime()
         }}})
   }
 
   private openPicker = (parentIndex: number, subIndex: number = null) => {
     this.setState({dialog: {...this.state.dialog, open: true, value: {
-      ...this.state.dialog,
+      ...this.state.dialog.value,
          parentIndex,
          subIndex
     }}})
   }
 
   private dialogClose = () => {
-    this.setState({dialog: {...this.state.dialog, open: false}})
+    this.setState({
+      dialog: {
+        ...this.state.dialog,
+        open: false,
+        value: {
+          ...this.state.dialog.value,
+          parentIndex: null,
+          subIndex: null
+        }
+      }
+    })
   }
 
   private dialogAgree = () => {
-   /* */
+    const {dialog} = this.state
+    const {tasks} = this.props
+    console.log(tasks, dialog)
+    const parentIndex = dialog.value.parentIndex
+    const subIndex = dialog.value.subIndex
+    const task: TaskModel = subIndex === null
+      ? Object.assign(Object.create(tasks[parentIndex]), tasks[parentIndex])
+      : Object.assign(Object.create(tasks[parentIndex].tasks[subIndex]), tasks[parentIndex].tasks[subIndex])
+
+    task.deadline = dialog.value.date
+
+    this.setDialogLoading()
+    this.props.saveTaskInProject(this.props.id, task, parentIndex, subIndex)
+      .then(() => {
+        this.setDialogUnloading()
+        this.dialogClose()
+         this.props.onLoad()
+      })
+      .catch(() => this.setDialogUnloading())
+  }
+
+  private setDialogLoading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: true}})
+  }
+
+  private setDialogUnloading = () => {
+    this.setState({dialog: {...this.state.dialog, loading: false}})
+  }
+
+  private calculatePercent(tasks: TaskModel[]) {
+    let done = 0
+    let total = 0
+
+    if (tasks.length === 0) {
+      return 0
+    }
+    tasks.forEach((task: TaskModel) => {
+      if (task.saved) {
+        total += 1
+      }
+      if (task.done) {
+        done += 1
+      }
+    })
+
+    return Math.ceil(100 * done / total)
   }
 
   private listRender() {
@@ -81,6 +141,7 @@ class TaskList extends React.Component<IProps, IState> {
               checkDisable={task.loading || !task.saved}
               addSubDisable={!task.saved}
               calendarDisable={!task.saved}
+              progress={this.calculatePercent(task.tasks)}
         >
           {task.tasks.map((taskSub: TaskModel, indexSub: number) => (
             <Task value={taskSub.name}
@@ -130,4 +191,15 @@ class TaskList extends React.Component<IProps, IState> {
   }
 }
 
-export default TaskList
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    saveTaskInProject: (id: string, task: TaskModel, parentIndex: number = null, subIndex: number = null) => dispatch<any>(saveTaskInProject(
+      id,
+      task,
+      parentIndex,
+      subIndex
+    )),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TaskList)

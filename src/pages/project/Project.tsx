@@ -255,6 +255,34 @@ class Project extends React.Component<IProps, IState> {
     this.saveTask(task, parentIndex, subIndex)
   }
 
+  // @ts-ignore
+  private calculatePercent = () => {
+    const tasks = this.state.project.tasks
+    let done = 0
+    let total = 0
+
+    tasks.forEach((task) => {
+      if (task.saved) {
+        total += 1
+      }
+      if (task.done) {
+        done += 1
+      }
+      if (task.tasks.length > 0) {
+        task.tasks.forEach((sub) => {
+          if (sub.saved) {
+            total += 1
+          }
+          if (sub.done) {
+            done += 1
+          }
+        })
+      }
+    })
+
+    return Math.ceil(100 * done / total)
+  }
+
   /**
    * Render dialog window
    */
@@ -284,6 +312,7 @@ class Project extends React.Component<IProps, IState> {
 
   private contentRender(): React.ReactNode {
     const {project} = this.state
+    const percent = this.calculatePercent()
     return (
       <div>
         <Grid container={true} justify="center" className="pjContainer">
@@ -301,7 +330,7 @@ class Project extends React.Component<IProps, IState> {
                 </CardContent>
                 <Info id={this.props.match.params.id}
                       budget={this.state.project.budget.toString()}
-                      progress={50}
+                      progress={percent}
                       onLoad={this.loadProject}/>
                 <Divider/>
                 <CardContent> {/* Tasks */}
@@ -312,6 +341,7 @@ class Project extends React.Component<IProps, IState> {
                             onSave={this.saveTask}
                             onRemove={this.removeTask}
                             onCheck={this.checkToggleTask}
+                            onLoad={() => this.loadProject}
                   />
                 </CardContent>
                 <Divider/>
