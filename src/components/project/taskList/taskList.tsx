@@ -128,11 +128,12 @@ class TaskList extends React.Component<IProps, IState> {
 
     return this.props.tasks.map((task: TaskModel, index: number) => (
         <Task value={task.name}
+              className="pjTask"
+              date={task.deadline !== null ? new Date(task.deadline) : null}
               key={`task__${index}`}
               checked={task.done}
               loading={task.loading}
               onFocusLost={() => this.props.onSave(Object.assign(Object.create(task), task), index)}
-              className="pjTask"
               onChange={value => this.props.onChange(value, index)}
               onRemove={() => this.props.onRemove(index)}
               onSubAdd={() => this.props.onAdd(index)}
@@ -145,12 +146,13 @@ class TaskList extends React.Component<IProps, IState> {
         >
           {task.tasks.map((taskSub: TaskModel, indexSub: number) => (
             <Task value={taskSub.name}
+                  className="pjTask"
+                  date={new Date(taskSub.deadline)}
                   key={`task__${index}__sub__${indexSub}`}
                   sub={true}
                   checked={taskSub.done}
                   loading={taskSub.loading}
                   onFocusLost={() => this.props.onSave(Object.assign(Object.create(taskSub), taskSub), index, indexSub)}
-                  className="pjTask"
                   onChange={value => this.props.onChange(value, index, indexSub)}
                   onRemove={() => this.props.onRemove(index, indexSub)}
                   onDatelinePicker={() => this.openPicker(index, indexSub)}

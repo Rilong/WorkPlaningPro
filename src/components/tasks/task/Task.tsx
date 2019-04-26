@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Card, Checkbox, Fab, Grid, LinearProgress, Typography} from '@material-ui/core'
+import dateFns from 'date-fns'
 import TaskField from '../taskField/TaskField'
 import CloseIcon from '@material-ui/icons/Close'
 import CalendarIcon from '@material-ui/icons/CalendarTodayRounded'
@@ -12,6 +13,7 @@ import './animation.css'
 interface IProps {
   value: string
   className?: string
+  date?: Date
   onChange?: (value: string) => void
   onRemove?: () => void
   onSubAdd?: () => void
@@ -40,6 +42,7 @@ class Task extends React.Component<IProps, IState> {
 
   public static defaultProps = {
     className: null,
+    date: null,
     checked: null,
     children: null,
     checkDisable: false,
@@ -69,6 +72,7 @@ class Task extends React.Component<IProps, IState> {
         nextProps.sub !== this.props.sub ||
         nextProps.calendarDisable !== this.props.calendarDisable ||
         nextProps.addSubDisable !== this.props.addSubDisable ||
+        nextProps.date !== this.props.date ||
         nextState.showControls !== this.state.showControls) {
       return true
     }
@@ -142,7 +146,9 @@ class Task extends React.Component<IProps, IState> {
                            loading={this.props.loading}
                            onFocus={this.props.onFocus}
                            onFocusLost={this.props.onFocusLost}/>
-                <Typography variant="body2" className="dateText">20.02.2019</Typography>
+                <Typography variant="body2" className="dateText">
+                  {this.props.date !== null ? dateFns.format(this.props.date, 'DD.MM.YYYY') : 'Не задана'}
+                </Typography>
 
               </Grid>
               <Grid item={true} xs={!sub ? 3 : 2} className="controlsRoot">
