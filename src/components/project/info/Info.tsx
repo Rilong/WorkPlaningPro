@@ -32,6 +32,10 @@ class Info extends React.Component<IProps, IState> {
   private inputRef = React.createRef<HTMLInputElement>()
 
 
+  public componentDidMount(): void {
+    this.setState({dialog: {...this.state.dialog, value: this.props.budget}})
+  }
+
   public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
     if (prevProps.budget !== this.props.budget) {
       this.setState({dialog: {...this.state.dialog, value: this.props.budget}})
