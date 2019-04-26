@@ -12,6 +12,7 @@ import {getProjects} from './store/actions/project-list/actions'
 import Message from './components/message/Message'
 import messageType from './interfaces/messages/MessageType'
 import User from './models/User'
+import Watermark from './components/watermark/Watermark'
 
 interface IProps {
   isAuthorized?: boolean
@@ -67,6 +68,7 @@ class App extends React.Component<IProps> {
             </div>
         }
         <Message typeMessage={this.props.messageType}/>
+        <Watermark side="bottomRight">ALPHA 0.2.0 ENTRY ACCESS</Watermark>
       </div>
     )
   }
