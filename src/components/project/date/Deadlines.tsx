@@ -118,7 +118,6 @@ class Deadlines extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
-    console.log(this.props.start, this.props.finish)
     return (
       <>
         <Grid container={true} justify="space-between">
