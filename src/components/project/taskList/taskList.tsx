@@ -147,7 +147,7 @@ class TaskList extends React.Component<IProps, IState> {
           {task.tasks.map((taskSub: TaskModel, indexSub: number) => (
             <Task value={taskSub.name}
                   className="pjTask"
-                  date={new Date(taskSub.deadline)}
+                  date={taskSub.deadline !== null ? new Date(taskSub.deadline) : null}
                   key={`task__${index}__sub__${indexSub}`}
                   sub={true}
                   checked={taskSub.done}

@@ -114,14 +114,10 @@ class Task extends React.Component<IProps, IState> {
   }
 
   private progressRender() {
-    if (!this.props.loading) {
       if (!this.props.sub && this.isExistsSubs()) {
         return <LinearProgress variant="determinate" value={this.props.progress}/>
       }
       return null
-    } else {
-      return <LinearProgress color="secondary" />
-    }
   }
 
   public render(): React.ReactNode {

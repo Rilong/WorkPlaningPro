@@ -255,11 +255,14 @@ class Project extends React.Component<IProps, IState> {
     this.saveTask(task, parentIndex, subIndex)
   }
 
-  // @ts-ignore
   private calculatePercent = () => {
     const tasks = this.state.project.tasks
     let done = 0
     let total = 0
+
+    if (tasks.length === 0) {
+      return 0
+    }
 
     tasks.forEach((task) => {
       if (task.saved) {
@@ -323,8 +326,8 @@ class Project extends React.Component<IProps, IState> {
                   <Typography variant="h4"
                               onClick={this.dialogOpen}
                               className="pjName">{project.name}</Typography>
-                  <Deadlines start={new Date(project.startDate)}
-                             finish={new Date(project.finishDate)}
+                  <Deadlines start={project.startDate !== null ? new Date(project.startDate) : null}
+                             finish={project.finishDate !== null ? new Date(project.finishDate) : null}
                              id={this.props.match.params.id}
                              onLoad={this.loadProject}/>
                 </CardContent>
