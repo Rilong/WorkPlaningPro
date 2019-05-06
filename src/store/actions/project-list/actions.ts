@@ -47,7 +47,12 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
         const attachmentFiles = typeof tmpProjects[key].attachmentFiles === 'undefined' ? null : tmpProjects[key].attachmentFiles
 
         if (tasks.length > 0) {
-          tasks = tasks.map(task => {
+          tasks = tasks.map((task: Task) => {
+            if (typeof task.tasks !== 'undefined' && task.tasks.length > 0) {
+              task.tasks = task.tasks.map((subTask: Task) => {
+                return new Task(subTask.name, subTask.deadline, null, subTask.done, subTask.saved)
+              })
+            }
             return new Task(task.name, task.deadline, task.tasks, task.done, task.saved)
           })
         }
@@ -59,9 +64,8 @@ export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
       dispatch(projectLoaded())
     }
   } catch (e) {
-    console.log(e)
     dispatch(projectLoadingEnd())
-    dispatch(openMessage(ERROR_UNKNOWN))
+    dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
   }
 }
 
