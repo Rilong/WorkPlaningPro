@@ -1,6 +1,7 @@
 import {IProject} from '../interfaces/projects/IProject'
 import * as dateFns from 'date-fns'
 import Task from './Task'
+import Note from './Note'
 
 export class Project implements IProject {
   public id: string = null
@@ -9,7 +10,7 @@ export class Project implements IProject {
   public startDate: number = null
   public finishDate: number = null
   public tasks: Task[] = null
-  public notes: any = 0
+  public notes: Note[] = null
   public budget: number = null
   public attachmentFiles: any = null
 
@@ -19,7 +20,7 @@ export class Project implements IProject {
               startDate: number = null,
               finishDate: number = null,
               tasks: Task[] = [],
-              notes: any = null, price: number = 0,
+              notes: Note[] = [], price: number = 0,
               attachmentFiles: any = null) {
     this.id = id
     this.userId = userId

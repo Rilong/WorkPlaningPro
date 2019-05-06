@@ -349,7 +349,7 @@ class Project extends React.Component<IProps, IState> {
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Notes */}
-                  <NoteList/>
+                  <NoteList notes={this.state.project.notes} projectId={this.state.project.id}/>
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Upload files */}
