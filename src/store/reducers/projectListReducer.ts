@@ -1,6 +1,7 @@
 import {IAction} from '../../interfaces/IAction'
 import {IProjectListState} from '../../interfaces/projects/IProjectListState'
 import {
+  ADD_PROJECT_NOTE_IN_LIST,
   EDIT_PROJECT_BUDGET_IN_LIST,
   EDIT_PROJECT_DEADLINES_IN_LIST,
   EDIT_PROJECT_NAME_IN_LIST,
@@ -45,6 +46,9 @@ export default function (state: IProjectListState = initialState, action: IActio
       return {...state, projects}
     case UPDATE_TASKS_IN_PROJECT:
       projects[action.payload.index].tasks = action.payload.tasks
+      return {...state, projects}
+    case ADD_PROJECT_NOTE_IN_LIST:
+      projects[action.payload.index].notes.push(action.payload.note)
       return {...state, projects}
     default:
       return state

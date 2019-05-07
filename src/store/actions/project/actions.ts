@@ -5,15 +5,17 @@ import * as _ from 'lodash'
 import {CREATE_PROJECT_END_LOADING, CREATE_PROJECT_START_LOADING} from './actionTypes'
 import {openMessage} from '../message/actions'
 import {Project} from '../../../models/Project'
+// @ts-ignore
 import {
   updateTasksInProject,
   addProject,
   editProjectBudgetInList,
   editProjectDeadlinesInList,
-  editProjectNameInList
+  editProjectNameInList, addNoteInProjectList
 } from '../project-list/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 import TaskModel from '../../../models/Task'
+import Note from '../../../models/Note'
 
 export const createProject = (projectName: string, userId: string) => async (dispatch: Dispatch) => {
   const newProject = new Project(null, userId, projectName, new Date().getTime())
@@ -132,6 +134,24 @@ export const removeTaskInProject = (id: string, parentIndex: number, subIndex: n
     return Promise.resolve()
   } catch (e) {
     dispatch(openMessage(ERROR_UNKNOWN))
+    return Promise.reject()
+  }
+}
+
+export const addNoteInProject = (content: string, projectId: string) => async (dispatch: Dispatch): Promise<void> => {
+  const project: Project = dispatch<any>(getProjectById(projectId))
+  const projectIndex: number = dispatch<any>(getProjectIndexById(projectId))
+  const note: Note = new Note(content)
+  const notes: Note[] = [...project.notes]
+  notes.push(note)
+  project.notes = notes
+
+  try {
+    await updateProjectById(project, projectId)
+    dispatch(addNoteInProjectList(note, projectIndex))
+    return Promise.resolve()
+  } catch (e) {
+    dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
     return Promise.reject()
   }
 }

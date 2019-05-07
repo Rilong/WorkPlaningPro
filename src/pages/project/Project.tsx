@@ -68,7 +68,10 @@ class Project extends React.Component<IProps, IState> {
 
   private loadProject = () => {
     const project: ProjectModel = this.props.getProjectById(this.props.match.params.id)
-    this.setState({project})
+    if (typeof project !== 'undefined') {
+      project.notes = project.notes.concat()
+      this.setState({project})
+    }
   }
 
   private addFiles = (files: FileList) => {
@@ -349,7 +352,7 @@ class Project extends React.Component<IProps, IState> {
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Notes */}
-                  <NoteList notes={this.state.project.notes} projectId={this.state.project.id}/>
+                  <NoteList notes={this.state.project.notes} projectId={this.state.project.id} onLoad={this.loadProject}/>
                 </CardContent>
                 <Divider/>
                 <CardContent> {/* Upload files */}

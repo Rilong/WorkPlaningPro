@@ -3,6 +3,7 @@ import 'firebase/database'
 
 import {IAction} from '../../../interfaces/IAction'
 import {
+  ADD_PROJECT_NOTE_IN_LIST,
   EDIT_PROJECT_BUDGET_IN_LIST,
   EDIT_PROJECT_DEADLINES_IN_LIST,
   EDIT_PROJECT_NAME_IN_LIST,
@@ -19,6 +20,7 @@ import {Project} from '../../../models/Project'
 import {openMessage} from '../message/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 import Task from '../../../models/Task'
+import Note from '../../../models/Note'
 
 export const getProjects = (userId: string) => async (dispatch: Dispatch) => {
   const projects: IProject[] = []
@@ -108,6 +110,13 @@ export const setProjectList = (list: IProject[]): IAction => {
   return {
     type: PROJECTS_GET,
     payload: list
+  }
+}
+
+export const addNoteInProjectList = (note: Note, index: number): IAction => {
+  return {
+    type: ADD_PROJECT_NOTE_IN_LIST,
+    payload: {note, index}
   }
 }
 const projectLoadingStart = (): IAction => {
