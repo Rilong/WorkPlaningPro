@@ -9,7 +9,7 @@ import {
   PROJECTS_GET,
   PROJECTS_LOADED, PROJECTS_LOADING_END,
   PROJECTS_LOADING_START,
-  PROJECTS_UNLOADED, UPDATE_TASKS_IN_PROJECT
+  PROJECTS_UNLOADED, REMOVE_PROJECT_NOTE_IN_LIST, UPDATE_NOTES_IN_PROJECT, UPDATE_TASKS_IN_PROJECT
 } from '../actions/project-list/actionTypes'
 
 const initialState: IProjectListState = {
@@ -50,6 +50,11 @@ export default function (state: IProjectListState = initialState, action: IActio
     case ADD_PROJECT_NOTE_IN_LIST:
       projects[action.payload.index].notes.push(action.payload.note)
       return {...state, projects}
+    case REMOVE_PROJECT_NOTE_IN_LIST:
+      projects[action.payload.projectIndex].notes.splice(action.payload.noteIndex, 1)
+      return {...state, projects}
+    case UPDATE_NOTES_IN_PROJECT:
+      projects[action.payload.index].notes = action.payload.notes
     default:
       return state
   }

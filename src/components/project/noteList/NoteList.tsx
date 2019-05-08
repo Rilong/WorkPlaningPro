@@ -7,12 +7,16 @@ import TextEditor from '../../textEditor/TextEditor'
 import AddIcon from '@material-ui/icons/Add'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {addNoteInProject} from '../../../store/actions/project/actions'
+import {addNoteInProject, getProjectIndexById, removeNoteInProject} from '../../../store/actions/project/actions'
+import {updateNotesInProject} from '../../../store/actions/project-list/actions'
 
 interface IProps {
   notes: NoteModel[]
   projectId: string
   addNote: (content: string, projectId: string) => Promise<void>
+  removeNote: (index: number, projectId: string) => Promise<void>
+  updateNotes: (notes: NoteModel[], index: number) => void
+  getProjectIndexById: (projectId: string) => number
   onLoad: () => void
 }
 
@@ -53,7 +57,7 @@ class NoteList extends React.Component<IProps, IState> {
   }
 
   private removeNote = (index: number) => {
-    /**/
+    this.props.removeNote(index, this.props.projectId)
   }
 
   private setLoading = () => {
@@ -97,7 +101,10 @@ class NoteList extends React.Component<IProps, IState> {
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return {
-    addNote: (content: string, projectId: string) => dispatch<any>(addNoteInProject(content, projectId))
+    addNote: (content: string, projectId: string) => dispatch<any>(addNoteInProject(content, projectId)),
+    removeNote: (index: number, projectId: string) => dispatch<any>(removeNoteInProject(index, projectId)),
+    updateNotes: (notes: NoteModel[], index: number) => dispatch<any>(updateNotesInProject(notes, index)),
+    getProjectIndexById: (projectId: string) => dispatch<any>(getProjectIndexById(projectId))
   }
 }
 

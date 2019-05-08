@@ -12,7 +12,7 @@ import {
   PROJECTS_LOADED,
   PROJECTS_LOADING_END,
   PROJECTS_LOADING_START,
-  PROJECTS_UNLOADED, UPDATE_TASKS_IN_PROJECT
+  PROJECTS_UNLOADED, REMOVE_PROJECT_NOTE_IN_LIST, UPDATE_NOTES_IN_PROJECT, UPDATE_TASKS_IN_PROJECT
 } from './actionTypes'
 import {Dispatch} from 'redux'
 import {IProject} from '../../../interfaces/projects/IProject'
@@ -106,6 +106,13 @@ export const updateTasksInProject = (tasks: Task[], index: number): IAction => {
   }
 }
 
+export const updateNotesInProject = (notes: Note[], index: number): IAction => {
+  return {
+    type: UPDATE_NOTES_IN_PROJECT,
+    payload: {notes, index}
+  }
+}
+
 export const setProjectList = (list: IProject[]): IAction => {
   return {
     type: PROJECTS_GET,
@@ -117,6 +124,13 @@ export const addNoteInProjectList = (note: Note, index: number): IAction => {
   return {
     type: ADD_PROJECT_NOTE_IN_LIST,
     payload: {note, index}
+  }
+}
+
+export const removeNoteInProjectList = (noteIndex: number, projectIndex: number): IAction => {
+  return {
+    type: REMOVE_PROJECT_NOTE_IN_LIST,
+    payload: {noteIndex, projectIndex}
   }
 }
 const projectLoadingStart = (): IAction => {
