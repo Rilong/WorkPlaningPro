@@ -57,7 +57,16 @@ class NoteList extends React.Component<IProps, IState> {
   }
 
   private removeNote = (index: number) => {
+    const {projectId} = this.props
+    const projectIndex = this.props.getProjectIndexById(projectId)
+    const notes = [...this.props.notes]
+    notes[index].loading = true
+
+    this.props.updateNotes(notes, projectIndex)
+    this.props.onLoad()
+
     this.props.removeNote(index, this.props.projectId)
+      .then(() => this.props.onLoad())
   }
 
   private setLoading = () => {
@@ -74,7 +83,8 @@ class NoteList extends React.Component<IProps, IState> {
         <Note key={`note-${index}`}
               content={note.content}
               onEdit={this.editNote}
-              onRemove={() => this.removeNote(index)}/>
+              onRemove={() => this.removeNote(index)}
+              loading={note.loading}/>
       ))
     }
 

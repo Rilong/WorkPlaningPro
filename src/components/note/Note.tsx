@@ -10,7 +10,8 @@ import TextEditorModel from '../../models/TextEditor'
 interface IProps {
   content: string
   onEdit: (html: string) => void
-  onRemove: () => void
+  onRemove: () => void,
+  loading?: boolean
 }
 
 interface IState {
@@ -18,6 +19,10 @@ interface IState {
 }
 
 class Note extends React.Component<IProps, IState> {
+
+  public static defaultProps = {
+    loading: false
+  }
 
   public state:IState = {
     edit: false
@@ -52,8 +57,8 @@ class Note extends React.Component<IProps, IState> {
           <Divider/>
           <CardActions>
             <Grid container={true} justify="flex-end">
-              <Fab size="small" color="primary" onClick={this.editToggle}><EditIcon/></Fab>
-              <Fab size="small" color="primary"><RemoveIcon/></Fab>
+              <Fab size="small" color="primary" disabled={this.props.loading} onClick={this.editToggle}><EditIcon/></Fab>
+              <Fab size="small" color="primary" disabled={this.props.loading} onClick={this.props.onRemove}><RemoveIcon/></Fab>
             </Grid>
           </CardActions>
         </Card>
