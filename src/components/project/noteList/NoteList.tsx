@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {EditorState, ContentState} from 'draft-js'
 import {Fab, Typography} from '@material-ui/core'
 import NoteModel from '../../../models/Note'
 import TextEditorModel from '../../../models/TextEditor'
@@ -22,14 +23,30 @@ interface IProps {
 
 interface IState {
   loading: boolean
-  model: TextEditorModel
+  model: TextEditorModel,
+  editor: EditorState
 }
 
 class NoteList extends React.Component<IProps, IState> {
 
-  public state = {
-    loading: false,
-    model: null
+  constructor(props: Readonly<IProps>) {
+    super(props)
+
+    this.state = {
+      loading: false,
+      model: null,
+      editor: EditorState.createEmpty()
+    }
+  }
+
+  private setEditorState = (editorState: EditorState) => {
+    this.setState({editor: editorState})
+  }
+
+  private clearEditorState() {
+    const editorState = EditorState.push(this.state.editor, ContentState.createFromText(''), 'remove-range')
+    this.setState({editor: editorState})
+
   }
 
   private changeTextEditor = (model: TextEditorModel) => {
@@ -46,6 +63,7 @@ class NoteList extends React.Component<IProps, IState> {
       this.props.addNote(this.state.model.html, this.props.projectId)
         .then(() => {
           this.setUnloading()
+          this.clearEditorState()
           this.props.onLoad()
         })
         .catch(() => this.setUnloading())
@@ -96,7 +114,10 @@ class NoteList extends React.Component<IProps, IState> {
       <>
         <Typography variant="h6" align="center" className="pj-mb">Примечания</Typography>
         {this.noteList()}
-        <TextEditor onChange={this.changeTextEditor} className="pjTextEditor"/>
+        <TextEditor onChange={this.changeTextEditor}
+                    editorState={this.state.editor}
+                    onChangeState={this.setEditorState}
+                    className="pjTextEditor"/>
         <Fab color="primary"
              variant="extended"
              size="small"
