@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {
+  ContentState,
+  convertFromHTML,
+  convertToRaw,
+  DefaultDraftBlockRenderMap,
   Editor,
   EditorState,
-  ContentState,
-  RichUtils,
-  DefaultDraftBlockRenderMap,
-  convertFromHTML,
-  convertToRaw
+  RichUtils
 } from 'draft-js'
 import {stateToHTML} from 'draft-js-export-html'
 import * as Immutable from 'immutable'
@@ -25,7 +25,9 @@ import './styles.scss'
 import {blockType, inlineStyle} from '../../types/textEditor'
 
 interface IProps {
+  editorState?: EditorState
   value?: string
+  onChangeState?: (editorState: EditorState) => void
   onChange?: (model: TextEditorModel) => void
   className?: string
   placeholder?: string
@@ -39,6 +41,8 @@ interface IState {
 class TextEditor extends React.Component<IProps, IState> {
 
   public static defaultProps:IProps = {
+    editorState: null,
+    onChangeState: () => {/**/},
     value: null,
     placeholder: '',
     className: null
@@ -71,7 +75,9 @@ class TextEditor extends React.Component<IProps, IState> {
 
       editorState = EditorState.createWithContent(content)
     } else {
-      editorState = EditorState.createEmpty()
+      if (props.editorState === null) {
+        editorState = EditorState.createEmpty()
+      }
     }
 
     this.state = {
@@ -80,12 +86,17 @@ class TextEditor extends React.Component<IProps, IState> {
     }
   }
 
+  private getEditorState() : EditorState {
+    return this.props.editorState ? this.props.editorState : this.state.editor
+  }
+
   private isCurrentInlineStyle(style: inlineStyle) {
-    return this.state.editor.getCurrentInlineStyle().has(style)
+    const editorState = this.getEditorState()
+    return editorState.getCurrentInlineStyle().has(style)
   }
 
   private isCurrentBlockType(type: blockType) {
-    const editorState = this.state.editor
+    const editorState = this.getEditorState()
     const selection = editorState.getSelection()
     const blockTypeSelection = editorState
       .getCurrentContent()
@@ -96,8 +107,11 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   public shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
-    const oldHtml = this.toHtml(this.state.editor.getCurrentContent())
-    const nextHtml = this.toHtml(nextState.editor.getCurrentContent())
+    const oldEditorState = this.getEditorState()
+    const nextEditorState = nextProps.editorState ? nextProps.editorState : nextState.editor
+
+    const oldHtml = this.toHtml(oldEditorState.getCurrentContent())
+    const nextHtml = this.toHtml(nextEditorState.getCurrentContent())
 
     if (oldHtml !== nextHtml || this.state.isFocused !== nextState.isFocused) {
       return true
@@ -107,11 +121,11 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private setInlineStyle = (style: inlineStyle) => {
-    this.onChangeHandler(RichUtils.toggleInlineStyle(this.state.editor, style))
+    this.onChangeHandler(RichUtils.toggleInlineStyle(this.getEditorState(), style))
   }
 
   private setBlockType = (type: blockType) => {
-    this.onChangeHandler(RichUtils.toggleBlockType(this.state.editor, type))
+    this.onChangeHandler(RichUtils.toggleBlockType(this.getEditorState(), type))
   }
 
   private focus = () => {
@@ -119,11 +133,17 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private onChangeHandler = (editorState: EditorState) => {
+
     const contentState = editorState.getCurrentContent()
     const html = this.toHtml(contentState)
     const raw = JSON.stringify(convertToRaw(contentState))
     this.props.onChange(new TextEditorModel(raw, html))
-    this.setState({editor: editorState})
+
+    if (this.props.editorState) {
+      this.props.onChangeState(editorState)
+    } else {
+      this.setState({editor: editorState})
+    }
   }
 
   private onFocusHandler = (event: React.SyntheticEvent) => this.setState({isFocused: true})
@@ -201,7 +221,7 @@ class TextEditor extends React.Component<IProps, IState> {
         </Card>
 
         <div className={textFieldClassName} onClick={this.focus}>
-          <Editor editorState={this.state.editor}
+          <Editor editorState={this.getEditorState()}
                   placeholder={this.props.placeholder}
                   blockRenderMap={this.blockRenderMap}
                   onChange={this.onChangeHandler}
