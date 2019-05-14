@@ -29,6 +29,8 @@ interface IProps {
   value?: string
   onChangeState?: (editorState: EditorState) => void
   onChange?: (model: TextEditorModel) => void
+  onBlur?: () => void
+  onFocus?: () => void
   className?: string
   placeholder?: string
 }
@@ -43,6 +45,8 @@ class TextEditor extends React.Component<IProps, IState> {
   public static defaultProps:IProps = {
     editorState: null,
     onChangeState: () => {/**/},
+    onBlur: () => {/**/},
+    onFocus: () => {/**/},
     value: null,
     placeholder: '',
     className: null
@@ -129,6 +133,7 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private focus = () => {
+    this.props.onFocus()
     this.editorRef.focus()
   }
 
@@ -147,7 +152,10 @@ class TextEditor extends React.Component<IProps, IState> {
   }
 
   private onFocusHandler = (event: React.SyntheticEvent) => this.setState({isFocused: true})
-  private onBlurHandler = (event: React.SyntheticEvent) => this.setState({isFocused: false})
+  private onBlurHandler = (event: React.SyntheticEvent) => {
+    this.props.onBlur()
+    this.setState({isFocused: false})
+  }
 
   private toHtml(contentState: ContentState) {
     const options = {
