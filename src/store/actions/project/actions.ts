@@ -11,7 +11,7 @@ import {
   addProject,
   editProjectBudgetInList,
   editProjectDeadlinesInList,
-  editProjectNameInList, addNoteInProjectList, removeNoteInProjectList
+  editProjectNameInList, addNoteInProjectList, removeNoteInProjectList, updateNotesInProject
 } from '../project-list/actions'
 import {ERROR_UNKNOWN} from '../../../validation/validationMessages'
 import TaskModel from '../../../models/Task'
@@ -171,6 +171,28 @@ export const removeNoteInProject = (index: number, projectId: string) => async (
     return Promise.resolve()
   } catch (e) {
     dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
+    return Promise.reject()
+  }
+}
+
+export const editNoteInProject = (note: Note, index: number, projectId: string) => async (dispatch: Dispatch): Promise<void> => {
+  const project: Project = dispatch<any>(getProjectById(projectId))
+  const projectIndex: number = dispatch<any>(getProjectIndexById(projectId))
+  const notes: Note[] = [...project.notes]
+
+  notes[index] = {...note}
+  notes[index].content = notes[index].editedContent
+  notes[index].editedContent = null
+
+  notes[index].loading = false
+  project.notes = notes
+  try {
+    await updateProjectById(project, projectId)
+    dispatch(updateNotesInProject(notes, projectIndex))
+    return Promise.resolve()
+  } catch (e) {
+    dispatch(openMessage(ERROR_UNKNOWN, 'danger'))
+    console.log(e)
     return Promise.reject()
   }
 }

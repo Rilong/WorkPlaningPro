@@ -8,7 +8,12 @@ import TextEditor from '../../textEditor/TextEditor'
 import AddIcon from '@material-ui/icons/Add'
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
-import {addNoteInProject, getProjectIndexById, removeNoteInProject} from '../../../store/actions/project/actions'
+import {
+  addNoteInProject,
+  editNoteInProject,
+  getProjectIndexById,
+  removeNoteInProject
+} from '../../../store/actions/project/actions'
 import {updateNotesInProject} from '../../../store/actions/project-list/actions'
 
 interface IProps {
@@ -16,6 +21,7 @@ interface IProps {
   projectId: string
   addNote: (content: string, projectId: string) => Promise<void>
   removeNote: (index: number, projectId: string) => Promise<void>
+  editNoteInProject: (note: NoteModel, index: number, projectId: string) => Promise<void>
   updateNotes: (notes: NoteModel[], index: number) => void
   getProjectIndexById: (projectId: string) => number
   onLoad: () => void
@@ -57,6 +63,16 @@ class NoteList extends React.Component<IProps, IState> {
     }
   }
 
+  private updateNoteInStore = (note: NoteModel, index: number) => {
+    const {projectId} = this.props
+    const projectIndex = this.props.getProjectIndexById(projectId)
+    const notes = [...this.props.notes]
+    notes[index] = note
+
+    this.props.updateNotes(notes, projectIndex)
+    this.props.onLoad()
+  }
+
   private addNote = () => {
     if (this.state.model !== null) {
       this.setLoading()
@@ -70,18 +86,29 @@ class NoteList extends React.Component<IProps, IState> {
     }
   }
 
-  private editNote = (content: any) => {
-    /**/
+  private editNote = (index: number, content: any) => {
+    const note: NoteModel = [...this.props.notes][index]
+    note.editedContent = content
+    this.updateNoteInStore(note, index)
+  }
+
+  private editSaveNote = (index: number) => {
+    const note = [...this.props.notes][index]
+    console.log(note)
+    note.loading = true
+
+    this.updateNoteInStore(note, index)
+
+    this.props.editNoteInProject(note, index, this.props.projectId)
+      .then(() => this.props.onLoad())
+      .catch(() => this.props.onLoad())
   }
 
   private removeNote = (index: number) => {
-    const {projectId} = this.props
-    const projectIndex = this.props.getProjectIndexById(projectId)
-    const notes = [...this.props.notes]
-    notes[index].loading = true
+    const note = [...this.props.notes][index]
+    note.loading = true
 
-    this.props.updateNotes(notes, projectIndex)
-    this.props.onLoad()
+    this.updateNoteInStore(note, index)
 
     this.props.removeNote(index, this.props.projectId)
       .then(() => this.props.onLoad())
@@ -100,7 +127,8 @@ class NoteList extends React.Component<IProps, IState> {
       return this.props.notes.map((note: NoteModel, index: number) => (
         <Note key={`note-${index}`}
               content={note.content}
-              onEdit={this.editNote}
+              onEdit={(content: any) => this.editNote(index, content)}
+              onSave={() => this.editSaveNote(index)}
               onRemove={() => this.removeNote(index)}
               loading={note.loading}/>
       ))
@@ -134,6 +162,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
   return {
     addNote: (content: string, projectId: string) => dispatch<any>(addNoteInProject(content, projectId)),
     removeNote: (index: number, projectId: string) => dispatch<any>(removeNoteInProject(index, projectId)),
+    editNoteInProject: (note: NoteModel, index: number, projectId: string) => dispatch<any>(editNoteInProject(note, index, projectId)),
     updateNotes: (notes: NoteModel[], index: number) => dispatch<any>(updateNotesInProject(notes, index)),
     getProjectIndexById: (projectId: string) => dispatch<any>(getProjectIndexById(projectId))
   }

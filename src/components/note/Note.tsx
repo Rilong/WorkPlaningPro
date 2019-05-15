@@ -6,11 +6,13 @@ import RemoveIcon from '@material-ui/icons/Delete'
 import './styles.scss'
 import TextEditor from '../textEditor/TextEditor'
 import TextEditorModel from '../../models/TextEditor'
+import SaveIcon from '@material-ui/icons/SaveAlt'
 
 interface IProps {
   content: string
   onEdit: (html: string) => void
-  onRemove: () => void,
+  onSave: () => void
+  onRemove: () => void
   loading?: boolean
 }
 
@@ -43,7 +45,16 @@ class Note extends React.Component<IProps, IState> {
   private editRender(): React.ReactNode {
     const {content} = this.props
 
-    return <TextEditor value={content} onChange={this.editorChangeHandler}/>
+    return (
+      <>
+        <TextEditor value={content} onChange={this.editorChangeHandler}/>
+        <Fab color="primary"
+             variant="extended"
+             size="small"
+             disabled={this.props.loading}
+             onClick={this.props.onSave}><SaveIcon/> Сохранить</Fab>
+      </>
+      )
   }
 
   public render(): React.ReactNode {
