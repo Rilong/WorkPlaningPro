@@ -114,6 +114,13 @@ class NoteList extends React.Component<IProps, IState> {
       .then(() => this.props.onLoad())
   }
 
+  private onEditToggleHandler = (index: number) => {
+    const note = [...this.props.notes][index]
+    note.showEdit = !note.showEdit
+
+    this.updateNoteInStore(note, index)
+  }
+
   private setLoading = () => {
     this.setState({loading: true})
   }
@@ -127,6 +134,8 @@ class NoteList extends React.Component<IProps, IState> {
       return this.props.notes.map((note: NoteModel, index: number) => (
         <Note key={`note-${index}`}
               content={note.content}
+              showEdit={note.showEdit}
+              onEditToggle={() => this.onEditToggleHandler(index)}
               onEdit={(content: any) => this.editNote(index, content)}
               onSave={() => this.editSaveNote(index)}
               onRemove={() => this.removeNote(index)}

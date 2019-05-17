@@ -143,11 +143,14 @@ export const addNoteInProject = (content: string, projectId: string) => async (d
   const projectIndex: number = dispatch<any>(getProjectIndexById(projectId))
   const note: Note = new Note(content)
   const notes: Note[] = [...project.notes]
+
+  note.showEdit = null
   notes.push(note)
   project.notes = notes
 
   try {
     await updateProjectById(project, projectId)
+    note.showEdit = false
     dispatch(addNoteInProjectList(note, projectIndex))
     return Promise.resolve()
   } catch (e) {
@@ -179,8 +182,11 @@ export const editNoteInProject = (note: Note, index: number, projectId: string) 
   const project: Project = dispatch<any>(getProjectById(projectId))
   const projectIndex: number = dispatch<any>(getProjectIndexById(projectId))
   const notes: Note[] = [...project.notes]
+  const clonedNote = {...note}
 
-  notes[index] = {...note}
+  clonedNote.showEdit = null
+
+  notes[index] = clonedNote
   notes[index].content = notes[index].editedContent
   notes[index].editedContent = null
 
@@ -188,6 +194,7 @@ export const editNoteInProject = (note: Note, index: number, projectId: string) 
   project.notes = notes
   try {
     await updateProjectById(project, projectId)
+    notes[index].showEdit = false
     dispatch(updateNotesInProject(notes, projectIndex))
     return Promise.resolve()
   } catch (e) {

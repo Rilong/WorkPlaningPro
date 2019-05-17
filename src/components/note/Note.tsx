@@ -10,10 +10,12 @@ import SaveIcon from '@material-ui/icons/SaveAlt'
 
 interface IProps {
   content: string
+  showEdit: boolean
+  loading?: boolean
   onEdit: (html: string) => void
+  onEditToggle: () => void
   onSave: () => void
   onRemove: () => void
-  loading?: boolean
 }
 
 interface IState {
@@ -25,12 +27,6 @@ class Note extends React.Component<IProps, IState> {
   public static defaultProps = {
     loading: false
   }
-
-  public state:IState = {
-    edit: false
-  }
-
-  private editToggle = () => this.setState({edit: !this.state.edit})
 
   private editorChangeHandler = (model: TextEditorModel) => {
     this.props.onEdit(model.html)
@@ -63,12 +59,12 @@ class Note extends React.Component<IProps, IState> {
       <>
         <Card className="Note">
           <CardContent>
-            {!this.state.edit ? this.contentRender() : this.editRender()}
+            {!this.props.showEdit ? this.contentRender() : this.editRender()}
           </CardContent>
           <Divider/>
           <CardActions>
             <Grid container={true} justify="flex-end">
-              <Fab size="small" color="primary" disabled={this.props.loading} onClick={this.editToggle}><EditIcon/></Fab>
+              <Fab size="small" color="primary" disabled={this.props.loading} onClick={this.props.onEditToggle}><EditIcon/></Fab>
               <Fab size="small" color="primary" disabled={this.props.loading} onClick={this.props.onRemove}><RemoveIcon/></Fab>
             </Grid>
           </CardActions>
