@@ -18,11 +18,7 @@ interface IProps {
   onRemove: () => void
 }
 
-interface IState {
-  edit: boolean
-}
-
-class Note extends React.Component<IProps, IState> {
+class Note extends React.Component<IProps> {
 
   public static defaultProps = {
     loading: false

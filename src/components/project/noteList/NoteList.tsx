@@ -16,6 +16,8 @@ import {
 } from '../../../store/actions/project/actions'
 import {updateNotesInProject} from '../../../store/actions/project-list/actions'
 
+import './styles.scss'
+
 interface IProps {
   notes: NoteModel[]
   projectId: string
@@ -148,7 +150,7 @@ class NoteList extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <>
+      <div className="NoteList">
         <Typography variant="h6" align="center" className="pj-mb">Примечания</Typography>
         {this.noteList()}
         <TextEditor onChange={this.changeTextEditor}
@@ -162,7 +164,7 @@ class NoteList extends React.Component<IProps, IState> {
              className="pjNotesAdd"
              onClick={this.addNote}><AddIcon/> Добавить
           примечание</Fab>
-      </>
+      </div>
     )
   }
 }
