@@ -100,6 +100,10 @@ class Info extends React.Component<IProps, IState> {
     }
   }
 
+  private calculateBudget = () => {
+    return (Number(this.props.budget) * this.props.progress) / 100
+  }
+
   private dialogRender() {
     const {dialog} = this.state
     return <DialogAction open={dialog.open}
@@ -128,7 +132,7 @@ class Info extends React.Component<IProps, IState> {
               <Fab size="small" color="primary" onClick={this.dialogOpen}>
                 <MoneyIcon/>
               </Fab>
-              <span className="text">{this.props.budget}</span>
+              <span className="text">{this.calculateBudget()} из {this.props.budget}</span>
             </Typography>
             <Typography variant="body1" className="pjProgressText"><span>{this.props.progress}%</span></Typography>
           </Grid>
